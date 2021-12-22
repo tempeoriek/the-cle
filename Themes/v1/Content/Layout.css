@@ -1,0 +1,283 @@
+﻿/* FOOTER */
+footer {
+    width: 100vw;
+   
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    font-size: 0.92rem;
+    color: #1c1c1c;
+    padding-top:50px;
+    padding-bottom:20px;
+    border-top:1px solid #B8b8b8;
+    margin-top:30px;
+}
+    
+footer section {
+    width: 1366px;
+    margin:0 auto;
+    padding: 95px 0 0;
+}
+    footer a {
+       color: #D9D9D9;
+        padding: 3px 0;
+        letter-spacing:1.25px;
+    }
+
+footer .logo-footer{
+    margin-top:14px;
+    max-width:120px;
+}
+
+footer h2{
+  font-size:10px;
+  letter-spacing:1.25px;
+  text-transform:uppercase;
+  margin-top:14px;
+  margin-bottom:14px;
+}
+
+
+footer .sosmed{margin-top:60px;}
+
+footer .line-border-left{ border-left:1px solid #D9D9D9}
+
+
+footer .img-footer{width:100%; max-width:160px;}
+footer .copyright,
+footer .copyright ul li > a {font-size: 0.84rem;}
+
+footer .staticlinks .col-4{
+    /*padding-left:5px;
+    padding-right:5px;*/
+}
+
+
+
+    /*footer .nav-item{text-transform:uppercase;}					   
+footer .nav-item  + .nav-item {margin-left:13px;}					   
+
+
+
+footer .copyright .content__copyright{max-width:300px;width:100%;margin-left:61vw}
+
+footer .footer__location{display:block;width:200px;line-height:16px;margin-top:34px}
+
+.navbar-footer{
+    display: flex;
+    max-width: 1920px !important;
+    padding-top: -100px;
+}*/
+    /*footer .newsletter {padding: 0;max-width: 100%;}
+footer .newsletter p {margin: 12px 0 10px;}
+footer .lnk-footer {margin-bottom: 0;}
+footer .lnk-footer-email {padding-top: 20px;margin-bottom: 0;}
+footer .lnk-footer-email li {font-size: 0.92rem;letter-spacing: 1px;}
+footer .lnk-footer-email a {color: #878787;font-size: 0.92rem;letter-spacing: 1px;}
+footer ul.social {display: inline-flex}
+footer ul li + li {padding-left: 0;padding-right: 0}
+footer .Footer__line{border-bottom:1px solid white;margin:10px -10px 10px -10px}*/
+    /*footer h6 {
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 2px;
+    font-weight: normal;
+}*/
+    /*.siteby {text-transform: lowercase;}
+.social-icon {
+    width: 13px;
+    margin-right: 12px;
+}
+
+.copyright-text {
+    font-size: 10px;
+}*/
+    /*END OF FOOTER*/
+    /* NEWSLETTER */
+    #nieuwsbrief {
+        margin-top: 15px;
+        max-width:60%;
+        margin-left:auto;
+    }
+
+#nieuwsbrief-mobile {margin: -15px auto;}
+
+    #nieuwsbrief-popup input.email,
+    #nieuwsbrief input.email,
+    #nieuwsbrief-mobile input.email {
+        -webkit-appearance: none;
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box; /* Firefox, other Gecko */
+
+        box-sizing: border-box;
+        line-height: normal;
+        border: none;
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        border-color: -moz-use-text-color -moz-use-text-color #838386;
+        -moz-border-image: none;
+        -o-border-image: none;
+        -webkit-border-image: none;
+        border-image: none;
+        border-style: none none solid;
+        border-width: thin thin 1px;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        border-bottom: 1px solid #1c1c1c;
+        border-radius: 0;
+        width: 100%;
+        display: inline-block;
+        text-transform: none;
+        background-color: transparent;
+        text-align: left;
+        color: #1c1c1c;
+    }
+
+    #nieuwsbrief-popup input[type="submit"],
+    #nieuwsbrief input[type="submit"],
+    #nieuwsbrief-mobile input[type="submit"] {
+        background-color: rgba(0, 0, 255, 0);
+        border: 0 none;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        text-transform: uppercase;
+    }
+
+#nieuwsbrief #mc-embedded-subscribe, #mc-embedded-subscribe1 {
+    background-color: transparent;
+    border: none;
+    margin-left: -1vw
+}
+
+
+#nieuwsbrief #mc-embedded-subscribe, #mc-embedded-subscribe1 {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background-color: #1c1c1c;
+    margin-bottom: 0;
+    margin-left: -2px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    border: 1px solid #1c1c1c;
+    cursor: pointer;
+    padding: 2px 20px;
+    text-transform: uppercase;
+}
+
+    #nieuwsbrief #mc-embedded-subscribe:hover,
+    #nieuwsbrief #mc-embedded-subscribe:active,
+    #nieuwsbrief #mc-embedded-subscribe:focus,
+    #mc-embedded-subscribe1:hover {
+        background-color: #B8B8B8;
+    }
+    /*end newsletter*/
+    /*card*/
+    footer .card {
+        padding-left: 14px;
+    }
+footer [data-toggle="collapse"]:after {margin-top:3px;margin-left:56vw}
+footer [data-toggle="collapse"]:after .sub{margin-top:3px;margin-left:68vw}
+footer a:focus, a:hover{color:white}
+footer a:hover, a:focus, a:active{color:white}
+/*end*/
+
+
+
+
+
+
+    @media screen and (max-width: 767px) {
+        footer {
+            padding: 10px;
+            text-align: left
+        }
+
+            footer .card .card-body ul li > a {
+                font-size: 13px;
+            }
+
+            footer section {
+                padding: 0
+            }
+
+
+        footer .logo-footer{
+            margin-top:36px;
+            margin-bottom:36px;
+            width:40%;
+        }
+
+
+    }
+
+    @media (min-width: 768px) and (max-width: 1079px) {
+        footer {
+            padding: 14px 1.5% 13px;
+        }
+    }
+
+
+/*******/
+ @media screen and (min-width: 768px){
+
+ }
+
+
+ 
+
+@media (max-width: 575.98px) {
+    footer {
+        padding-top: 0;
+        padding-left:30px;
+        padding-right:30px;
+        padding-bottom:14px;
+        height:100%;
+    }
+
+    footer .container{
+        padding-left:0;
+        padding-right:0;
+    }
+
+
+  footer .logo-footer {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 25%;
+  }
+   
+  footer .line-border-left{
+      border-left:none !important;
+      border-top: 1px solid #D9D9D9 !important;
+  }
+   
+
+  footer .sosmed{ margin-top:24px;}
+  #nieuwsbrief{margin-top: 24px;}
+
+  .navbar-footer{flex-direction:column; padding:0 35px 0 35px;}
+    #footer_left{margin-left: 0}
+    #footer_left {padding-left:0px; padding-top:5px;justify-content:center;}
+#footer_right {padding-right:0px; text-align:center; padding-top:10px;}
+#footer_center {margin-left:0;}
+.social-logo {
+    display: flex;
+    justify-content: center;
+    padding-top:5px;
+}
+   
+ .copyright-text {
+        font-size: 15px;
+        color: #707070;
+        text-align:center;
+}
+   
+ }
