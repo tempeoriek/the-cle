@@ -1,0 +1,68 @@
+﻿@model CheckoutShippingAddressModel
+@using Nop.Web.Models.Checkout;
+@{
+
+    Layout = "~/views/shared/_Layout.cshtml";
+
+    ViewBag.Title = "New Shipping Address";
+}
+
+@*@using (Html.BeginForm("NewShippingAddress", "Checkout", FormMethod.Post, new { id = "form1", @class = "login-form" }))*@
+
+@using (Ajax.BeginForm("NewShippingAddress", "Checkout", new AjaxOptions
+{
+    HttpMethod = "POST",
+    LoadingElementId = "ajax-loader",
+    OnSuccess = "loginCallback",
+    UpdateTargetId = "pnlMsg"
+}))
+{
+
+    <div class="col-main  mt-5">
+        <h4 class="alternate text-center">ADD NEW SHIPPING ADDRESS</h4>
+        <div class="enter-address blox mt-5">
+            @{
+                var validationSummary = Html.ValidationSummary(true);
+
+                if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                {
+                    <div class="message-error">@validationSummary</div>
+                }
+
+                var dataDictAddress = new ViewDataDictionary();
+                //Merge ModelState (required for validation)
+                dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                dataDictAddress.TemplateInfo.HtmlFieldPrefix = "NewAddress";
+                @Html.Partial("_CreateOrUpdateAddress", Model.NewAddress, dataDictAddress)
+            }
+        </div>
+
+        <div class="buttons mt-5 mb-5" style="text-align:right;">
+            <input type="submit" name="nextstep" value="Save" class="btn btn-default" />
+            <div id="pnlMsg" class="text-danger"></div>
+        
+        </div>
+        
+    </div>
+}
+
+
+
+@section RootScripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+         function loginCallback(data) {
+             if (data.ok) {
+                $("#pnlMsg").html(data.msg);
+                //window.location = data.newurl;
+            }
+            else {
+                $("#pnlMsg").html(data.msg);
+            }
+        }
+        function reqfailed() {
+            $("#pnlfailure").html("Sorry, an error occured.");
+        }
+    </script>
+}

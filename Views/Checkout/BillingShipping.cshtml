@@ -1,0 +1,299 @@
+﻿@using Nop.Web.Models.Checkout;
+@model FlittsCheckoutModel
+
+@{
+
+    ViewBag.Title = "Billing and Shipping";
+    ViewBag.HideMenu = "true";
+}
+
+
+<div class="container" style="margin-top:120px;">
+    @using (Html.BeginForm())
+    {
+
+        <div class="row">
+            <div class="col-sm-6">
+                <!-- billing -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h1>@T("Checkout.BillingAddress")</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="checkout-blox">
+                            @if (Model.BillingAdress != null)
+                            {
+
+                                if (Model.BillingAdress.ExistingAddresses.Count > 0)
+                                {
+                                    var billingDictAddress = new ViewDataDictionary();
+                                    //Merge ModelState (required for validation)
+                                    billingDictAddress.ModelState.Merge(ViewData.ModelState);
+                                    billingDictAddress.TemplateInfo.HtmlFieldPrefix = "BillingNewAddress";
+
+                                    foreach (var item in Model.BillingAdress.ExistingAddresses)
+                                    {
+                                        @Html.Partial("_CreateOrUpdateAddress", item, billingDictAddress)
+                                        @*@Html.Partial("_Address", item, billingDictAddress)*@
+                                    }
+                                }
+                                else
+                                {
+                                    var dataDictAddress = new ViewDataDictionary();
+                                    //Merge ModelState (required for validation)
+                                    dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                                    dataDictAddress.TemplateInfo.HtmlFieldPrefix = "BillingNewAddress";
+                                    @Html.Partial("_CreateOrUpdateAddress", Model.BillingAdress.NewAddress, dataDictAddress)
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- end billing -->
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+
+                        <div class="hidden visible-xs">
+                            <br />
+                        </div>
+
+                        <h1>@T("Checkout.ShippingAddress")</h1>
+                    </div>
+                    <div class="panel-body">
+
+                        <!-- shipping -->
+                        <div id="shipping-new-address-form">
+
+
+
+                            <div class="checkout-blox">
+                                @if (Model.ShippingAddress != null)
+                            {
+
+                                if (Model.ShippingAddress.ExistingAddresses.Count > 0)
+                                {
+                                    var validationSummary = Html.ValidationSummary(true);
+                                    if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                                    {
+                                        <div class="message-error">@validationSummary</div>
+                                    }
+
+                                    var dataDictAddress = new ViewDataDictionary();
+                                    //Merge ModelState (required for validation)
+
+                                    dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                                    dataDictAddress.TemplateInfo.HtmlFieldPrefix = "ShippingNewAddress";
+
+                                    foreach (var item in Model.ShippingAddress.ExistingAddresses)
+                                    {
+                                        @Html.Partial("_CreateOrUpdateAddress", item, dataDictAddress)
+                                    }
+                                }
+                                else
+                                {
+                                    var dataDictAddress = new ViewDataDictionary();
+                                    //Merge ModelState (required for validation)
+                                    dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                                    dataDictAddress.TemplateInfo.HtmlFieldPrefix = "ShippingNewAddress";
+                                    @Html.Partial("_CreateOrUpdateAddress", Model.ShippingAddress.NewAddress, dataDictAddress)
+                                }
+                            }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="radio-default">
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" class="radio-default">
+                <label for="optionsRadios1">
+                    <span></span> Ship to this address
+                </label>
+            </div>
+            <div class="radio-default">
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" checked="checked"><label for="optionsRadios2"> <span></span> Ship to different address</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-default mb-normal">
+
+        <div class="col-sm-12">
+            <input type="submit" id="confirm-button" name="confirm-button" value="Continue" class="btn btn-default" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    }
+    <hr class="hidden-xs" />
+    <div class="hidden visible-xs">
+        <br />
+    </div>
+    <div class="mt-default mb-normal">
+        <h1>Your bag</h1>
+        @Html.Action("OrderSummary", "ShoppingCart")
+    </div>
+</div>
+
+
+
+
+
+@section Left{
+    @*@Html.Partial("MenuStatic")*@
+
+    @Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Address })
+}
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $.validator.setDefaults({
+            ignore: ":hidden"
+        });
+
+
+        $(function () {
+            $('#optionsRadios1').click(function () {
+                //$('#shipping-new-address-form').slideToggle();
+                //$('#shipping-new-address-form').css('display', 'none');
+
+                $("#ShippingNewAddress_FirstName").val($("#BillingNewAddress_FirstName").val());
+                $("#ShippingNewAddress_LastName").val($("#BillingNewAddress_LastName").val());
+                $("#ShippingNewAddress_Email").val($("#BillingNewAddress_Email").val());
+                $("#ShippingNewAddress_Address1").val($("#BillingNewAddress_Address1").val());
+                $("#ShippingNewAddress_Address2").val($("#BillingNewAddress_Address2").val());
+                $("#ShippingNewAddress_City").val($("#BillingNewAddress_City").val());
+                $("#ShippingNewAddress_ZipPostalCode").val($("#BillingNewAddress_ZipPostalCode").val());
+                $("#ShippingNewAddress_PhoneNumber").val($("#BillingNewAddress_PhoneNumber").val());
+                $("#ShippingNewAddress_CountryId").val($("#BillingNewAddress_CountryId").val());
+                $("#ShippingNewAddress_StateProvinceId").val($("#BillingNewAddress_StateProvinceId").val());
+
+                $("#ShippingNewAddress_FirstName").attr("disabled", "disabled");
+                $("#ShippingNewAddress_LastName").attr("disabled", "disabled");
+                $("#ShippingNewAddress_Email").attr("disabled", "disabled");
+                $("#ShippingNewAddress_Address1").attr("disabled", "disabled");
+                $("#ShippingNewAddress_Address2").attr("disabled", "disabled");
+                $("#ShippingNewAddress_City").attr("disabled", "disabled");
+                $("#ShippingNewAddress_ZipPostalCode").attr("disabled", "disabled");
+                $("#ShippingNewAddress_PhoneNumber").attr("disabled", "disabled");
+                $("#ShippingNewAddress_CountryId").attr("disabled", "disabled");
+                $("#ShippingNewAddress_StateProvinceId").attr("disabled", "disabled");
+            });
+
+            $('#optionsRadios2').click(function () {
+                //$('#shipping-new-address-form').slideToggle();
+
+                $("#ShippingNewAddress_FirstName").val('');
+                $("#ShippingNewAddress_LastName").val('');
+                $("#ShippingNewAddress_Email").val('');
+                $("#ShippingNewAddress_Address1").val('');
+                $("#ShippingNewAddress_Address2").val('');
+                $("#ShippingNewAddress_City").val('');
+                $("#ShippingNewAddress_ZipPostalCode").val('');
+                $("#ShippingNewAddress_PhoneNumber").val('');
+                $("#ShippingNewAddress_CountryId").val('0');
+                $("#ShippingNewAddress_StateProvinceId").val('0');
+
+                $("#ShippingNewAddress_FirstName").removeAttr('disabled');
+                $("#ShippingNewAddress_LastName").removeAttr('disabled');
+                $("#ShippingNewAddress_Email").removeAttr('disabled');
+                $("#ShippingNewAddress_Address1").removeAttr('disabled');
+                $("#ShippingNewAddress_Address2").removeAttr('disabled');
+                $("#ShippingNewAddress_City").removeAttr('disabled');
+                $("#ShippingNewAddress_ZipPostalCode").removeAttr('disabled');
+                $("#ShippingNewAddress_PhoneNumber").removeAttr('disabled');
+                $("#ShippingNewAddress_CountryId").removeAttr('disabled');
+                $("#ShippingNewAddress_StateProvinceId").removeAttr('disabled');
+            });
+        });
+
+    </script>
+
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        function reqfailed() {
+            $("#pnlfailure").html("Sorry, an error occured.");
+        }
+
+        function frmUpdateComplete(data, status, xhr) {
+            if (typeof data.uri != "undefined")
+                window.location = data.uri;
+
+            if ($('#cartqty').html() != "undefined") {
+                var q = ($('#cartqty').html());
+
+                if (q > 0) {
+                    $('.cart-qty').html(q);
+                }
+                else {
+                    var width = $(window).width(), height = $(window).height();
+                    //if ((width >= 1080)) {
+                    //    $('.cart-qty').html('0');
+                    //}
+                    //else {
+                        $('.cart-qty').empty();
+                    //}
+                }
+
+            }
+        }
+    </script>
+
+
+
+    <script>
+
+        $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+
+            //$('#confirm-button').click(function () {
+            //    if ($('input[name=paymentmethod]:checked').length <= 0) {
+            //        alert("Please select payment method");
+            //        return false;
+            //    };
+            //});
+        });
+
+
+
+    </script>
+
+    @*<script>
+        $(function () {
+            $('#optionsRadios2').click(function () {
+                //$('input[id^="ShippingNewAddress"]').filter(
+                //    function () {
+                //        return this.id.match(/\d+$/);
+                //    }).attr('disabled', !this.checked);
+
+                //$('input:text').attr('disabled', !this.checked)
+            });
+
+        });
+    </script>*@
+}

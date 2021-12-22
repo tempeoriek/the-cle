@@ -1,0 +1,173 @@
+﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+}
+
+@*@SubmenuAboutUs("contactus")<br /><br />*@
+
+@*Contact form*@
+
+
+<div class="static-page">
+  &nbsp;
+</div>
+
+<div class="col-main-sml">
+    <div class="page-content text-center">
+        <div class="contactus">
+            <div class="contactus_top">
+                <h1>Get in touch</h1>
+                <p>We love to hear from you, so if you’d like to get in touch about your online order, our service or anything else, our team is here and ready to help.</p>
+                <br />
+            </div>
+            <br />
+            <div class="contactus_bottom">
+                @if (Model.SuccessfullySent)
+            {
+                    <div class="result text-center">
+                        @Model.Result
+                    </div>
+                }
+                else
+                {
+                    using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="message-error">
+                            @Html.ValidationSummary(true)
+                        </div>
+                        <div class="fieldset">
+
+                            <div class="form-group text-left">
+                                Name/Company
+                                @*@Html.LabelFor(model => model.FullName)*@ @Html.ValidationMessageFor(model => model.FullName)
+                                @Html.TextBoxFor(model => model.FullName, new { @class = "form-control contactus-form" })
+                            </div>
+
+                            <div class="form-group text-left">
+                                Phone
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control contactus-form" })
+                            </div>
+
+                            <div class="form-group text-left">
+                                Email
+                                @*@Html.LabelFor(model => model.Email)*@ @Html.ValidationMessageFor(model => model.Email)
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control contactus-form" })
+                            </div>
+
+                            <div class="form-group text-left">
+                                Inquiries
+                                <select name="topic" class="form-control classic">
+                                    <option value="Custom Gifts">Custom Gifts</option>
+                                    <option value="Corporate Gifts">Corporate Gifts</option>
+
+                                    <option value="Partnership">Partnership</option>
+                                    <option value="Corporate">Corporate</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+
+                            @*@if (Model.SubjectEnabled)
+                                {
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(model => model.Subject, new { @class = "form-control contactus-form", placeholder = T("ContactUs.Subject.Hint") })
+
+                                        </div>
+                                }*@
+
+                            <div class="form-group contactus-form text-left">
+                                Message
+                                @*@Html.LabelFor(model => model.Enquiry, new { @class = "control-label" }, " *")*@ @Html.ValidationMessageFor(model => model.Enquiry)
+                                @Html.TextAreaFor(model => model.Enquiry, new { @class = "enquiry form-control", @rows= 8 })
+                            </div>
+
+                            @if (Model.DisplayCaptcha)
+                            {
+                                <div class="captcha-box">
+                                    @Html.Raw(Html.GenerateCaptcha())
+                                </div>
+                            }
+
+                            <div class="buttons pull-right mt-30"><input type="text" name="subject" style="border:none;apperance:none; width:1px; height:1px; background-color:transparent" />
+                                <button type="submit" name="send-email" class="btn btn-default" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Sending...">Send</button>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@Html.Action("TopicBlock", "Topic", new { systemName = "ContactUs" })
+
+
+@*<div class="hero_alt bg__blue pb-50 pt-50 mt-5">
+    <h2 class="mb-0">Press + Media + Collaboration Inquiries</h2>
+    <p><a hhref="mailto:collab@the-clementines.com">collab@the-clementines.com</a></p>
+
+    <h2 class="mt-5 mb-0">Have a question about your order?</h2>
+    <p><a href="mailto:customercare@the-clementines.com">customercare@the-clementines.com</a></p>
+
+    <h2 class="mt-5 mb-0">Want to know more about Gifting Services?</h2>
+    <p><a href="mailto:info@the-clementines.com">info@the-clementines.com</a></p>
+    <br /><br /><br />
+    <p>Please not our business hours are<br />
+    Monday - Friday 10 AM to 5PM<br />
+    We promise we'll get back to you promptly-<br />
+    Your gifting needs are always on our minds!
+    </p>
+</div>*@
+
+
+    @section Left{
+
+    }
+
+    @section scripts{
+
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+
+
+
+
+
+@helper SubmenuAboutUs(string systemname)
+{
+
+string liClass = "";
+
+Dictionary<string, string> items = new Dictionary<string, string>();
+items.Add("about", "Our Story");
+items.Add("contactus", "Contact Us");
+items.Add("press", "Press");
+items.Add("frequently-asked-questions", "F.A.Q");
+items.Add("Careers", "Careers");
+
+
+
+    <div class="container text-center d-none d-md-block">
+        <ul class="list-unstyled list-inline menunavigation submenu">
+            @foreach (var kvp in items)
+            {
+                if (kvp.Key.Equals(systemname, StringComparison.OrdinalIgnoreCase))
+                { liClass = "active"; }
+                else
+                { liClass = ""; }
+                <li class="list-inline-item"><a href="~/@kvp.Key" class="@liClass"><span>@kvp.Value</span></a></li>
+            }
+        </ul>
+    </div>
+
+
+
+}

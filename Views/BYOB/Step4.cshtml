@@ -1,0 +1,98 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+@{
+    ViewBag.Title = "Step 4: Personalization";
+}
+
+
+
+    <div class="byob">
+        @*<div class="steps">
+            <div class="container">
+                { Steps breadcrumb}
+            </div>
+
+        </div>*@
+
+        <div class="container header">
+            <h2>Step 4 of 4</h2>
+            <h1>Personalization</h1>
+            <p>
+                &nbsp;<br />&nbsp;
+            </p>
+        </div>
+
+
+        @if (Model.Products.Any())
+        {
+
+            using (Html.BeginForm("step4", "byob", FormMethod.Post, new { id = "form1", @class = "login-form" }))
+            {
+                @Html.AntiForgeryToken()
+
+    <div class="col-main-sml mb-5">
+        <div class="form-group">
+
+            <div class="radio-default">
+                <input type="radio" id="personalized_0" name="id" value="0" class="radio-default" checked="checked">
+                <label for="personalized_0"><span></span> Perfect as is</label>
+            </div>
+
+            @foreach (var item in Model.Products)
+            {
+                var txt = item.ShortDescription;
+                txt = txt.Replace("<p>", "");
+                txt = txt.Replace("</p>", "");
+
+                <div class="radio-default">
+                    <input type="radio" id="personalized_@item.Id" name="id" value="@item.Id" class="radio-default">
+                    <label for="personalized_@item.Id"><span></span> @Html.Raw(txt)</label>
+                </div>
+
+                <div id="pnl_addInitials"><span>@item.Name</span><input name="initials" type="text" class="txtInitials form-control-alternate " id="initials" value="" /> (Max. 5 chars)</div>
+
+
+            }
+        </div>
+        <div class="buttons mt-30">
+           <button type="submit" name="submit" class="btn btn-default w-100">Add To Bag</button>
+        </div>
+    </div>
+            }
+
+        }
+        else
+        {
+            <div class="container mt-5"><h3>We're still preparing the collection. Please stay tuned.</h3></div>
+        }
+
+
+        <div class="container">
+            <hr />
+            <div class="buttons mt-30">
+                <a href="~/byob/step3" class="btn btn-default">Back to Previous Step</a>
+            </div>
+        </div>
+    </div>
+
+
+@*<div class="" id="byobcart-wrapper">
+        @Html.Action("FlyoutShoppingCartBYOB", "ShoppingCart")
+    </div>
+
+
+
+
+    @section scripts{
+    <script>
+        $("#byobcart-wrapper").click(function () {
+            $("#byobcart").toggleClass("show");
+        });
+        </script>
+
+    }*@
+

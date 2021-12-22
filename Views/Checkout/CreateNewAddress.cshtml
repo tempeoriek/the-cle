@@ -1,0 +1,82 @@
+﻿@model CustomerAddressEditModel
+@using Nop.Web.Models.Customer;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    ViewBag.HideMenu = "true";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+
+}
+
+
+
+
+<section class="col-main-sml">
+    
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <h1>Add New Address</h1>
+        </div>
+    </div>
+
+    <div id="pnlform">
+
+        @using (Ajax.BeginForm("CreateNewAddress", "Checkout", new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            OnFailure = "reqfailed",
+            LoadingElementId = "ajax-loader",
+            UpdateTargetId = "pnlform"
+
+        }, new { id = "form1" }))
+        {
+
+            @Html.AntiForgeryToken()
+
+            var validationSummary = Html.ValidationSummary(true);
+
+            if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+            {
+                <div class="message-error">
+                    @validationSummary
+                </div>
+            }
+
+
+            var dataDictAddress = new ViewDataDictionary();
+            //Merge ModelState (required for validation)
+            dataDictAddress.ModelState.Merge(ViewData.ModelState);
+            dataDictAddress.TemplateInfo.HtmlFieldPrefix = "Address";
+            @Html.Partial("_CreateOrUpdateAddress", Model.Address, dataDictAddress)
+
+
+
+            <div class="form-group">
+                <div class="buttons">
+                    <input type="submit" class="btn btn-default" value="@T("Common.Save")" />
+                </div>
+            </div>
+
+        }
+    </div>
+</section>
+
+
+
+@section RootScripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            $(document).on('click', '.closeFancybox', function () {
+                $.fancybox.close();
+            })
+        })
+    </script>
+
+}

@@ -1,0 +1,86 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+@{
+    ViewBag.Title = "Step 3: Card";
+}
+
+
+
+<div class="byob">
+    @*<div class="steps">
+            <div class="container">
+                { Steps breadcrumb}
+            </div>
+
+        </div>*@
+
+    <div class="container header">
+        <h2>Step 3 of 4</h2>
+        <h1>Choose your Card</h1>
+        <p>
+            Choose the perfect card for the occasion from our selection of exclusive designs.<br />
+            Our team handwrites each and every note to keep your gifts personal. (Plus, we have great handwriting.)
+        </p>
+    </div>
+
+
+    @if (Model.Products.Any())
+    {
+
+        using (Html.BeginForm("step3", "byob", FormMethod.Post, new { id = "form1", @class = "login-form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="container mb-5">
+                <div class="row">
+
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="col-6 col-md-3 catalog-line">
+                            <button type="submit" name="id" value="@item.Id" class="box__option clean">
+                                <img src="@item.DefaultPictureModel.ImageUrl" class="img-fluid" />
+                                <h3>@item.Name</h3>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="col-main-slim mt-5"><h3>We're still preparing the collection. Please stay tuned.</h3></div>
+
+    }
+
+
+    <div class="container">
+        <hr />
+        <div class="buttons mt-30">
+            <a href="~/byob/step2" class="btn btn-default">Back to Previous Step</a>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="" id="byobcart-wrapper">
+    @Html.Action("FlyoutShoppingCartBYOB", "ShoppingCart")
+</div>
+
+
+
+
+@section scripts{
+<script>
+    $("#byobcart-wrapper").click(function () {
+        $("#byobcart").toggleClass("show");
+    });
+    </script>
+   
+}*@
+

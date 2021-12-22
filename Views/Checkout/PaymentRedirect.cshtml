@@ -1,0 +1,36 @@
+﻿
+@model CheckoutPaymentInfoModel
+@using Nop.Web.Models.Checkout;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+
+    ViewBag.HideMenu = "true";
+}
+
+
+<section class="col-main-sml">
+
+    @Html.Action(Model.PaymentInfoActionName, Model.PaymentInfoControllerName, Model.PaymentInfoRouteValues)
+
+</section>
+
+
+
+@section scripts{
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+        });
+    </script>
+}
+
+

@@ -1,0 +1,183 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+@{
+
+
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    //var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+
+@*@if (Model.DisplayCategoryBreadcrumb)
+    {
+        <div>
+            <ol class="breadcrumb">
+                <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a></li>
+                @foreach (var cat in Model.CategoryBreadcrumb)
+                {
+                    var isLastCategory = cat.Id == Model.Id;
+
+                    if (isLastCategory)
+                    {
+                <li class="active">@cat.Name</li>
+                    }
+                    else
+                    {
+                <li><a href="@Url.RouteUrl("Category", new { SeName = cat.SeName })" title="@cat.Name">@cat.Name</a></li>
+                    }
+
+                }
+            </ol>
+        </div>
+    }*@
+
+@*<div>
+    @Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())
+</div>*@
+
+<div class="product-filters">
+
+    @Html.Partial("_FilterSpecsBox", Model.PagingFilteringContext.SpecificationFilter, new ViewDataDictionary())
+
+</div>
+
+@*Filter*@
+<section class="mt-normal">
+
+    @*<h1>@Model.Name</h1>*@
+
+    @*description*@
+    @if (!String.IsNullOrWhiteSpace(Model.Description))
+    {
+        <div class="category-description">
+            @Html.Raw(Model.Description)
+        </div>
+    }
+
+
+    @if (Model.Products.Count > 0)
+    {
+
+        var pg_i = 0;
+
+        <div class="row">
+            <div id="ulSorList">
+                @foreach (var product in Model.Products)
+                {
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        @Html.Partial("_ProductBox", product)
+                    }
+                    pg_i++;
+                }
+                <div class="gap"></div>
+            </div>
+        </div>
+    }
+
+</section>
+
+@section scripts
+{
+    @*<script src="~/Scripts/jquery.contenthover.min.js"></script>*@
+
+    @*<script>
+
+            function toggleColmdClass() {
+                var wi = $(window).width();
+                if (wi > 1080 && wi < 1440) {
+                    $("div.colKlein").removeClass("col-md-3");
+                    $("div.colKlein").addClass("col-md-2");
+                    $("div.colGroot").removeClass("col-md-6");
+                    $("div.colGroot").addClass("col-md-8");
+                }
+            }
+
+            $(function () {
+                toggleColmdClass();
+            });
+
+            $(window).resize(function () {
+                toggleColmdClass();
+            });
+        </script>*@
+
+
+@*<script>
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            $('.product-filters').css('bottom', '100px');
+        }
+        else { }
+    });
+
+</script>*@
+
+
+    <script src="~/Scripts/mixitup/jquery.mixitup.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#ulSorList').mixItUp();
+
+            $(".f-aktief").click(function () {
+                var str = $(this).text();
+                if (str == "All colors") {
+                    $("#filter2").html('Color');
+                    $("#filter2").addClass("caretup1");
+                } else {
+                    $("#filter2").removeClass("caretup1");
+                    $("#filter2").html('Color: ' + str);
+                }
+            });
+
+            $('#dlFilters').change(function () {
+                $('#ulSorList').mixItUp('filter', this.value);
+            });
+
+
+        });
+    </script>
+    <script>
+        $(".grid-change").click(function (e) {
+            var val = $(this).data("col");
+            $(".product-item").removeClass('col-sm-2');
+            $(".product-item").removeClass('col-sm-3');
+            $(".product-item").removeClass('col-sm-4');
+            $(".product-item").removeClass('col-sm-6');
+            $(".product-item").addClass(val);
+
+            if (val == "col-sm-2") {
+                $(".description").toggleClass("hide");
+            }
+            else { $(".description").removeClass("hide");}
+        });
+
+        $(".grid-change").click(function () {
+            var str = $(this).text();
+            $("#filterView").removeClass("caretup2");
+            $("#filterView").html('View: ' + str);
+        });
+
+    </script>
+
+
+}
+
+@section HeaderSection{
+    @*<link rel="stylesheet" href="~/Scripts/mixitup/mixitup.css" type="text/css" media="screen" />*@
+}

@@ -1,0 +1,171 @@
+﻿@model CheckoutPaymentMethodModel
+@using Nop.Web.Models.Checkout;
+@{
+
+    //title
+    Html.AddTitleParts("Payment Method");
+
+    //ViewBag.HideMenu = "true";
+}
+
+
+
+
+
+
+<div class="container mt-5 checkout">
+    <div class="row catalogue-img d-flex justify-content-center">
+        <div class="cart-page">
+            <div class="cart-header">
+                <h1 class="text-left mb-2">Checkout</h1>
+            </div>
+
+            <div class="page-body checkout-data">
+                <ol class="list-unstyled opc" id="checkout-steps">
+                    <li id="opc-billing" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4>@T("Checkout.BillingAddress")</h4></div>
+                    </li>
+
+                    <li id="opc-shipping" class="tab-section">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.ShippingAddress")</h4>
+                        </div>
+
+                    </li>
+
+
+                    <li id="opc-shipping_method" class="tab-section">
+                        <div class="step-title checkout-margin-title" >
+                            <h4 class="title">@T("Checkout.ShippingMethod")</h4>
+                        </div>
+                       
+                    </li>
+                    <li id="opc-payment_method" class="tab-section allow">
+                        <div class="step-title checkout-margin-title" data-toggle="collapse" href="#checkout-step-payment" role="button" aria-expanded="false" aria-controls="checkout-step-payment">
+                            <h4 class="title">@T("Checkout.PaymentMethod")</h4>
+                        </div>
+                        <div id="checkout-step-payment" class="step a-item collapse show">
+                            <div id="checkout-payment-load">
+                                @ShowContent()
+                            </div>
+                        </div>
+                    </li>
+                    <li id="opc-confirm_order" class="tab-section">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.ConfirmOrder")</h4>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+@helper ShowContent()
+{
+
+<div class="pnl__checkout">
+
+    
+
+    @using (Html.BeginRouteForm("CheckoutPaymentMethod", FormMethod.Post))
+    {
+
+     
+     <div class="row">
+                <div class="col-6">
+                    <p style="margin:10px 0;">
+                        @T("Checkout.SelectPaymentMethod")
+                    </p>
+
+                    @*if (Model.DisplayRewardPoints && Model.PaymentMethods.Count > 0)
+                        {
+                            <div class="use-reward-points">
+                                @Html.EditorFor(model => model.UseRewardPoints)
+                                @string.Format(T("Checkout.UseRewardPoints").Text, Model.RewardPointsBalance, Model.RewardPointsAmount)
+                            </div>
+                        }*@
+
+                    @if (Model.PaymentMethods.Count > 0)
+                    {
+                        <div class="method-lists">
+                            @for (int i = 0; i < Model.PaymentMethods.Count; i++)
+                            {
+                            var paymentMethod = Model.PaymentMethods[i];
+                            var paymentMethodName = paymentMethod.Name;
+
+                            //a little hack. site specific (custom)
+                            // we present "Credit card" instead of Veritrans
+                            if (paymentMethodName.IndexOf("Veritrans") > -1)
+                            {
+                                paymentMethodName = "Credit Card";
+                            }
+
+                            if (!String.IsNullOrEmpty(paymentMethod.Fee))
+                            {
+                                paymentMethodName = T("Checkout.SelectPaymentMethod.MethodAndFee", paymentMethodName, paymentMethod.Fee).Text;
+                            }
+                            @*<div class="radio">
+                                    <label>
+                                        <input id="paymentmethod_@(i)" type="radio" name="paymentmethod" value="@(paymentMethod.PaymentMethodSystemName)" checked="@paymentMethod.Selected" class="radio-default" /> @paymentMethodName
+                                        @if (!String.IsNullOrEmpty(paymentMethod.LogoUrl))
+                                            {
+                                                <img src="@paymentMethod.LogoUrl" alt="@paymentMethodName" style="width:30px; margin-left:5px;" />
+                                            }
+                                    </label>
+                                </div>*@
+
+
+                            <div class="radio-default">
+                                <input type="radio" id="paymentmethod_@(i)" name="paymentmethod" value="@(paymentMethod.PaymentMethodSystemName)" class="radio-default" checked="@paymentMethod.Selected">
+                                <label for="paymentmethod_@(i)">
+                                    <span></span> @paymentMethodName
+                                </label>
+                            </div>
+
+                        }
+                    </div>
+
+
+                  
+                    }
+                    else
+                    {
+                    <div class="message-error">
+                        @T("Checkout.NoPaymentMethods")
+                    </div>
+                    }
+                    
+
+
+                </div>
+            </div>
+
+
+     <div class="row buttons" id="shipping-buttons-container">
+            <div class="col-6">
+                <p class="back-link"><a href="~/checkout"><small>&laquo; </small>@T("Common.Back")</a></p>
+            </div>
+            <div class="col-6" style="text-align:right;">
+                @if (Model.PaymentMethods.Count > 0)
+                {
+                    <input type="submit" name="nextstep" value="@T("Common.Continue")" class="btn btn-default" />
+                }
+
+            </div>
+        </div>
+
+    }
+
+    </div>
+}
+
+
+

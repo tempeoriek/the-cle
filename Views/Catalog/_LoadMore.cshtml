@@ -1,0 +1,83 @@
+﻿@model  List<Nop.Web.Models.Catalog.ProductOverviewModel>
+
+
+
+@{
+    var classrow = "grid";
+    if(ViewBag.Mode != null)
+    {classrow = ViewBag.Mode;}
+}
+
+
+
+
+@foreach (var product in Model)
+{
+    if (classrow == "modelist")
+    {
+        <div class="modelist catalog-line">
+            @Html.Partial("_ProductBoxAlternate", product)
+        </div>
+    }
+    else
+    {
+
+        for (int i = 0; i <= 10; i++)
+        {
+            <div class="col-xs-6 col-sm-4 col-md-3 catalog-line">
+                @Html.Partial("_ProductBox", product)
+            </div>
+        }
+
+
+        <!-- -->
+    @*<div class="col-xs-6 col-sm-4 col-md-3 catalog-line">
+        <div class="product-card">
+            <div class="product-front">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/t-shirt.png" alt="" />
+                <div class="image_overlay"></div>
+                <div class="view_details">View details</div>
+                <div class="stats">
+                    <div class="stats-container">
+                        <span class="product_price">$39</span>
+                        <span class="product_name">Adidas Originals</span>
+                        <p>Men's running shirt</p>
+
+                        <div class="product-options">
+                            <strong>SIZES</strong>
+                            <span>XS, S, M, L, XL, XXL</span>
+                            <strong>COLORS</strong>
+                            <div class="colors">
+                                <div class="c-blue"><span></span></div>
+                                <div class="c-red"><span></span></div>
+                                <div class="c-white"><span></span></div>
+                                <div class="c-green"><span></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    
+  
+
+        <!-- -->
+    
+    }
+}
+
+<div class="next">
+@Html.ActionLink("LOAD MORE", "LoadMore", new { categoryId = ViewBag.Category, page = ViewBag.Page, mode = ViewBag.Mode }, new { id = "lnkLoad" })
+</div>
+
+    @*<div class="row">
+        <div class="col-xs-2 col-xs-offset-5">
+            <div class="next">
+                <div id="loadmore">...</div>
+                @Html.ActionLink("Load more", "LoadMore", new { categoryId = ViewBag.Category, page = ViewBag.Page, mode = ViewBag.Mode }, new { id = "lnkLoad" })
+            </div>
+        </div>
+    </div>*@
+  

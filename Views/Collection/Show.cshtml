@@ -1,0 +1,19 @@
+﻿@using Nop.Web.Models.Flitts.Collection
+@model CollectieViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutTwo.cshtml";
+    
+    var item = Model.Collectie;
+    
+    //title, meta
+    Html.AddTitleParts(!String.IsNullOrEmpty(item.MetaTitle) ? item.MetaTitle : item.Name);
+    Html.AddMetaDescriptionParts(item.MetaDescription);
+    Html.AddMetaKeywordParts(item.MetaKeywords);
+}
+
+<div class="text-center" style="background-color:green">
+    @Html.Raw(item.Body)
+</div>
+

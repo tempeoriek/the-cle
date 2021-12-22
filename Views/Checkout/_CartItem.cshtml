@@ -1,0 +1,104 @@
+﻿@model Nop.Web.Models.ShoppingCart.ShoppingCartModel.ShoppingCartItemModel
+
+
+<div class="checkout__cartItem">
+    <div class="thumbnail"><img src="@Model.Picture.ImageUrl" class="img-fluid" /></div>
+    <div class="summary">
+        <span class="order-summary-text">@Model.ProductName</span>
+
+        @if (!string.IsNullOrWhiteSpace(Model.AttributeInfo))
+        {
+
+            if (!Model.isBYOB)
+            {
+                <span class="attributes text-font">@Html.Raw(Model.AttributeInfo)</span>
+            }
+            else
+            {
+                @Html.Raw(Model.AttributeInfo)
+
+                <span class="attributes text-font byob_attr">@Html.Raw(Model.BoxSize)</span>
+                if (!string.IsNullOrWhiteSpace(Model.AttributeInfo))
+                {
+                    <div class="byob_attr">
+                        <strong>Content</strong>
+                        @{
+                            @Html.Raw(Model.AttributeInfo)
+                            @*var aryBoxItems = Model.AttributeInfo.Split(';');
+                            if (aryBoxItems != null)
+                            {
+                                <ul class="list_byob">
+                                    @foreach (var ary in aryBoxItems)
+                                    {
+                                        if (!string.IsNullOrWhiteSpace(ary))
+                                        {
+                                            <li>@Html.Raw(ary)</li>
+                                        }
+                                    }
+                                </ul>
+                            }*@
+                        }
+                    </div>
+
+                }
+
+                if (!string.IsNullOrWhiteSpace(Model.Card))
+                {
+                    if (Model.Card.Contains('|'))
+                    {
+                        var carddetails = Model.Card.Split('|');
+                        if (carddetails != null)
+                        {
+                            <div class="byob_attr">
+                                @foreach (var c in carddetails)
+                                {
+                                    @Html.Raw(c)
+                                    <br />
+                                }
+                            </div>
+
+                        }
+
+
+                    }
+
+                }
+
+                if (!string.IsNullOrWhiteSpace(Model.Personalization))
+                {
+                    <div class="byob_attr">@Html.Raw(Model.Personalization)</div>
+                }
+
+            }
+
+
+        }
+
+
+
+
+        @if (Model.ProductManufacturers != null)
+        {
+            <span class="manufacturer" style="font-style:italic;">
+                @foreach (var brand in Model.ProductManufacturers)
+                {
+                    <a href="~/@brand.SeName">@brand.Name</a>
+                }
+            </span>
+        }
+
+
+
+
+
+        @if (Model.Warnings.Count > 0)
+        {
+            <span class="text-danger">
+                @for (int i = 0; i < Model.Warnings.Count; i++)
+                {
+                    @Model.Warnings[i]
+                }
+            </span>
+        }
+    </div>
+</div>

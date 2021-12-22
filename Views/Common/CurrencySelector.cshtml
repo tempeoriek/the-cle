@@ -1,0 +1,61 @@
+﻿@model CurrencySelectorModel
+@using Nop.Web.Models.Common;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@if (Model.AvailableCurrencies.Count > 1)
+{
+    var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+
+    var currencies = Model.AvailableCurrencies.Select(x => new SelectListItem
+    {
+        Text = x.Name,
+        Value = webHelper.ModifyQueryString(Url.RouteUrl("ChangeCurrency", new { customercurrency = x.Id }), "returnurl=" + HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), null),
+        Selected = x.Id.Equals(Model.CurrentCurrencyId)
+    });
+    
+    @Html.DropDownList("customerCurrency", currencies, new { onchange = "setLocation(this.value);", @class = "classic" })
+        
+ 
+
+    @* desktop *@
+    @*<div class="hidden-xs hidden-sm">
+        <div class="currency-selector">
+            <ul class="list-unstyled list-inline">
+                @foreach (var c in currencies)
+                {
+                    var active = "";
+                    if (c.Selected)
+                    {
+                        active = "btnCurrencyActive";
+                    }
+                    <li style="padding-right:0;">
+                        <button type="button" value="@c.Value" onclick="setLocation(this.value);" class="btn btn-link btnCurrency @active">@c.Text</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>*@
+
+
+    @* Mobile *@
+    @*<div class="visible-xs visible-sm">
+        <div class="currency-selector">
+            <div class="list-group">
+                <ul class="list-unstyled list-inline">
+                    <li>Currency:</li>
+                        @foreach (var c in currencies)
+                        {
+                            var active = "";
+                            if (c.Selected)
+                            {
+                                active = "btnCurrencyActive";
+                            }
+                            <li style="padding-right:0;">
+                                <button type="button" value="@c.Value" onclick="setLocation(this.value);" class="btn btn-link btnCurrency @active">@c.Text</button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+    </div>*@
+}

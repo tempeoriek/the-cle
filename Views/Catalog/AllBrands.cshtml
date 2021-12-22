@@ -1,0 +1,33 @@
+﻿@model IOrderedEnumerable<Nop.Web.Models.Flitts.Catalog.AllBrandsViewModel>
+@{
+    ViewBag.Title = "Brands";
+
+}
+
+
+<div class="container-fluid">
+    <img src="~/Content/Images/uploaded/homepage/brands banner.jpg" class="img-fluid" />
+</div>
+
+@if(Model != null)
+{
+    <div class="container allbrands mt-5">
+        @foreach(var item in Model)
+        {
+            <div class="row brand-alphabet">
+                <div class="col-12 col-md-2">
+                    <h3>@item.Alphabet</h3>
+                </div>
+                <div class="col-12 col-md-10">
+                    <ul class="list-unstyled list-inline brand-list">
+                        @foreach(var brand in item.Brands)
+                        {
+                            <li class="list-inline-item"><a href="~/@brand.SeName" >@brand.Name</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+}
+

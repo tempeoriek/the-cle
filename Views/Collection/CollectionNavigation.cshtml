@@ -1,0 +1,111 @@
+﻿@using Nop.Services.Flitts.Collection
+@model IEnumerable<Collection>
+
+@{
+
+    var selected = "active";
+    var seoname = "";
+    var collapseMenu = "collapse";
+    var archive = "";
+
+    var controllername = Request.RequestContext.RouteData.Values["controller"].ToString();
+    if (controllername.Equals("collection", StringComparison.OrdinalIgnoreCase))
+    {
+        var actionname = Request.RequestContext.RouteData.Values["action"].ToString();
+        if (actionname.Equals("archive", StringComparison.OrdinalIgnoreCase))
+        {
+            archive = "active";
+            collapseMenu = "";
+        }
+        else if (actionname.Equals("show", StringComparison.OrdinalIgnoreCase))
+        {
+            //get seoname
+            var url = Request.RawUrl;
+            seoname = url.Substring(url.LastIndexOf("/") + 1);
+            if (seoname != "")
+            {
+                collapseMenu = "";
+            }
+
+        }
+        else if (actionname.Equals("new", StringComparison.OrdinalIgnoreCase))
+        {
+            //archive = "active";
+            collapseMenu = "";
+
+            var raw = Request.Url.ToString();
+            seoname = raw.Split('/').Last();
+            
+        }
+        else if (actionname.Equals("index", StringComparison.OrdinalIgnoreCase))
+        {
+            //get seoname
+            var url = Request.RawUrl;
+            seoname = url.Substring(url.LastIndexOf("/") + 1);
+            if (seoname != "")
+            {
+                collapseMenu = "";
+                
+                //archive = "active";
+
+            }
+
+        }
+    }
+
+    var id = (ViewBag.isMobile != null) ? "collection-mobile" : "collection";
+    var parentId = (ViewBag.isMobile != null) ? "phmenu-mobile" : "phmenu";
+
+
+}
+
+
+
+
+
+<a href="#@id" data-toggle="collapse" data-parent="#@parentId">Collections</a>
+<div id="@id" class="list-group-submenu @collapseMenu">
+
+    @if (Model != null)
+    {
+        var top = Model.Count() - 1;
+        if (Model.Count() > 1)
+        {
+            top = 1;
+        }
+
+        for (int i = 0; i <= top; i++)
+        {
+            var collection = Model.ElementAt(i);
+            if (collection.SystemName.Equals(seoname, StringComparison.OrdinalIgnoreCase))
+            {
+                selected = "active";
+            }
+            else
+            {
+                selected = " ";
+            }
+
+
+            var url = Request.RawUrl.ToLower();
+            if (url.Contains("/new") && (!url.Contains("/collection/archive")))
+            {
+                <span>
+                    <a href="#@collection.SystemName" class="@selected">@collection.Name</a>
+                </span>
+            }
+            else
+            {
+                @*<span>
+                        @Html.ActionLink(collection.Name, "new", new { seoname = Html.AttributeEncode(collection.SystemName) }, new { @class = selected })
+                    </span>*@
+                <span>
+                    <a href="~/collection/new/@Html.AttributeEncode(collection.SystemName)" class="@selected">@collection.Name</a>
+                </span>
+            }
+        }
+    }
+    <span>
+        <a id="lnkArchive" href="~/collection/archive" class="@archive">Archive</a>
+    </span>
+</div>

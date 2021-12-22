@@ -1,0 +1,200 @@
+﻿@model CatalogPagingFilteringModel.SpecificationFilterModel
+@using Nop.Web.Models.Catalog;
+@{
+    var notFilteredItemsGroups = Model.NotFilteredItems.GroupBy(x => x.SpecificationAttributeName);
+}
+
+
+@if (Model.Enabled)
+{
+    <div class="product-filter product-spec-filter">
+        <div class="filter-title">
+            <strong>@T("Filtering.SpecificationFilter")</strong>
+        </div>
+        <div class="filter-content">
+            @if (Model.NotFilteredItems.Count > 0)
+            {
+                <div class="available-items">
+                    @foreach (var group in notFilteredItemsGroups)
+                    {
+                        var groupList = group.ToList();
+                        
+                        <ul class="group product-spec-group">
+                            <li class="title">
+                                <strong>@groupList[0].SpecificationAttributeName</strong>
+                            </li>
+
+                            @foreach (var spec in groupList)
+                            {
+                                <li class="item">
+                                    <a href="@spec.FilterUrl">@spec.SpecificationAttributeOptionName</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+            @if (Model.AlreadyFilteredItems.Count > 0)
+            {
+                <div class="filtered-items">
+                    <ul>
+                        <li class="title">
+                            @T("Filtering.SpecificationFilter.CurrentlyFilteredBy")
+                        </li>
+                        @foreach (var item in Model.AlreadyFilteredItems)
+                        {
+                            <li class="item">
+                                <strong>@(item.SpecificationAttributeName):</strong> @item.SpecificationAttributeOptionName
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="remove-filter">
+                    <a href="@Model.RemoveFilterUrl">@T("Filtering.SpecificationFilter.Remove")</a>
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+
+
+    <itx-filters class="visible-md visible-lg">
+
+        <div id="filters-dialog" class="container-dialog filters-open" style="">
+            <header class="visible-xs visible-sm">
+                <h2>Filteren </h2>
+                <i class="icon icon-close-modal icon-right ng-isolate-scope"></i>
+            </header>
+
+            <div class="filters-content" click-outside="filtersCtrl.close()">
+                <div class="content">
+                    <ul class="list-unstyled filter-sections">
+                        <!-- Colors -->
+                        <li class="section ng-scope open">
+                            <a href="">
+                                <span>Color</span>
+                                <span class="toggler"></span>
+                            </a>
+                            <div class="filter color-slider">
+                                <div class="row">
+                                    @*<div class="form-group col-sm-4 col-md-2 ng-scope">
+                                        <input id="G-AZULES" name="G-AZULES" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="G-AZULES" class="ng-isolate-scope">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">Blauw</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-2 ng-scope">
+                                        <input id="G-MARRON" name="G-MARRON" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="G-MARRON" itx-filters-color-check="::filterColor.value" class="ng-isolate-scope">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">Bruin</span>
+                                        </label>
+                                    </div>*@
+
+
+                                    @if (Model.NotFilteredItems.Count > 0)
+                                    {
+                                        <div class="available-items">
+                                            @foreach (var group in notFilteredItemsGroups)
+                                            {
+                                                var groupList = group.ToList();
+
+                                                @*<strong>@groupList[0].SpecificationAttributeName</strong>*@
+
+                                                    foreach (var spec in groupList)
+                                                    {
+                                                            @*<a href="@spec.FilterUrl"></a>*@
+                                                        var kleur = spec.SpecificationAttributeOptionName;
+
+                                                        <div class="form-group col-sm-4 col-md-2">
+                                                            <input id="@kleur" name="@kleur" class="@kleur.ToLower()" type="checkbox">
+                                                            <label for="@kleur">
+                                                                <i class="icon icon-check"></i>
+                                                                <span>@kleur</span>
+                                                            </label>
+                                                        </div>
+
+                                                    }
+                                       
+                                            }
+                                        </div>
+                                    }
+
+
+
+
+
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Sizes -->
+                        <li class="section ng-scope open">
+                            <a href="">
+                                <span>Size</span>
+                            </a>
+                            <div class="filter ng-scope">
+                                <div class="row">
+
+                                    <div class="form-group ng-scope col-xs-4 col-md-2">
+                                        <input id="S" name="S" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="S">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">S</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group ng-scope col-xs-4 col-md-2">
+                                        <input id="M" name="M" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="M">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">M</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group ng-scope col-xs-4 col-md-2">
+                                        <input id="L" name="L" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="L">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">L</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group ng-scope col-xs-4 col-md-2">
+                                        <input id="XL" name="XL" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="XL">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">XL</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group ng-scope col-xs-4 col-md-2">
+                                        <input id="XXL" name="XXL" class="ng-pristine ng-untouched ng-valid ng-empty" type="checkbox">
+                                        <label for="XXL">
+                                            <i class="icon icon-check"></i>
+                                            <span class="ng-binding">XXL</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
+                <div class="filter-actions ng-scope" style="">
+                    <div class="col-xs-6 text-md-right">
+                        <button class="btn btn-default btn-sm" disabled="disabled">
+                            Clear All
+                        </button>
+                    </div>
+                    <div class="col-xs-6 text-md-left">
+                        <button class="btn btn-primary btn-sm" disabled="disabled">
+                            Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </itx-filters>
+}

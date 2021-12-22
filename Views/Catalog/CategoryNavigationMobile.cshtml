@@ -1,0 +1,325 @@
+﻿@model CategoryNavigationModel
+@using Nop.Web.Models.Catalog;
+
+
+
+@functions{
+    public bool BreadCrumbContainsCurrentCategoryId(CategorySimpleModel category)
+    {
+        if (Model.CurrentCategoryId == 0)
+            return false;
+
+        if (category.Id == Model.CurrentCategoryId)
+            return true;
+
+        foreach (var subCategory in category.SubCategories)
+        {
+            if (BreadCrumbContainsCurrentCategoryId(subCategory))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+@helper RenderCategoryLineSidebar(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <li class="listItemB"><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass"> <img alt="icon" src="~/Content/Images/dot menu.png"> @category.Name</a></li>
+
+    if (category.Id == Model.CurrentCategoryId ||
+        category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0)
+    {
+        if (category.SubCategories.Count > 0)
+        {
+            <ul class="sublist">
+                @foreach (var subCategory in category.SubCategories)
+                {
+                    @RenderCategoryLine(subCategory)
+                }
+            </ul>
+        }
+    }
+}
+
+
+@*untuk yang category shop*@
+@helper RenderCategoryLine(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass dropdown-item"> @category.Name</a>
+}
+
+@*untuk yang category collection*@ 
+@helper RenderCategoryLineCollection(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+
+    <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="@liClass dropdown-item"> @category.Name</a>
+}
+
+
+@helper RenderCategoryMobile(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+    <li><a href="#ddl1-@category.SeName">@category.Name</a></li>
+  
+}
+
+@helper RenderCategoryMobileCollection(CategorySimpleModel category)
+{
+    bool active = category.Id == Model.CurrentCategoryId || category.SubCategories.Count(BreadCrumbContainsCurrentCategoryId) > 0;
+    bool last = category.Id == Model.CurrentCategoryId;
+    string liClass = active ? "active" : "inactive";
+
+    if (last)
+    {
+        liClass += " last";
+    }
+     <li><a href="#ddl1-@category.SeName">@category.Name</a></li>
+}
+
+
+@{
+    var liCollapse = (Model.CurrentCategoryId > 0) ? "" : "collapse";
+    var parentId = (ViewBag.isMobile != null) ? "phmenu-mobile" : "phmenu";
+    var divId = (ViewBag.isMobile != null) ? "shop-mobile" : "shop";
+
+}
+
+
+
+
+
+
+
+
+
+
+
+@*desktop - mousover type*@
+@{
+    var issidebar = (ViewBag.isSidebar == null) ? false : Convert.ToBoolean(ViewBag.isSidebar);
+
+    if (!issidebar)
+    {
+        if (Model.Categories.Count > 0)
+        {
+            <ul class="list-unstyled list-inline hidden-xs hidden-sm">
+                
+                @foreach (var category in Model.Categories)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">@category.Name</a>
+                        <div class="dropdown-content">
+                            @if (category.SeName.Equals("shop", StringComparison.OrdinalIgnoreCase))
+                            {
+                            <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" class="dropdown-item">Shop All</a>
+                            <a href="~/new-arrivals" class="dropdown-item">New Arrivals</a>
+
+                            }
+
+                            @foreach (var subcat in category.SubCategories)
+                            {
+                                @RenderCategoryLine(subcat)
+                            }
+                        </div>
+                    </li>
+
+                }
+
+                @*<li class="dropdown"> 
+                    <a href="#" class="dropbtn">SHOP</a>
+                    <div class="dropdown-content">
+                        @foreach (var category in Model.Categories){
+                            @RenderCategoryLine(category)
+                        }
+                    </div>
+                </li>
+                 <li class="dropdown"> 
+                    <a href="#" class="dropbtn">COLLECTION</a>
+                    <div class="dropdown-content">
+                        @foreach (var category in Model.Categories){
+                            @RenderCategoryLineCollection(category)
+                        }
+                    </div>
+                </li>*@
+            </ul>
+
+            @*Mobile Version*@
+            <ul class="hidden visible-xs visible-sm">
+                <li class="dropright dropright-list">
+                    <a href="#">SHOP</a>
+                    <ul class="dropright-drop">
+                         @foreach (var category in Model.Categories){
+                            @RenderCategoryMobile(category)
+                        }
+                    </ul>
+                </li>
+                 <li class="dropright dropright-list">
+                    <a href="#">COLLECTION</a>
+                    <ul class="dropright-drop">
+                         @foreach (var category in Model.Categories){
+                            @RenderCategoryMobileCollection(category)
+                        }
+                    </ul>
+                </li>
+            </ul>
+        }
+
+    }
+    else
+    {
+         @*sidebar*@
+if (Model.Categories.Count > 0)
+{
+    var menu1 = Model.Categories.OrderByDescending(x => x.Id).ToList();
+    <ul class="sidebar-menu list-unstyled" id="pop-sidebar-menu">
+        @foreach (var category in menu1)
+        {
+            var cssCategoryActief = "inactive";
+            if (Model.CurrentCategoryId == category.Id)
+            {
+                cssCategoryActief = "active";
+            }
+
+            if (category.SeName.Equals("shop", StringComparison.OrdinalIgnoreCase))
+            {
+                //skip category
+                cssCategoryActief = "inactive";
+                if (Model.CurrentCategoryId == category.Id)
+                {
+                    cssCategoryActief = "active";
+                }
+
+                <li class="list-group-item panel">
+                    <a class="inactive" data-parent="#pop-sidebar-menu"></a>
+                    <div class="list-group-submenu dropdown-container"><hr /></div>
+                </li>
+                <li class="list-group-item panel"><a class="@cssCategoryActief" href="~/shop">Shop All</a></li>
+                <li class="list-group-item panel"><a class="inactive" href="~/new-arrivals">New Arrivals</a></li>
+                foreach (var subcategory in category.SubCategories)
+                {
+                var cssSubCategoryActief = "inactive";
+                if (subcategory.Id == Model.CurrentCategoryId)
+                {
+                cssSubCategoryActief = "active";
+                }
+                <li class="list-group-item panel"><span><a class="@cssSubCategoryActief" href="~/@subcategory.SeName">@subcategory.Name</a></span></li>
+                }
+                }
+                else
+                {
+                <li class="list-group-item panel">
+                    <a class="@cssCategoryActief" href="#@category.SeName" data-toggle="collapse" data-parent="#pop-sidebar-menu">@category.Name</a>
+                    <div class="list-group-submenu dropdown-container" id="@category.SeName">
+                        <hr />
+
+
+                        @foreach (var subcategory in category.SubCategories)
+                        {
+                            var cssSubCategoryActief = "inactive";
+                            if (subcategory.Id == Model.CurrentCategoryId)
+                            {
+                                cssSubCategoryActief = "active";
+                            }
+
+                            <span><a class="@cssSubCategoryActief" href="~/@subcategory.SeName">@subcategory.Name</a></span>
+                        }
+                    </div>
+                </li>
+                }
+
+                }
+            </ul>
+
+
+
+
+    @*foreach (var category in Model.Categories)
+    {
+
+        if (category.Name.Equals("food", StringComparison.OrdinalIgnoreCase))
+        {
+            <li class="list-group-item" style="margin-bottom:30px;">
+                        @{
+                            var cssCategoryActief = "inactive";
+                            if (Model.CurrentCategoryId == category.Id){
+                                cssCategoryActief = "active";
+                            }
+                        }
+
+                        <a class="@cssCategoryActief" href="@Url.RouteUrl("Category", new { SeName = category.SeName })">
+                            @if (category.Name.Equals("shop", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <text>SHOP ALL</text>
+                            }
+                            else
+                            {
+                                @category.Name
+                            }
+
+                        </a>
+                        <ul class="list-unstyled" style="margin-top:20px; border-bottom:1px solid red;">
+                            @foreach (var subcategory in category.SubCategories)
+                            {
+                                <li>
+                                    <span>
+                                        @{
+                                            var cssSubCategoryActief = "inactive";
+
+                                            if (subcategory.Id == Model.CurrentCategoryId)
+                                            {
+                                                cssSubCategoryActief = "active";
+                                            }
+                                        }
+
+                                        <a class="@cssSubCategoryActief" href="~/@subcategory.SeName">@subcategory.Name</a>
+                                    </span>
+                                </li>
+
+                            }
+                        </ul>
+                    </li>
+                    break;
+
+}
+            }*@
+        }
+
+    }
+}
+
+

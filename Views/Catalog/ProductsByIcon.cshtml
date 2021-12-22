@@ -1,0 +1,439 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutOne.cshtml";
+
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    //var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+
+
+
+@*<h1>@Model.Name</h1>*@
+<section class="mb-normal ">
+    <div class="product-body">
+        <div class="figure">
+            <div>
+                <img src="/content/images/uploaded/homepage/sans_hauswork.jpg" alt="" />
+            </div>
+        </div>
+        @*<p><img class="img-responsive" src="/content/images/uploaded/homepage/sans_hauswork crop.jpg" alt="" /></p>*@
+        <div class="brand-text">
+            <div class="open-semiBold">Sans Ceuticals</div>
+            <br />
+            <div>
+                Aesop is an Autralian skin care brand owned by Brazilian company Natur. In addition t skincare
+                Aesop also produces hair care, soaps and fragrance, a total of over 80 hair, skin and body care
+                formulations Each Aesop store has a unique interior design developed in
+                collaboratin with various architects, interior designers and artist. As of 2017, the brand
+            </div>
+        </div>
+
+        <div class="hidden-sm hidden-xs">
+            <div class="product-filter">
+                <div class="col-md-12">
+                    <div class="col-md-6 text-left">
+                        <div class="dropdown account-menu">
+                            <a href="#" class="btn btn-back-account dropdown-toggle brand-left" data-toggle="dropdown">FILTER &nbsp; <i class="fa fa-angle-right"></i> </a>
+                            <div class="dropdown-menu menu-font" aria-labelledby="dropdownMenuButton">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <div class="title" data-role="title" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            BRAND
+                                        </div>
+                                    </div>
+                                    <div class="search-wrapper mt-10">
+                                        <input type="text" name="focus" required class="search-box" placeholder="Enter search term" />
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel-body scroll-filter mt-10" style="width:100%">
+                                            <div class="radio-default">
+                                                <input id="" name="" value="ALL" class="radio-default" checked="checked" type="radio">
+                                                <label for="">
+                                                    <span></span>ALL
+                                                </label>
+                                            </div>
+                                            <div class="radio-default">
+                                                <input type="radio" id="horns" name="feature"
+                                                       value="horns" checked="checked" />
+                                                <label for="horns"><span></span>Sans [ceuticals]</label>
+                                            </div>
+                                            <div class="radio-default">
+                                                <input type="radio" id="horns" name="feature"
+                                                       value="horns" checked="checked" />
+                                                <label for="horns"><span></span>Aesop</label>
+                                            </div>
+                                            <div class="radio-default">
+                                                <input type="radio" id="horns" name="feature"
+                                                       value="horns" checked="checked" />
+                                                <label for="horns"><span></span>Erha</label>
+                                            </div>
+                                            <div class="radio-default">
+                                                <input type="radio" id="horns" name="feature"
+                                                       value="horns" checked="checked" />
+                                                <label for="horns"><span></span>Apot Care</label>
+                                            </div>
+                                            <div class="radio-default">
+                                                <input type="radio" id="horns" name="feature"
+                                                       value="horns" checked="checked" />
+                                                <label for="horns"><span></span>Caudalie</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default mt-normal" style="width:100%">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                            <div class="title" data-role="title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                PRICE
+                                            </div>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                                            <div class="panel-body  mt-10">
+                                                <div class="radio-default">
+                                                    <input id="" name="" value="ALL" class="radio-default" checked="checked" type="radio">
+                                                    <label for="">
+                                                        <span></span>ALL
+                                                    </label>
+                                                </div>
+                                                <div class="radio-default">
+                                                    <input type="radio" id="horns" name="feature"
+                                                           value="horns" checked="checked" />
+                                                    <label for="horns"><span></span>IDR 0 - IDR 250.000</label>
+                                                </div>
+                                                <div class="radio-default">
+                                                    <input type="radio" id="horns" name="feature"
+                                                           value="horns" checked="checked" />
+                                                    <label for="horns"><span></span>IDR 250.000 - IDER 500.000</label>
+                                                </div>
+                                                <div class="radio-default">
+                                                    <input type="radio" id="horns" name="feature"
+                                                           value="horns" checked="checked" />
+                                                    <label for="horns"><span></span>IDR 500.000 - IDR 750.000</label>
+                                                </div>
+                                                <div class="radio-default">
+                                                    <input type="radio" id="horns" name="feature"
+                                                           value="horns" checked="checked" />
+                                                    <label for="horns"><span></span>IDR 750.000 - IDR 1.000.000</label>
+                                                </div>
+                                                <div class="radio-default">
+                                                    <input type="radio" id="horns" name="feature"
+                                                           value="horns" checked="checked" />
+                                                    <label for="horns"><span></span>IDR 1.000.000</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-right">
+                            <ul class="list-unstyled list-inline lnk-footer brand-right">
+                                @*<li>
+                                        <img class="img-responsive" src="~/Content/Images/uploaded/homepage/icons/ic_chevron_left-1.png" alt="" style="width:4px" />
+                                    </li>*@
+                                <li class="open-semiBold">
+                                    <a href="#" class="show_hide brand-margin"><i class="fa fa-angle-left"></i> &nbsp;SORT</a>
+                                </li>
+                            </ul>
+                            <div class="slidingDiv">
+                                <ul class="list-unstyled list-inline lnk-footer">
+                                    <li class="open-regular">
+                                        @Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden visible-sm visible-xs">
+            <div class="product-filter">
+                <div class="text-right mt-normal">
+                    <ul class="list-unstyled list-inline lnk-footer brand-right">
+                        @*<li>
+                                <img class="img-responsive" src="~/Content/Images/uploaded/homepage/icons/ic_chevron_left-1.png" alt="" style="width:4px" />
+                            </li>*@
+                        <li class="open-semiBold ">
+                            <a href="#" class="show_hide "><i class="fa fa-angle-left"></i>&nbsp;SORT</a>
+                        </li>
+                    </ul>
+                    <div class="slidingDiv">
+                        <ul class="list-unstyled list-inline lnk-footer">
+                            <li class="open-regular">
+                                @Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="dropdown account-menu">
+                    <a href="#" class="btn btn-back-account dropdown-toggle brand-left text-left size-brand open-semiBold" data-toggle="dropdown">
+                        <i class="fa fa-angle-left"></i>&nbsp;FILTER
+                    </a>
+                    <div class="dropdown-menu menu-brand" aria-labelledby="dropdownMenuButton">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <div class="title" data-role="title" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    BRAND
+                                </div>
+                            </div>
+                            <div class="search-wrapper mt-10">
+                                <input type="text" name="focus" required class="search-box" placeholder="Enter search term" />
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body scroll-filter mt-10" style="width:100%">
+                                    <div class="radio-default">
+                                        <input id="" name="" value="ALL" class="radio-default" checked="checked" type="radio">
+                                        <label for="">
+                                            <span></span>ALL
+                                        </label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>Sans [ceuticals]</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>Aesop</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>Erha</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>Apot Care</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>Caudalie</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default mt-normal" style="width:100%">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <div class="title" data-role="title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        PRICE
+                                    </div>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body  mt-10">
+                                        <div class="product-filters">
+                                            @if (Model.PagingFilteringContext.PriceRangeFilter.Enabled)
+                                            {
+                                                @Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())
+                                            }
+                                            @if (Model.PagingFilteringContext.SpecificationFilter.Enabled)
+                                            {
+                                                @Html.Partial("_FilterSpecsBox", Model.PagingFilteringContext.SpecificationFilter, new ViewDataDictionary())
+                                            }
+                                        </div>
+
+
+                                    <div class="radio-default">
+                                        <input id="" name="" value="ALL" class="radio-default" checked="checked" type="radio">
+                                        <label for="">
+                                            <span></span>ALL
+                                        </label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>IDR 0 - IDR 250.000</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>IDR 250.000 - IDER 500.000</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>IDR 500.000 - IDR 750.000</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>IDR 750.000 - IDR 1.000.000</label>
+                                    </div>
+                                    <div class="radio-default">
+                                        <input type="radio" id="horns" name="feature"
+                                               value="horns" checked="checked" />
+                                        <label for="horns"><span></span>IDR 1.000.000</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-12 top-brand">
+        <hr />
+    </div>
+    @*<h1>@Model.Name</h1>*@
+
+        @*description*@
+        @if (!String.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="category-description">
+                @if (!String.IsNullOrWhiteSpace(Model.Description))
+                {
+                    @Html.Raw(Model.Description)
+                }
+            </div>
+        }
+
+
+        @*filtering*@
+
+        @*<div class="pull-right">
+                Filter
+            </div>*@
+
+        @*<div class="" style="margin-top:1.25em;">
+                @Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())
+            </div>*@
+
+
+        @*<div class="product-filters">
+                    @if (Model.PagingFilteringContext.PriceRangeFilter.Enabled)
+                    {
+                        @Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())
+                    }
+                    @if (Model.PagingFilteringContext.SpecificationFilter.Enabled)
+                    {
+                        @Html.Partial("_FilterSpecsBox", Model.PagingFilteringContext.SpecificationFilter, new ViewDataDictionary())
+                    }
+                </div>
+            <br/>*@
+
+        @*@if (Model.Products.Count > 0)
+            {
+                var pg_i = 0;
+
+                <div class="row">
+                    <div id="ulSorList">
+                        @foreach (var product in Model.Products)
+                        {
+                            <div class="col-sm-6 col-xs-6 catalog-line">
+                                @Html.Partial("_ProductBox", product)
+                            </div>
+                            pg_i++;
+                        }
+
+                        <div class="gap"></div>
+                    </div>
+                </div>
+            }*@
+
+        @if (Model.Products.Count > 0)
+        {
+            var pg_i = 0;
+
+            <div class="row">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-xs-6 col-md-4 catalog-line">
+                        @Html.Partial("_ProductBox", product)
+                    </div>
+
+                    @*test*@
+                    <div class="col-xs-6 col-md-4 catalog-line">
+                        @Html.Partial("_ProductBox", product)
+                    </div>
+                    <div class="col-xs-6 col-md-4 catalog-line">
+                        @Html.Partial("_ProductBox", product)
+                    </div>
+                    <div class="col-xs-6 col-md-4 catalog-line">
+                        @Html.Partial("_ProductBox", product)
+                    </div>
+                    @*end test*@
+                    pg_i++;
+                }
+                <div class="gap"></div>
+            </div>
+
+
+        }
+        <div class="hidden-xs hidden-sm">
+            <div class="pag-size">
+                <div class="pagination">
+                    <a href="#">&laquo; PREV</a>
+                    <a href="#">1</a>
+                    <a class="active" href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">6</a>
+                    <a href="#">NEXT &raquo;</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="hidden visible-xs visible-sm">
+            <div class="pag-size">
+                <div class="pagination">
+                    <a href="#">&laquo; PREV</a>
+                    <a href="#">1</a>
+                    <a class="active" href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">NEXT &raquo;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+
+        $(".slidingDiv").hide();
+        $(".show_hide").show();
+
+        $('.show_hide').click(function () {
+            $(".slidingDiv").toggle("slide");
+        });
+
+
+    });
+
+    $('#cat_icon,.panel_title').click(function () {
+        $('#categories,#cat_icon').stop().slideToggle('slow');
+    });
+
+
+</script>
+
+
+@section scripts{
+
+}
+
+@section HeaderSection{
+
+}

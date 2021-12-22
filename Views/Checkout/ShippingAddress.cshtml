@@ -1,0 +1,215 @@
+﻿@model  IList<CheckoutShippingAddressModel>
+@using Nop.Web.Models.Checkout;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+}
+
+
+<div class="container mt-5 checkout">
+    <div class="row catalogue-img d-flex justify-content-center">
+        <div class="cart-page">
+            <div class="cart-header">
+                <h1 class="text-left mb-2">Checkout</h1>
+            </div>
+
+            <div class="page-body checkout-data">
+                <ol class="list-unstyled opc" id="checkout-steps">
+                    <li id="opc-billing" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4>@T("Checkout.BillingAddress")</h4></div>
+                    </li>
+
+                    <li id="opc-shipping" class="tab-section allow">
+                        <div class="step-title checkout-margin-title" data-toggle="collapse" href="#checkout-step-shipping" role="button" aria-expanded="false" aria-controls="checkout-step-shipping">
+                            <h4 class="title">@T("Checkout.ShippingAddress")</h4>
+                        </div>
+                        <div id="checkout-step-shipping" class="step a-item collapse show">
+                            <div id="checkout-shipping-load">
+                                @ShowContent()
+                            </div>
+                           
+                        </div>
+                    </li>
+
+
+                    <li id="opc-shipping_method" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ShippingMethod")</h4></div>
+                    </li>
+                    <li id="opc-payment_method" class="tab-section">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.PaymentMethod")</h4>
+                        </div>
+                    </li>
+                    <li id="opc-confirm_order" class="tab-section">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.ConfirmOrder")</h4>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@helper ShowContent()
+{
+    var index = 1;
+
+<div class="pnl__checkout">
+
+    <h3>&nbsp;</h3>
+    @*//@using (Html.BeginRouteForm("CheckoutShippingAddress", FormMethod.Post))*@
+    @using (Html.BeginForm("MultipleShippingAddress", "Checkout", FormMethod.Post, new { id = "form1", @class = "login-form" }))
+{
+    
+    foreach (var item in Model)
+    {
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="blox">
+                        <div class="row">
+                            <div class="col-6">
+                                @Html.Partial("_CartItem", item.shoppingCartItem)
+                            </div>
+                            <div class="col-6">
+                                <p>@T("Checkout.SelectShippingAddress")</p>
+
+                                <div class="form-group">
+                                    @if (item.ExistingAddresses.Count > 0)
+            {
+                                        <select name="ShippingAddressId" id="shipping-address-select" class="form-control-alternate classic" style="width:100%;">
+                                            @foreach (var address in item.ExistingAddresses)
+            {
+                var addressLine = "";
+                addressLine += address.FirstName;
+                addressLine += " " + address.LastName;
+                if (address.StreetAddressEnabled && !String.IsNullOrEmpty(address.Address1))
+                {
+                    addressLine += ", " + address.Address1;
+                }
+                if (address.CityEnabled && !String.IsNullOrEmpty(address.City))
+                {
+                    addressLine += ", " + address.City;
+                }
+                //if (address.StateProvinceEnabled && !String.IsNullOrEmpty(address.StateProvinceName))
+                //{
+                //    addressLine += ", " + address.StateProvinceName;
+                //}
+                if (address.ZipPostalCodeEnabled && !String.IsNullOrEmpty(address.ZipPostalCode))
+                {
+                    addressLine += " " + address.ZipPostalCode;
+                }
+                                                //if (address.CountryEnabled && !String.IsNullOrWhiteSpace(address.CountryName))
+                                                //{
+                                                //    addressLine += ", " + address.CountryName;
+                                                //}
+
+                                                //how should we render "FormattedCustomAddressAttributes" here?
+                                                <option value="@string.Format("{0}_{1}",item.shoppingCartItem.Id, address.Id)">@(addressLine)</option>
+                                            }
+                                        </select>
+                                    }
+                                </div>
+                                <p>
+                                    <a href="~/checkout/NewShippingAddress" class="clean">@T("Checkout.OrEnterNewAddress") here</a>
+                                </p>
+                                <p>
+                                    @{
+                                        var pickupInStoreName = T("Checkout.PickUpInStore").Text;
+                                        if (!String.IsNullOrEmpty(item.PickUpInStoreFee))
+                                        {
+                                            pickupInStoreName = T("Checkout.PickUpInStoreAndFee", item.PickUpInStoreFee).Text;
+                                        }
+                                    }
+                                    <div class="radio-default">
+                                        <input id="shippingoption_@index" type="checkbox" name="PickUpInStore_@index" /><label for="shippingoption_@index"><span></span> @pickupInStoreName</label>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                                            index++;
+                                        }
+
+
+        <div class="row buttons" id="shipping-buttons-container">
+            <div class="col-6">
+                <p class="back-link"><a href="~/checkout"><small>&laquo; </small>@T("Common.Back")</a></p>
+            </div>
+            <div class="col-6"  style="text-align:right;">
+                <input type="submit" name="nextstep" value="@T("Common.Continue")" class="btn btn-default" />
+            </div>
+        </div>
+
+       
+    }
+
+</div>
+}
+@*@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Address })*@
+
+
+
+
+
+
+@section scripts{
+
+    <script src="~/Scripts/app/fancyBox/jquery.fancybox.pack.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(".clean").on("click", function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+
+                $.fancybox({
+                href: url,
+                type: 'iframe',
+                'speedIn': 600,
+                'speedOut': 200,
+                'autoSize': true,
+                'type': 'iframe',
+                'autoCenter': true,
+                'centerOnScroll': true
+                ,'afterClose': function () {
+                    parent.location.reload(true);
+                }
+                , fitToView: false,
+                autoSize: false,
+                afterLoad: function () {
+                    this.width = '400';
+                    //this.height = '80%';
+                }
+            });
+
+            return false;
+        });
+
+        });
+
+    </script>
+
+
+
+
+}
+
+
+@section HeaderSection{
+
+    <link href="~/Scripts/app/fancyBox/jquery.fancybox.css" rel="stylesheet" />
+}
+
+

@@ -1,0 +1,166 @@
+﻿@model IList<ManufacturerModel>
+@using Nop.Web.Models.Catalog;
+
+@{ 
+
+    string[] css = new string[] {
+        "col-xs-6 col-sm-6 col-md-4",
+        "col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 ",
+        "col-xs-12 col-xs-offset-0 col-md-6 col-md-offset-2" };
+
+}
+
+
+@*<div class="mt-large">
+    <div class="row">
+
+        @foreach (var item in Model.BlogPosts)
+        {
+            var linemargin = "col-sm-5 blog";
+            if (counter == 1)
+            {
+                linemargin = "col-sm-5 col-sm-offset-2 blog__alternate";
+            }
+
+            if (counter >= 2)
+            {
+                break;
+            }
+            <div class="col-xs-12  @linemargin">
+                <img src="@item.Thumbnail" class="img-responsive center-block" />
+                <div class="blog__info">
+                    <h1><a href="@Url.RouteUrl("BlogPost", new {SeName = item.SeName})">@item.Title</a></h1>
+                    @item.BodyOverview
+                </div>
+            </div>
+
+            counter++;
+        }
+
+    </div>
+</div>*@
+
+
+
+<div class="homepage__brand mt-large">
+    <div class="row">
+        @{
+            var counter = 0;
+            foreach (var item in Model)
+            {
+                if (counter <= 5)
+                {
+                    <div class="@css[counter]">
+                        @*<a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })">
+                            <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="img-responsive center-block" />
+                        </a>*@
+                        <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="img-responsive center-block" />
+                        <div class="brand__info">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>                            
+                        </div>
+                    </div>
+                }
+                else
+                {
+
+                }
+
+                @*if (counter == 1)
+                {
+                    // brand 1
+                    <div class="col-md-12 col-md-4 hidden-xs">
+                        <a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">
+                            <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="homepage-img-top" />
+                        </a>
+                        <div class="homepage-blog-container">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                    </div>
+
+                    //untuk mobile
+                    <div class="col-xs-6 hidden visible-xs visible-sm">
+                        <a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">
+                            <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="homepage-img-top img-responsive" />
+                        </a>
+                        <div class="homepage-blog-responsive">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                    </div>
+                }
+                else if (counter == 2)
+                {
+                    //brand 2
+                    <div class="col-md-12 col-md-4 hidden-xs"></div>
+                    <div class="col-md-12 col-md-4 mt-large hidden-xs">
+                        <a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">
+                            <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="homepage-img-top" />
+                        </a>
+                        <div class="homepage-blog-container">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                    </div>
+
+                    //untuk mobile
+                    <div class="col-xs-6 hidden visible-xs visible-sm">
+                        <a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">
+                            <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="homepage-img-top img-responsive" />
+                        </a>
+                        <div class="homepage-blog-responsive">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    //brand 3
+                    <div class="col-md-12 col-md-3 mt-default hidden-xs"></div>
+                    <div class="col-md-12 col-md-6 mt-large text-center hidden-xs">
+                        <a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">
+                            <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="homepage-img-top" />
+                        </a>
+                        <div class="homepage-blog-container">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                    </div>
+
+                    //untuk mobile
+                    <div class="col-xs-12 hidden visible-xs visible-sm">
+                        <div class="homepage-img-responsive">
+                            <a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">
+                                <img alt="@item.Thumbnail.AlternateText" src="@item.Thumbnail.ImageUrl" title="@item.Thumbnail.Title" class="homepage-img-top img-responsive" />
+                            </a>
+                        </div>
+                        <div class="homepage-blog-responsive">
+                            <h1><a href="@Url.RouteUrl("Manufacturer", new { SeName = item.SeName })" title="@item.PictureModel.Title">@item.Name</a></h1>
+                            <p>
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                    </div>
+
+                }*@
+
+                counter++;
+            }
+        }
+    </div>
+</div>
+

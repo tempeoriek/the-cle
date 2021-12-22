@@ -1,0 +1,135 @@
+﻿@using Nop.Web.Models.Flitts.Collection
+@model LookViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model != null)
+    {
+        //title, meta
+        Html.AddTitleParts(!String.IsNullOrEmpty(Model.Look.MetaTitle) ? Model.Look.MetaTitle : Model.Look.Name);
+        //Html.AddMetaDescriptionParts(Model.);
+        //Html.AddMetaKeywordParts(item.MetaKeywords);
+    }
+
+
+
+}
+
+
+
+@*<div class="panel-body">
+    @using (Ajax.BeginForm("ArtistSearch", "Home",
+        new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+    OnFailure = "searchFailed",
+    LoadingElementId = "ajax-loader",
+    UpdateTargetId = "searchresults",
+}))
+    {
+        <input type="text" name="q" />
+        <input type="submit" value="search" />
+        <img id="ajax-loader" src="@Url.Content("~/Themes/peg/Content/images/loader-xl.png")" style="display:none" />
+    }
+    <div id="searchresults"></div>
+</div>*@
+
+
+
+<section>
+
+    @if (Model != null)
+    {
+        var look = Model.Look;
+
+        <table class="table table-responsive tblLook">
+            <colgroup>
+                <col style="width:25px" />
+                <col style="width:231px;" />
+                <col style="width:437px;" />
+                <col style="width:231px;" />
+                <col style="width:25px" />
+            </colgroup>
+            <tr>
+                <td colspan="6" style="padding:32px 0;"></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="@string.Format("/collection/{0}/look/{1}", Model.CollectionSeoName, Model.PrevSeoName)" title="Previous" class="clean">
+                        <img src="~/Themes/peg/Content/images/arrow-left.png" style="max-width:10px;" />
+                    </a>
+                </td>
+                <td>
+                    <span>
+                        @Model.CollectionTitle
+                    </span>
+                    <br />
+                    @Model.CollectionDescription
+
+
+                </td>
+                <td style="width:437px; padding:0;">
+                    <img src="@look.ImageUrl" class="img-responsive" />
+                </td>
+                <td>
+                    <h2 class="Alternate">
+                        @Model.Look.Title
+                    </h2>
+                    <div style="padding-bottom:25px;">
+                        SHARE
+                    </div>
+
+                    @{
+
+        var url = Url.Encode(String.Format("http://{0}/collection/{1}", Request.ServerVariables["SERVER_NAME"], Model.CollectionSeoName));
+        var product = Url.Encode(Model.CollectionName);
+
+        var tweet = string.Format("https://twitter.com/intent/tweet?status={0}&url={1}", product, url);
+        var facebook = string.Format("https://www.facebook.com/sharer/sharer.php?u={1}&title={0}", product, url);
+        var pinterest = string.Format("http://pinterest.com/pin/create/bookmarklet/?media={0}&url={0}&is_video=false&description={1}", url, product);
+
+        <ul class="list-unstyled list-inline lnk-footer">
+
+            <li><a href="@facebook" class="alt" target="_blank"><i class="fa fa-facebook fa-lg"></i></a></li>
+            <li><a href="@pinterest" class="alt" target="_blank"><i class="fa fa-pinterest-p fa-lg" aria-hidden="true"></i></a></li>
+            <li><a href="@tweet" class="alt" target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
+
+        </ul>
+
+                    }
+                </td>
+                <td>
+                    <a href="@string.Format("/collection/{0}/look/{1}", Model.CollectionSeoName, Model.NextSeoName)" title="Next" class="clean">
+                            <img src="~/Themes/peg/Content/images/arrow.png" style="max-width:10px;" />
+                        </a>
+
+                    @*@Ajax.ActionLink("Next", "Look", null, new AjaxOptions
+               {
+                   UpdateTargetId = "dailydeal",
+                   InsertionMode = InsertionMode.Replace,
+                   HttpMethod = "GET"
+               }, new { @class = "clean" })*@
+
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" style="padding:0 0 32px;"></td>
+            </tr>
+        </table>
+
+    }
+    else
+    {
+        <h1>No Collection found</h1>
+    }
+
+</section>
+
+
+@section RootScripts
+{
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"> </script>*@
+}

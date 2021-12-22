@@ -1,0 +1,485 @@
+﻿@model CheckoutConfirmModel
+@using Nop.Web.Models.Checkout;
+@{
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+    // ViewBag.HideMenu = "true";
+}
+
+@section Left{
+    @*@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Confirm })*@
+}
+
+
+
+
+
+
+<div class="container mt-5 checkout">
+    <div class="row catalogue-img d-flex justify-content-center">
+        <div class="cart-page">
+            <div class="cart-header">
+                <h1 class="text-left mb-2">Checkout</h1>
+            </div>
+
+            <div class="page-body checkout-data">
+                <ol class="list-unstyled opc" id="checkout-steps">
+                    <li id="opc-billing" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4>@T("Checkout.BillingAddress")</h4></div>
+                    </li>
+
+                    <li id="opc-shipping" class="tab-section">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.ShippingAddress")</h4>
+                        </div>
+
+                    </li>
+
+
+                    <li id="opc-shipping_method" class="tab-section">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.ShippingMethod")</h4>
+                        </div>
+
+                    </li>
+                    <li id="opc-payment_method" class="tab-section ">
+                        <div class="step-title checkout-margin-title">
+                            <h4 class="title">@T("Checkout.PaymentMethod")</h4>
+                        </div>
+                     
+                    </li>
+                    <li id="opc-confirm_order" class="tab-section allow">
+                        <div class="step-title checkout-margin-title"  data-toggle="collapse" href="#checkout-step-payment" role="button" aria-expanded="false" aria-controls="checkout-step-payment">
+                            <h4 class="title">@T("Checkout.ConfirmOrder")</h4>
+                        </div>
+                        <div id="checkout-step-payment" class="step a-item collapse show">
+                            <div id="checkout-payment-load">
+                                @ShowContent()
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@helper ShowContent()
+{
+
+<div class="pnl__checkout">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <h5>Billing</h5>
+                <p>
+                    <i class="fa fa-map-marker" aria-hidden="true" style="color:#80A9B8; margin-right:3px;"></i> @Model.BillingAddress.FirstName @Model.BillingAddress.LastName
+
+                    @if (Model.BillingAddress.CompanyEnabled && !String.IsNullOrEmpty(Model.BillingAddress.Company))
+                    {
+                        <br />@Model.BillingAddress.Company
+                    }
+
+                    @if (Model.BillingAddress.StreetAddressEnabled)
+                    {
+                        <br />@Model.BillingAddress.Address1
+                    }
+                    @if (Model.BillingAddress.StreetAddress2Enabled && !String.IsNullOrEmpty(Model.BillingAddress.Address2))
+                    {
+                        <br />@Model.BillingAddress.Address2
+                    }
+                    @if (Model.BillingAddress.CityEnabled || Model.BillingAddress.StateProvinceEnabled || Model.BillingAddress.ZipPostalCodeEnabled)
+                    {
+                        if (Model.BillingAddress.CityEnabled)
+                        {
+                            <br />@Model.BillingAddress.City
+                        }
+                        if (Model.BillingAddress.CityEnabled && (Model.BillingAddress.StateProvinceEnabled || Model.BillingAddress.ZipPostalCodeEnabled))
+                        {
+                            <text>,</text>
+                        }
+
+                        if (Model.BillingAddress.StateProvinceEnabled)
+                        {
+                            @Model.BillingAddress.StateProvinceName
+                        }
+                        if (Model.BillingAddress.ZipPostalCodeEnabled)
+                        {
+                            @Model.BillingAddress.ZipPostalCode
+                        }
+                    }
+                    @*@if (Model.BillingAddress.CountryEnabled && !String.IsNullOrEmpty(Model.BillingAddress.CountryName))
+                        {
+                            <br />@Model.BillingAddress.CountryName
+                        }*@
+
+                    @if (!String.IsNullOrEmpty(Model.BillingAddress.FormattedCustomAddressAttributes))
+                    {
+                        <br />
+                        @Html.Raw(Model.BillingAddress.FormattedCustomAddressAttributes)
+                    }
+
+
+                    <br />E: @Model.BillingAddress.Email
+                    <br />P: @Model.BillingAddress.PhoneNumber
+
+
+                </p>
+
+
+            </div>
+            <div class="col-12 col-md-6">
+                <h5>Payment Method</h5>
+                <p>
+                    @Model.PaymentMethod
+                </p>
+
+            </div>
+        </div>
+
+        <!-- bag-->
+        <div class="row mt-3">
+            <div class="col-12">
+                <h5>Your Bag</h5>
+            </div>
+        </div>
+
+        @foreach (var item in Model.checkoutItems)
+        {
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="blox">
+                        <div class="row">
+                            <div class="col-6">
+                                <p>&nbsp;</p>
+                                @foreach (var sci in item.ShoppingCartItems)
+                                {@Html.Partial("_CartItem", sci)}
+                            </div>
+                            <div class="col-6">
+                                <p>Deliver to</p>
+                                <div class="form-group">
+                                    @if (item.ShippingAddress != null)
+                                    {
+                                        <div class="address-item">
+                                            <ul class="address-box1 list-unstyled ">
+                                                <li style="">
+                                                    @if (item.ShippingAddressId == 2)
+                                                    {
+                                                        <i class="fa fa-map-marker" aria-hidden="true" style="color:#80A9B8; margin-right:3px;"></i> <text>Not applicable</text>
+                                                    }
+                                                    else
+                                                    {
+
+
+                                                        <i class="fa fa-map-marker" aria-hidden="true" style="color:#80A9B8; margin-right:3px;"></i> @item.ShippingAddress.FirstName @item.ShippingAddress.LastName
+
+                                                        if (item.ShippingAddress.CompanyEnabled && !String.IsNullOrEmpty(item.ShippingAddress.Company))
+                                                        {
+                                                            <br />@item.ShippingAddress.Company
+                                                        }
+
+                                                        if (item.ShippingAddress.StreetAddressEnabled)
+                                                        {
+                                                            <br />@item.ShippingAddress.Address1
+                                                        }
+                                                        if (item.ShippingAddress.StreetAddress2Enabled && !String.IsNullOrEmpty(item.ShippingAddress.Address2))
+                                                        {
+                                                            <br />@item.ShippingAddress.Address2
+                                                        }
+                                                        if (item.ShippingAddress.CityEnabled || item.ShippingAddress.StateProvinceEnabled || item.ShippingAddress.ZipPostalCodeEnabled)
+                                                        {
+                                                            if (item.ShippingAddress.CityEnabled)
+                                                            {
+                                                                <br />@item.ShippingAddress.City
+                                                            }
+                                                            if (item.ShippingAddress.CityEnabled && (item.ShippingAddress.StateProvinceEnabled || item.ShippingAddress.ZipPostalCodeEnabled))
+                                                            {
+                                                                <text>,</text>
+                                                            }
+                                                            @*@if (item.StateProvinceEnabled) {@item.StateProvinceName}*@
+                                                            if (item.ShippingAddress.ZipPostalCodeEnabled)
+                                                            {
+                                                                @item.ShippingAddress.ZipPostalCode
+                                                            }
+                                                        }
+                                                        @*@if (item.ShippingAddress.CountryEnabled && !String.IsNullOrEmpty(item.ShippingAddress.CountryName))
+            {
+                <br />@item.ShippingAddress.CountryName
+            }*@
+
+                                                        if (!String.IsNullOrEmpty(item.ShippingAddress.FormattedCustomAddressAttributes))
+                                                        {
+                                                            <br />
+                                                            @Html.Raw(item.ShippingAddress.FormattedCustomAddressAttributes)
+                                                        }
+
+
+                                                        <br /><text>E:</text> @item.ShippingAddress.Email
+                                                        <br /><text>P:</text> @item.ShippingAddress.PhoneNumber
+                                                    }
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <p class="mt-3"><strong>Shipping method:</strong> @Html.Raw(item.ShippingMethod)</p>
+                                        <p class="mt-3"><strong>Order note:</strong> @Html.Raw(item.Note)</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <table class="ordertotal">
+
+
+                    <tr>
+                        <td class="left">Subtotal</td>
+                        <td class="right">@Model.orderTotalsModel.SubTotal</td>
+                    </tr>
+                    @if (!String.IsNullOrEmpty(Model.orderTotalsModel.SubTotalDiscount))
+                    {
+                        <tr>
+                            <td class="left">@T("ShoppingCart.Totals.SubTotalDiscount")</td>
+                            <td class="right">
+                                @if (Model.orderTotalsModel.AllowRemovingSubTotalDiscount)
+                                {
+                                    /*empty value (little hack for FormValueExistsAttribute)*/
+                                    <input type="submit" name="removesubtotaldiscount" value="[ X ]" title="@T("Common.Remove")" class="remove-discount-button" />
+                                }
+                                <span class="value-summary">@Model.orderTotalsModel.SubTotalDiscount</span>
+                            </td>
+                        </tr>
+                    }
+
+                    <tr>
+                        <td class="left">@T("ShoppingCart.Totals.Shipping")</td>
+                        <td class="right">
+                            @if (Model.orderTotalsModel.RequiresShipping)
+                            {
+                                if (!String.IsNullOrEmpty(Model.orderTotalsModel.Shipping))
+                                {
+                                    @Model.orderTotalsModel.Shipping
+                                }
+                                else
+                                {
+                                    <span>@T("ShoppingCart.Totals.CalculatedDuringCheckout")</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>@T("ShoppingCart.Totals.Shipping.NotRequired")</span>
+                            }
+                        </td>
+                    </tr>
+
+
+                    @if (!String.IsNullOrEmpty(Model.orderTotalsModel.PaymentMethodAdditionalFee))
+                    {
+                        <tr>
+                            <td class="left">@T("ShoppingCart.Totals.PaymentMethodAdditionalFee")</td>
+                            <td class="right">
+                                @if (!String.IsNullOrEmpty(Model.orderTotalsModel.PaymentMethodAdditionalFee))
+                                {
+                                    <span class="value-summary">@Model.orderTotalsModel.PaymentMethodAdditionalFee</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!String.IsNullOrEmpty(Model.orderTotalsModel.OrderTotalDiscount))
+                    {
+                        <tr>
+                            <td class="left">
+                                <div class="discount-total">
+                                    @T("ShoppingCart.Totals.OrderTotalDiscount")
+                                    @if (Model.orderTotalsModel.AllowRemovingOrderTotalDiscount)
+                                    {
+                                        /*empty value (little hack for FormValueExistsAttribute)*/
+                                        <input type="submit" name="removeordertotaldiscount" value="[ X ] " title="@T("Common.Remove")" class="remove-discount-button" />
+                                    }
+                                </div>
+                            </td>
+                            <td class="right">
+                                @if (!String.IsNullOrEmpty(Model.orderTotalsModel.OrderTotalDiscount))
+                                {
+                                    <span class="value-summary">@Model.orderTotalsModel.OrderTotalDiscount</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+
+
+
+
+
+                    <tr>
+                        <td class="left"><strong>Total</strong></td>
+                        <td class="right"><strong>@Model.orderTotalsModel.OrderTotal</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- end bag-->
+        @using (Html.BeginRouteForm("CheckoutConfirm", FormMethod.Post, new { id = "confirm-order-form" }))
+        {
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="checkout-terms-condition">
+                        <div class="hint">
+
+                            @*<div class="checkbox"><label>@Html.CheckBox("newsletter", true) Subscribe to our newsletter</label></div>*@
+
+                            @if (!String.IsNullOrEmpty(Model.MinOrderTotalWarning))
+                            {
+                            <div class="alert alert-danger">@Model.MinOrderTotalWarning</div>
+                            }
+                            else
+                            {
+                            if (Model.TermsOfServiceOnOrderConfirmPage)
+                            {
+                            <div id="terms-of-service-warning-box" title='@T("Checkout.TermsOfService")' style="display:none;">
+                                <p>@T("Checkout.TermsOfService.PleaseAccept")</p>
+                            </div>
+
+                            @*<div class="terms-of-service checkbox">
+                                    <label>
+                                        <input id="termsofservice" type="checkbox" name="termsofservice" />
+                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);">@T("Checkout.TermsOfService.IAccept")</a>
+                                    </label>
+
+                                </div>*@
+
+
+                            <div class="radio-default  text-center">
+                                <input id="termsofservice" type="checkbox" name="termsofservice" class="radio-default">
+                                <label for="termsofservice">
+                                    @*<span></span> &nbsp; <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);" style="font-size:0.93em;">@T("Checkout.TermsOfService.IAccept")</a>*@
+                                    <span></span>
+
+                                    <div style="display:inline-block; width:80%; text-align:left;">
+                                        By placing your order you agree to our <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "TermsAndConditions" })', 450, 500, true);">Terms & Conditions</a>,
+                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "PrivacyInfo" })', 450, 500, true);">privacy</a> and
+                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "ShippingInfo" })', 450, 500, true);">returns policies</a>.<br />You also consent to some of your data being stored by The Clementines, which may be used to make future shopping experiences better for you.
+
+                                    </div>
+
+                                </label>
+                            </div>
+                            }
+
+                            }
+
+                            @if (Model.Warnings.Count > 0)
+                            {
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (var warning in Model.Warnings)
+                                    {
+                                        <li>@warning</li>
+                                    }
+                                </ul>
+                            </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row buttons" id="shipping-buttons-container">
+                <div class="col-6">
+                    <p class="back-link"><a href="~/checkout"><small>&laquo; </small>@T("Common.Back")</a></p>
+                </div>
+                <div class="col-6" style="text-align:right;">
+
+                    @if (String.IsNullOrEmpty(Model.MinOrderTotalWarning) && (Model.Warnings.Count == 0))
+                    {
+                        <button type="submit" id="nextstep" name="nextstep" class="btn btn-default">Confirm</button>
+                    }
+
+
+                </div>
+            </div>
+        }
+    
+
+</div>
+}
+
+
+
+
+
+
+@*<section class="col-main">
+    @Html.Action("OrderSummary", "ShoppingCart", new { prepareAndDisplayOrderReviewData = true })
+</section>*@
+
+
+
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        //$(function () {
+        //    $('.confirm-order-next-step-button').click(function () {
+        //        var termOfServiceOk = true;
+        //        if ($('#termsofservice').length > 0) {
+        //            //terms of service element exists
+        //            if (!$('#termsofservice').is(':checked')) {
+        //                $("#terms-of-service-warning-box").show();
+        //                termOfServiceOk = false;
+        //            } else {
+        //                termOfServiceOk = true;
+        //            }
+        //        }
+        //        if (termOfServiceOk) {
+        //            //$('#confirm-order-form').submit();
+        //            //$('.confirm-order-next-step-button').attr('disabled', 'disabled');
+        //            return true;
+        //        } else {
+        //            return false;
+        //        }
+        //    });
+        //});
+
+        $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+        });
+    </script>
+
+    @if (Model.TermsOfServiceOnOrderConfirmPage)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#nextstep').click(function () {
+                    if ($('#termsofservice').is(':checked')) {
+                        //do some stuff
+                        return true;
+                    }
+                    else {
+                        //just show validation errors, dont post
+                        alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(T("Account.Fields.AcceptPrivacyPolicy.Required").Text))');
+                        return false;
+                    }
+                });
+            });
+        </script>
+    }
+
+}

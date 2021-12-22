@@ -1,0 +1,46 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+
+@if (Model.Products.Any())
+{
+    @*<p style="margin-top:20px;">
+            If you opt to have a card, please choose the card:
+        </p>
+        <div class="form-group">
+            <select id='social' style='width: 100%;' name="CardId" class="form-control-alternate classic">
+                <option value="0" disabled>Please select card</option>
+
+                @foreach (var item in Model.Products)
+                {
+                    <option value='@item.Id' data-icon="@item.DefaultPictureModel.ImageUrl" icon="@item.DefaultPictureModel.ImageUrl">@item.Name</option>
+                }
+            </select>
+        </div>*@
+
+    <div class="form-group">
+        <select style='width: 100%;' name="CardId" class="form-control-alternate classic">
+
+            <option value="-1" disabled>- Please select card -</option>
+            <option value="0">I dont want a card</option>
+            <optgroup label="Cards Selection">
+                @foreach (var item in Model.Products)
+                {
+                    <option value='@item.Id' data-icon="@item.DefaultPictureModel.ImageUrl" icon="@item.DefaultPictureModel.ImageUrl">@item.Name</option>
+                }
+            </optgroup>
+          
+        </select>
+    </div>
+
+}
+else
+{
+    <p>There is no available card</p>
+}
+
+
+

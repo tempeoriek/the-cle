@@ -1,0 +1,61 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+
+@{
+     Html.AddTitleParts("Step 1: Choose Box");
+}
+
+
+<div class="byob">
+
+    @*@Html.Partial("_Progress", new ViewDataDictionary { { "step", "1" } }))*@
+
+
+    <div class="container header">
+        <h2>Step 1 of 4</h2>
+        <h1>Choose your Box</h1>
+        <p>Welcome to the easiest way to send someone a custom gift, in 4 simple steps.<br />Add to cart and repeat for multiple boxes, or update your quantity in the cart.</p>
+    </div>
+
+    @if (Model.Products.Any())
+    {
+
+        using (Html.BeginForm("step1", "byob", FormMethod.Post, new { id = "form1", @class = "login-form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="col-main mb-5">
+                <div class="row">
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="col-6 col-lg-3 catalog-line">
+                            <button type="submit" name="id" value="@item.Id" class="box__option clean">
+                                @if (item.AlternateImage != null)
+                                {
+                                   <img data-alt-src="@item.AlternateImage.ImageUrl" src="@item.DefaultPictureModel.ImageUrl" class="img-fluid center-block swapImg" />
+                                }
+                                else
+                                {
+                                  <img src="@item.DefaultPictureModel.ImageUrl" class="img-fluid center-block" />
+                                }
+                                <h3>@item.Name</h3>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="col-main-slim mt-5"><h3>We're still preparing the collection. Please stay tuned.</h3></div>
+
+    }
+
+
+</div>

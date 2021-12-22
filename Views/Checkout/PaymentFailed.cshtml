@@ -1,0 +1,42 @@
+﻿@model CheckoutCompletedModel
+@using Nop.Web.Models.Checkout;
+@{
+
+    //title
+    Html.AddTitleParts("Payment Failed");
+    ViewBag.HideMenu = "true";
+}
+
+@section Left{
+
+    @Html.Partial("MenuStatic")
+
+}
+
+
+
+<section class="col-main">
+    <h1>Payment Failed</h1>
+    <br /><br />
+    <h1>
+        @Model.PaymentInfo
+    </h1>
+    <br />
+    <h2>@T("Checkout.OrderNumber"): @Model.OrderId</h2>
+    <br /><br />
+    <p>
+        <input type="button" value="@T("Checkout.ThankYou.Continue")" class="btn btn-default" onclick="setLocation('@Url.RouteUrl("HomePage")')" />
+    </p>
+
+</section>
+
+
+@section scripts {
+    <script>
+            $(document).ready(function () {
+                function disableBack() { window.history.forward() }
+                window.onload = disableBack();
+                window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+            });
+    </script>
+}

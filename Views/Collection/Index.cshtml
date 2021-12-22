@@ -1,0 +1,161 @@
+﻿@using Nop.Web.Models.Flitts.Collection
+@model CollectionsViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutTwo.cshtml";
+    ViewBag.Title = "Collections";
+
+    var id = (ViewBag.isMobile != null) ? "collection-mobile" : "collection";
+
+
+    var actionname = Request.RequestContext.RouteData.Values["action"].ToString();
+
+}
+
+
+@{
+    if (Model == null)
+    {
+        <h1>
+            We're still preparing our new collection. Stay tuned!
+        </h1>
+    }
+    else
+    {
+
+        @*<div id="fancybox-loading">
+            <div></div>
+        </div>*@
+
+
+        if (Model != null)
+        {
+            var top = Model.Collecties.Count() - 1;
+            if (Model.Collecties.Count() > 1)
+            {
+                top = 1;
+            }
+
+            for (int i = 0; i <= top; i++)
+            {
+                <section class="pnl-xtarget" id="@Model.Collecties[i].Collectie.SystemName">
+                    <ul class="list-unstyled row">
+                        @foreach (var look in Model.Collecties[i].Looks)
+                        {
+
+                            <li class="col-xs-6 col-sm-3">
+                                <div class="collectie">
+                                    <a href="~/collection/@Html.AttributeEncode(Model.Collecties[i].Collectie.SystemName)/look/@Html.AttributeEncode(look.SystemName)" class="open_ajax clean">
+                                        <img src="@look.ImageUrl" class="img-responsive" />
+                                    </a>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+
+                </section>
+            }
+        }
+
+    }
+}
+
+
+
+@section HeaderSection{
+    <link href="~/Scripts/app/fancyBox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" />
+}
+@section Scripts
+{
+    <script src="~/Scripts/app/fancyBox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script>
+        $(document).ready(function () {
+
+            $(".open_ajax").fancybox({
+                    type: 'ajax',
+                    padding: 0,
+                    margin: 0,
+                    autoCenter: false,
+                    width: "100%",
+                    height: "100%",
+                    autoSize: false,
+                    scrolling: 'auto'
+                  
+                });
+
+        });
+
+
+
+
+    </script>
+
+
+    @if (actionname.ToLower() == "new")
+    {
+
+        <script>
+            $(document).ready(function () {
+                $(document).on("scroll", onScroll);
+
+                //smoothscroll
+                $('a[href^="#"]').on('click', function (e) {
+                    e.preventDefault();
+
+                    if (this.hash.toLowerCase() != "#collection") {
+
+                        $(document).off("scroll");
+
+                        $('a').each(function () {
+                            $(this).removeClass('active');
+                        })
+                        $(this).addClass('active');
+
+                        var target = this.hash,
+                            menu = target;
+                        $target = $(target);
+                        $('html, body').stop().animate({
+                            'scrollTop': $target.offset().top + 2
+                        }, 500, 'swing', function () {
+                            window.location.hash = target;
+                            $(document).on("scroll", onScroll);
+                        });
+
+                    };
+
+                });
+            });
+
+            function onScroll(event) {
+                var scrollPos = $(document).scrollTop();
+                $('#@id span a').each(function () {
+                    var currLink = $(this);
+
+
+                    if ((currLink.attr("id")) != "lnkArchive") {
+                        var refElement = $(currLink.attr("href"));
+
+                        //if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+                        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+                            $('#@id span a').removeClass("active");
+                            currLink.addClass("active");
+                        }
+                        else {
+                            currLink.removeClass("active");
+                        }
+                    }
+
+
+                });
+            }
+
+
+            $(document).ready(function () {
+                var target = '@Model.CollectieActive'; //this.hash;
+                window.location.hash = target;
+            });
+        </script>
+    }
+
+}

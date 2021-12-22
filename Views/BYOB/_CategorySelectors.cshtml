@@ -1,0 +1,26 @@
+﻿@model CategoryModel
+@using Nop.Web.Models.Catalog;
+
+
+
+
+<h5>Occassions</h5>
+@if (Model.SubCategories.Any())
+{
+    var selected = "";
+    var i = 1;
+    foreach (var item in Model.SubCategories)
+    {
+        if (item.isSelected)
+        {
+            selected = "checked=\"checked\"";
+        }
+        else
+        {
+            selected = "";
+        }
+        <div class="radio-alternate"><input type="radio" id="cat_@(i)" name="cat" value="@(item.Id)" @selected ><label for="cat_@(i)">@item.Name</label></div>
+
+        i++;
+    }
+}

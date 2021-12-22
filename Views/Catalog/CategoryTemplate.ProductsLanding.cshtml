@@ -1,0 +1,143 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+@{
+
+    //Layout = "~/Views/Shared/_LayoutTwo.cshtml";
+
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+
+    
+
+
+
+    <div class="shop_all ">
+        <div class="shop-1 d-flex justify-content-between row">
+            <div class="shop-1_text">
+                <a>new arrival</a>
+                <a href="#" class=" d-none d-sm-block">
+                    <div class="d-flex">
+                        <p class="link-shopall">see all new arrival</p>
+                        <div class="ml-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex ">
+                <img src="~/Content/Images/IMG_3060.png" class="p-1 img-fluid"/>
+                <img src="~/Content/Images/IMG_3005.png" class="p-1 img-fluid"/>
+                <img src="~/Content/Images/IMG_2773_1.png" class="p-1 img-fluid"/>
+                 <img src="~/Content/Images/IMG_2823.png" class="p-1 img-fluid"/>
+            </div>
+            <a href="#" class="d-block d-sm-none"><div class="d-flex justify-content-between">
+                <p class="link-shopall ml-4">see all new arrival</p>
+                <div class="mr-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+            </div></a>
+        </div>
+        <div class="shop-2 d-flex justify-content-between row">
+            <div class="shop-2_text">
+                <a>women</a>
+                <a href="#" class=" d-none d-sm-block">
+                    <div class="d-flex">
+                        <p class="link-shopall">see all new women</p>
+                        <div class="ml-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex ">
+                <img src="~/Content/Images/IMG_3060.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_3005.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2773_1.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2823.png" class="p-1 img-fluid" />
+            </div>
+            <a href="#" class="d-block d-sm-none">
+                <div class="d-flex justify-content-between">
+                    <p class="link-shopall ml-4">see all women</p>
+                    <div class="mr-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                </div>
+            </a>
+        </div>
+        <div class="shop-3 d-flex justify-content-between row">
+            <div class="shop-3_text">
+                <a>men</a>
+                <a href="#" class=" d-none d-sm-block">
+                    <div class="d-flex">
+                        <p class="link-shopall">see all men</p>
+                        <div class="ml-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex ">
+                <img src="~/Content/Images/IMG_3060.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_3005.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2773_1.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2823.png" class="p-1 img-fluid" />
+            </div>
+            <a href="#" class="d-block d-sm-none">
+                <div class="d-flex justify-content-between">
+                    <p class="link-shopall ml-4">see all men</p>
+                    <div class="mr-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                </div>
+            </a>
+        </div>
+        <div class="shop-4 d-flex justify-content-between row">
+            <div class="shop-4_text">
+                <a>kids</a>
+                <a href="#" class=" d-none d-sm-block">
+                    <div class="d-flex">
+                        <p class="link-shopall">see all kids</p>
+                        <div class="ml-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex ">
+                <img src="~/Content/Images/IMG_3060.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_3005.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2773_1.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2823.png" class="p-1 img-fluid" />
+            </div>
+            <a href="#" class="d-block d-sm-none">
+                <div class="d-flex justify-content-between">
+                    <p class="link-shopall ml-4">see all kids</p>
+                    <div class="mr-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                </div>
+            </a>
+        </div>
+        <div class="shop-5 d-flex justify-content-between row">
+            <div class="shop-5_text">
+                <a>sale</a>
+                <a href="#" class=" d-none d-sm-block">
+                    <div class="d-flex">
+                        <p class="link-shopall">see all sale</p>
+                        <div class="ml-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex ">
+                <img src="~/Content/Images/IMG_3060.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_3005.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2773_1.png" class="p-1 img-fluid" />
+                <img src="~/Content/Images/IMG_2823.png" class="p-1 img-fluid" />
+            </div>
+            <a href="#" class="d-block d-sm-none">
+                <div class="d-flex justify-content-between">
+                    <p class="link-shopall ml-4">see all sale</p>
+                    <div class="mr-4"><img src="~/Themes/v1/Content/images/arrow-thin.png" /></div>
+                </div>
+            </a>
+        </div>
+    </div>

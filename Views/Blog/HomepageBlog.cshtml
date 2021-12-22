@@ -1,0 +1,44 @@
+﻿@model BlogPostListModel
+@using Nop.Web.Models.Blogs;
+@{
+    var counter = 0;
+}
+
+
+
+<div class="blogposts">
+    <div class="row mt-default">
+        <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-6 text-center">
+            <h1 class="big">on the journal</h1>
+        </div>
+    </div>
+    <div class="mt-normal">
+        <div class="row">
+            @foreach (var item in Model.BlogPosts){
+                var linemargin = "col-sm-5 blog";
+                if (counter == 1){
+                    linemargin = "col-sm-5 col-sm-offset-2 blog__alternate";
+                }
+
+                if (counter >= 2){
+                    break;
+                }
+                <div class="col-xs-12  @linemargin">
+                     <img src="@item.Thumbnail" class="img-responsive center-block" />
+                    <div class="blog__info">
+                        <h1><a href="@Url.RouteUrl("BlogPost", new {SeName = item.SeName})">@item.Title</a></h1>
+                        @item.BodyOverview
+                    </div>
+                </div>
+
+                counter++;
+            }
+        </div>
+    </div>
+
+    <div class="pull-right">
+        <a href="~/blog" class="link--arrow"><small>MORE ARTICLES</small></a>
+    </div>
+
+
+</div>

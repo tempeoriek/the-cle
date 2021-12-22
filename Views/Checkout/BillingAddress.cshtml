@@ -1,0 +1,228 @@
+﻿@model CheckoutBillingAddressModel
+@using Nop.Web.Models.Checkout;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+
+    //ViewBag.HideMenu = "true";
+
+}
+
+
+
+@section Left{
+    @*@Html.Partial("MenuStatic")*@
+
+    @*@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Address })*@
+}
+
+
+
+
+<div class="container mt-5 checkout">
+    <div class="row catalogue-img d-flex justify-content-center">
+        <div class="cart-page">
+            <div class="cart-header">
+                <h1 class="text-left mb-2">Checkout</h1>
+            </div>
+
+            <div class="page-body checkout-data">
+                <ol class="list-unstyled opc" id="checkout-steps">
+                    <li id="opc-billing" class="tab-section allow">
+                        <div class="step-title checkout-margin-title" data-toggle="collapse" href="#checkout-step-billing" role="button" aria-expanded="false" aria-controls="checkout-step-billing">
+                            <h4>@T("Checkout.BillingAddress")</h4>
+                        </div>
+                        <div id="checkout-step-billing" class="step a-item collapse show">
+                           <div id="checkout-billing-load">@ShowContent()</div>
+                        </div>
+                    </li>
+
+                    <li id="opc-shipping" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ShippingAddress")</h4></div>
+                    </li>
+
+                    <li id="opc-shipping_method" class="tab-section"><div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ShippingMethod")</h4></div> 
+                    </li>
+
+                    <li id="opc-payment_method" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.PaymentMethod")</h4></div>
+                    </li>
+
+                    <li id="opc-confirm_order" class="tab-section">
+                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ConfirmOrder")</h4></div>
+                    </li>
+                </ol>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@helper ShowContent()
+{
+    <div class="pnl__checkout">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <p style="margin:10px 0;">@T("Checkout.SelectBillingAddress")</p>
+                        </div>
+                        <div class="panel-body">
+                            <div class="checkout-blox">
+                                @if (Model.ExistingAddresses.Count > 0)
+                                {
+                                    using (Html.BeginRouteForm("CheckoutBillingAddress", FormMethod.Post))
+                                    {
+                                        foreach (var item in Model.ExistingAddresses)
+                                        {
+                                        <div class="address-item">
+                                            <ul class="address-box list-unstyled ">
+                                                <li style="">
+                                                    @item.FirstName @item.LastName
+
+                                                    @if (item.CompanyEnabled && !String.IsNullOrEmpty(item.Company))
+                                                    {
+                                                        <br />@item.Company
+                                                    }
+
+                                                    @if (item.StreetAddressEnabled)
+                                                    {
+                                                        <br />@item.Address1
+                                                    }
+                                                    @if (item.StreetAddress2Enabled && !String.IsNullOrEmpty(item.Address2))
+                                                    {
+                                                        <br />@item.Address2
+                                                    }
+                                                    @if (item.CityEnabled || item.StateProvinceEnabled || item.ZipPostalCodeEnabled)
+                                                    {
+                                                        if (item.CityEnabled)
+                                                        {
+                                                            <br />@item.City
+                                                        }
+                                                        if (item.CityEnabled && (item.StateProvinceEnabled || item.ZipPostalCodeEnabled))
+                                                        {
+                                                            <text>,</text>
+                                                        }
+                                                        @*@if (item.StateProvinceEnabled)
+                                {
+                                 @item.StateProvinceName
+                                 }*@
+                                                    if (item.ZipPostalCodeEnabled)
+                                                    {
+                                                            @item.ZipPostalCode
+                                                        }
+                                                    }
+                                                    @if (item.CountryEnabled && !String.IsNullOrEmpty(item.CountryName))
+                                                    {
+                                                        <br />@item.CountryName
+                                                    }
+
+                                                    @if (!String.IsNullOrEmpty(item.FormattedCustomAddressAttributes))
+                                                    {
+                                                        <br />
+                                                        @Html.Raw(item.FormattedCustomAddressAttributes)
+                                                    }
+
+
+                                                    <br />@item.Email
+                                                    <br />P: @item.PhoneNumber
+
+                                                    @*@if (item.FaxEnabled)
+                            {
+                                <br />
+                                <label>@T("Address.Fields.FaxNumber"):</label>
+                                <span>@item.FaxNumber</span>
+
+                            }*@
+
+                                                </li>
+
+
+                                            </ul>
+                                            <div class="select-button">
+                                                <input type="button" value="@T("Checkout.BillToThisAddress")" class="btn btn-default" onclick="setLocation('@Url.RouteUrl("CheckoutSelectBillingAddress", new { addressId = item.Id })') " />
+                                                <br /><br />
+                                            </div>
+                                        </div>
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    <p>There is no address. Please add an address</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-12 col-md-6">
+                    <!-- billing -->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            @if (Model.ExistingAddresses.Count > 0)
+                            {
+                                <p style="margin:10px 0;">@T("Checkout.OrEnterNewAddress")</p>
+                            }
+                            else
+                            {
+                                <p style="margin:10px 0;">@T("Checkout.EnterBillingAddress")</p>
+                            }
+                        </div>
+                        <div class="panel-body">
+                            <div class="checkout-blox">
+                                @using (Html.BeginForm("NewBillingAddress", "Checkout", FormMethod.Post, new { id = "form1", @class = "login-form" }))
+                                {
+                                    <div class="enter-address">
+
+                                        @{ 
+
+
+                                            var validationSummary = Html.ValidationSummary(true);
+
+                                            if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                                            {
+                                                <div class="message-error">@validationSummary</div>
+                                            }
+
+                                            var dataDictAddress = new ViewDataDictionary();
+                                            //Merge ModelState (required for validation)
+                                            dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                                            dataDictAddress.TemplateInfo.HtmlFieldPrefix = "NewAddress";
+                                            @Html.Partial("_CreateOrUpdateAddress", Model.NewAddress, dataDictAddress)
+
+
+                                            }
+
+                                    </div>
+                                    <div class="buttons  mt-default" style="text-align:right;">
+                                        <input type="submit" name="nextstep" value="@T("Common.Continue")" class="btn btn-default" />
+                                    </div>
+                                }
+                                </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+       
+
+
+    </div>
+}
+
+
+

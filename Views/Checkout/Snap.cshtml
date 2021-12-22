@@ -1,0 +1,74 @@
+﻿@model PayNow
+@using Nop.Web.Models.Flitts.Checkout;
+
+@{
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+
+    ViewBag.HideMenu = "true";
+}
+
+
+<section class="col-main-sml">
+
+    <table style="width:100%;" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="text-align:center;">
+
+                <img src="/Content/Images/loader.gif" alt="Loading..." title="Loading" />
+                <br /><br />
+                Please do not close this window or click the Back button on your browser.
+                <br /><br />
+                <button id="pay-button" style="opacity:0"></button>
+            </td>
+        </tr>
+    </table>
+
+</section>
+
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+    $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+    });
+    </script>
+
+    @*
+        ==snap
+            sandbox: https://app.sandbox.midtrans.com/snap/snap.js
+            Live: https://app.midtrans.com/snap/snap.js
+    *@
+
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="@Model.Token"></script>
+    @*<script type="text/javascript">
+              var payButton = document.getElementById('pay-button');
+                payButton.addEventListener('click', function () {
+                    snap.pay('@Model.Token');
+              });
+        </script>*@
+
+    <script>
+
+    $(function () {
+        $('#pay-button').click(function () {
+            snap.pay('@Model.Token');
+        });
+
+        setTimeout(function () {
+            $('#pay-button').trigger('click');
+        }, 1000);
+    });
+    </script>
+
+
+}
+
+

@@ -1,0 +1,145 @@
+﻿@model CheckoutShippingAddressModel
+@using Nop.Web.Models.Checkout;
+<div class="checkout-data">
+    @if (Model.AllowPickUpInStore)
+        {
+            <div class="section pickup-in-store">
+                <p class="selector">
+                    @{
+                        var pickupInStoreName = T("Checkout.PickUpInStore").Text;
+                        if (!String.IsNullOrEmpty(Model.PickUpInStoreFee))
+                        {
+                            pickupInStoreName = T("Checkout.PickUpInStoreAndFee", Model.PickUpInStoreFee).Text;
+                        }
+                    }
+                    @Html.CheckBoxFor(x => x.PickUpInStore, new { @onclick = "Shipping.togglePickUpInStore(this)" })
+                    <label for="@Html.FieldIdFor(model => model.PickUpInStore)">@pickupInStoreName</label>
+                </p>
+                <p class="description"><i>@T("Checkout.PickUpInStore.Description")</i></p>
+            </div>
+        }
+    <div class="shipping-addresses" id="shipping-addresses-form">
+        <div class="card shipping-blog">
+          <div class="card-body">
+                @Html.Widget("op_checkout_shipping_address_top")
+                @if (Model.ExistingAddresses.Count > 0)
+                {
+                    <div class="section select-shipping-address">
+                        <label for="shipping-address-select">@T("Checkout.SelectShippingAddressOrEnterNewOne")</label>
+                        <div class="opc_inputpanel">
+                            <select name="shipping_address_id" id="shipping-address-select" class="form-control address-select" title="" onchange="Shipping.newAddress(!this.value)">
+                                @foreach (var address in Model.ExistingAddresses)
+                                {
+                                    var addressLine = "";
+                                    addressLine += address.FirstName;
+                                    addressLine += " " + address.LastName;
+                                    if (address.StreetAddressEnabled && !String.IsNullOrEmpty(address.Address1))
+                                    {
+                                        addressLine += ", " + address.Address1;
+                                    }
+                                    if (address.CityEnabled && !String.IsNullOrEmpty(address.City))
+                                    {
+                                        addressLine += ", " + address.City;
+                                    }
+                                    if (address.StateProvinceEnabled && !String.IsNullOrEmpty(address.StateProvinceName))
+                                    {
+                                        addressLine += ", " + address.StateProvinceName;
+                                    }
+                                    if (address.ZipPostalCodeEnabled && !String.IsNullOrEmpty(address.ZipPostalCode))
+                                    {
+                                        addressLine += " " + address.ZipPostalCode;
+                                    }
+                                    if (address.CountryEnabled && !String.IsNullOrWhiteSpace(address.CountryName))
+                                    {
+                                        addressLine += ", " + address.CountryName;
+                                    }
+                                    //how should we render "FormattedCustomAddressAttributes" here?
+                                    <option value="@(address.Id)">@(addressLine)</option>
+                                }
+                                <option value="" selected="@Model.NewAddressPreselected">@T("Checkout.NewAddress")</option>
+                            </select>
+                        </div>
+                    </div>
+                }
+                @Html.Widget("op_checkout_shipping_address_middle")
+                <div class="section new-shipping-address" id="shipping-new-address-form">
+                    <div class="opc_inputpanel enter-address">
+                        @{
+                            var validationSummary = Html.ValidationSummary(true);
+                        }
+                        @if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                        {
+                            <div class="message-error">@validationSummary</div>
+                        }
+                        @{
+                            var dataDictAddress = new ViewDataDictionary();
+                            //Merge ModelState (required for validation)
+                            dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                            dataDictAddress.TemplateInfo.HtmlFieldPrefix = "ShippingNewAddress";
+                            @Html.Partial("_CreateOrUpdateAddress", Model.NewAddress, dataDictAddress)
+                        }
+                    </div>
+                </div>
+                @Html.Widget("op_checkout_shipping_address_bottom")
+
+          </div>
+        </div>
+       
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // create select wrapper and arrows
+    function createSelectWrapper() {
+        // select wrapper and arrows
+            var select_wrapper = $("<span>", {
+                "class": "select-wrapper"
+            });
+            var select_carets = $("<div>", {
+                "class": "select__carets"
+            }).appendTo(select_wrapper);
+            var select_caretUp = $("<div>", {
+                "class": "select__caret select__caret--right fa fa-caret-up"
+            }).appendTo(select_carets);
+            var select_caretDown = $("<div>", {
+                "class": "select__caret select__caret--down fa fa-caret-down"
+            }).appendTo(select_carets);
+
+            return select_wrapper;
+        }
+
+        // add custom arrows to select input
+        function upgradeSelect() {
+            // add select input to the wrapper
+            $("select").each(function () {
+                var wrapper = createSelectWrapper();
+                $(this).replaceWith(wrapper)
+                $(this).appendTo(wrapper);
+            });
+        }
+
+        upgradeSelect();
+
+        // handles select down arrow click
+        $(".select__caret--down").on("click", function () {
+            // find the select input we need
+            var sel = $(this).parents(".select-wrapper").find("select");
+            console.log(sel);
+            // set focus to select input so we can use arrow keys
+            $(sel).focus();
+            // increment select next option
+            $(sel).find("option:selected").prop("selected", false).next().prop("selected", true);
+        });
+
+        // handles select up arrow click
+        $(".select__caret--right").on("click", function () {
+            // find the select input we need
+            var sel = $(this).parents(".select-wrapper").find("select");
+            // set focus to select input so we can use arrow keys
+            $(sel).focus();
+            // increment select next option
+            $(sel).find("option:selected").prop("selected", false).prev().prop("selected", true);
+        });
+</script>

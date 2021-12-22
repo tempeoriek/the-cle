@@ -1,0 +1,34 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+
+<div class="container-fluid" style="background-color:lightblue;">
+    <div class="container">
+        Filter
+
+        Sort
+
+        Search
+    </div>
+    <div class="col-main-sml">
+        <div class="row">
+            <div class="col-12 col-md-6" style="background-color:orange;">
+                <h5>Reason or Occassions</h5>
+                @foreach(var cat in Model.SubCategories)
+                {
+
+                }
+            </div>
+            <div class="col-12 col-md-6" style="background-color:yellow;">
+                Sort by
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<p>Filter</p>

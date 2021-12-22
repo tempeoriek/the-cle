@@ -1,0 +1,17 @@
+﻿@using Nop.Web.Models.Catalog;
+@model List<ProductIcon>
+
+@if (Model != null)
+{
+    if (Model.Any())
+    {
+        <ul class="list-unstyled sub-cat">
+            @foreach (var item in Model)
+            {
+                <li><a href="~/catalog/ProductsByIcon/@item.CategoryId/@item.SystemName">@item.Text</a></li>
+            }
+        </ul>
+
+    }
+}
+

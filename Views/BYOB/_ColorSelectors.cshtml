@@ -1,0 +1,38 @@
+﻿@model IEnumerable<CategoryModel.SubCategoryModel>
+@using Nop.Web.Models.Catalog;
+
+
+
+
+<h5>Colors</h5>
+@if (Model != null)
+{
+    var selected = "";
+    var i = 1;
+    foreach (var item in Model)
+    {
+
+        if (item.isSelected)
+        {
+            selected = "checked=\"checked\"";
+        }
+        else
+        {
+            selected = "";
+        }
+
+        <div class="radio-alternate">
+            <input type="radio" id="color_@(i)" name="color" value="@(item.Id)" @selected><label for="color_@(i)">@item.Name</label>
+        </div>
+
+        i++;
+    }
+
+
+}
+
+
+
+
+
+

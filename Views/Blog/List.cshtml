@@ -1,0 +1,53 @@
+﻿@model BlogPostListModel
+@using Nop.Web.Models.Blogs;
+@{
+    Layout = "~/Views/Shared/_LayoutTwo.cshtml";
+    Html.AddTitleParts(T("PageTitle.Blog").Text);
+
+}
+
+
+@section HeaderSection {
+    
+}
+
+
+@section left {
+    @*@Html.Action("BlogMonths", "Blog")
+      @Html.Action("BlogTags", "Blog")*@
+}
+
+<div class="container mt-default">
+    <div class="blog_list">
+
+        @foreach (var item in Model.BlogPosts)
+        {
+
+            <div class="card">
+                <div class="pnl-left">
+                    <a href="@Url.RouteUrl("BlogPost", new {SeName = item.SeName})"><img src="@item.Thumbnail" class="card-img-top img-fluid" /></a>
+                </div>
+                <div class="pnl-right">
+                  
+                        @if (item.Tags.Any())
+                        {
+                            <div class="blog__category">
+                        @foreach(var tag in item.Tags) {<span>@tag</span>}
+
+                            </div>
+                        }
+                   
+                    <h2><a href="@Url.RouteUrl("BlogPost", new {SeName = item.SeName})">@item.Title</a></h2>
+                    <p class="card-text blog-desc">@item.BodyOverview</p>
+                    @*
+              <p class="card-text blog-text">@item.CreatedOn.ToString("dd MMM yyyy")</p>
+                        <p class="card-text">
+            <a href="@Url.RouteUrl("BlogPost", new {SeName = item.SeName})" class="link--alternate">Read more…</a>
+        </p>*@
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+

@@ -1,0 +1,76 @@
+﻿
+@model CheckoutPaymentInfoModel
+@using Nop.Web.Models.Checkout;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+
+    ViewBag.HideMenu = "true";
+}
+
+
+<section class="col-main-sml mt-large">
+
+    <h1>@T("Checkout.PaymentInfo")</h1>
+
+    @using (Html.BeginForm("Pay", "Checkout", FormMethod.Post, new { id = "payment-form", name = "payment-form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="fieldset">
+
+                    <div class="form-group row">
+                        <label class="col-xs-3 control-label">Total order</label>
+                        <div class="col-xs-9 text-right">
+                            <strong>
+                                @Html.Raw(Model.orderTotalFormatted)
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="fieldset">
+
+                    @Html.Action(Model.PaymentInfoActionName, Model.PaymentInfoControllerName, Model.PaymentInfoRouteValues)
+
+                </div>
+
+                <div class="fieldset">
+                    <div class="form-fields">
+                        <div class="buttons text-right">
+                            <input id="price" name="price" type="hidden" value="@Html.Raw(Model.orderTotal)" />
+                            <button type="submit" id="submit-button" name="submit-button" class="btn btn-default half-width" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing..." >Pay now</button>
+                        </div>
+                    </div>
+                    <div class="message-error">
+                        <br />
+                        @Html.ValidationSummary(true)
+                        <div id="message"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+</section>
+
+
+
+@section Left{
+
+    @Html.Partial("MenuStatic")
+}
+
+@section scripts{
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+

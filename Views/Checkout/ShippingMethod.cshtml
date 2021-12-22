@@ -1,0 +1,219 @@
+﻿@model List<CheckoutShippingMethodModel>
+    @using Nop.Web.Models.Checkout;
+    @{
+
+        //title
+        Html.AddTitleParts(T("PageTitle.Checkout").Text);
+    }
+
+
+    @*@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Shipping })*@
+
+
+    <div class="container mt-5 checkout">
+        <div class="row catalogue-img d-flex justify-content-center">
+            <div class="cart-page">
+                <div class="cart-header">
+                    <h1 class="text-left mb-2">Checkout</h1>
+                </div>
+
+                <div class="page-body checkout-data">
+                    <ol class="list-unstyled opc" id="checkout-steps">
+                        <li id="opc-billing" class="tab-section">
+                            <div class="step-title checkout-margin-title"><h4>@T("Checkout.BillingAddress")</h4></div>
+                        </li>
+
+                        <li id="opc-shipping" class="tab-section">
+                            <div class="step-title checkout-margin-title">
+                                <h4 class="title">@T("Checkout.ShippingAddress")</h4>
+                            </div>
+
+                        </li>
+
+
+                        <li id="opc-shipping_method" class="tab-section allow">
+                            <div class="step-title checkout-margin-title" data-toggle="collapse" href="#checkout-step-shipping" role="button" aria-expanded="false" aria-controls="checkout-step-shipping">
+                                <h4 class="title">@T("Checkout.ShippingMethod")</h4>
+                            </div>
+                            <div id="checkout-step-shipping" class="step a-item collapse show">
+                                <div id="checkout-shipping-load">
+                                    @ShowContent()
+                                </div>
+                            </div>
+                        </li>
+                        <li id="opc-payment_method" class="tab-section">
+                            <div class="step-title checkout-margin-title">
+                                <h4 class="title">@T("Checkout.PaymentMethod")</h4>
+                            </div>
+                        </li>
+                        <li id="opc-confirm_order" class="tab-section">
+                            <div class="step-title checkout-margin-title">
+                                <h4 class="title">@T("Checkout.ConfirmOrder")</h4>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    @helper ShowContent()
+    {
+
+<div class="pnl__checkout">
+
+    <h3>&nbsp;</h3>
+    @using (Html.BeginRouteForm("CheckoutShippingMethod", FormMethod.Post))
+    {
+
+        foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="blox">
+                        <div class="row">
+                            <div class="col-6">
+                                <p>&nbsp;</p>
+                                @foreach (var sci in item.ShoppingCartItems)
+                                {@Html.Partial("_CartItem", sci)}
+                            </div>
+                            <div class="col-6">
+                                <p>@T("Checkout.SelectShippingMethod")</p>
+                                <div class="form-group">
+                                    @if (item.ShippingAddress != null)
+                                    {
+                                        if (item.ShippingAddressId == 2)
+                                        {
+                                            //pickup at studio
+                                            <div class="address-item">
+                                                <ul class="address-box list-unstyled ">
+                                                    <li style=""> the-clementines studio</li>
+                                                </ul>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="address-item">
+                                                <ul class="address-box list-unstyled ">
+                                                    <li style=""> @item.ShippingAddress.FirstName @item.ShippingAddress.LastName
+
+                                                        @if (item.ShippingAddress.CompanyEnabled && !String.IsNullOrEmpty(item.ShippingAddress.Company))
+                                                        {
+                                                            <br />@item.ShippingAddress.Company
+                                                        }
+
+                                                        @if (item.ShippingAddress.StreetAddressEnabled)
+                                                        {
+                                                            <br />@item.ShippingAddress.Address1
+                                                        }
+                                                        @if (item.ShippingAddress.StreetAddress2Enabled && !String.IsNullOrEmpty(item.ShippingAddress.Address2))
+                                                        {
+                                                            <br />@item.ShippingAddress.Address2
+                                                        }
+                                                        @if (item.ShippingAddress.CityEnabled || item.ShippingAddress.StateProvinceEnabled || item.ShippingAddress.ZipPostalCodeEnabled)
+                                                        {
+                                                            if (item.ShippingAddress.CityEnabled)
+                                                            {
+                                                                <br />@item.ShippingAddress.City
+                                                            }
+                                                            if (item.ShippingAddress.CityEnabled && (item.ShippingAddress.StateProvinceEnabled || item.ShippingAddress.ZipPostalCodeEnabled))
+                                                            {
+                                                                <text>,</text>
+                                                            }
+                                                            @*@if (item.StateProvinceEnabled) {@item.StateProvinceName}*@
+                                                            if (item.ShippingAddress.ZipPostalCodeEnabled)
+                                                            {
+                                                                @item.ShippingAddress.ZipPostalCode
+                                                            }
+                                                        }
+                                                        @if (item.ShippingAddress.CountryEnabled && !String.IsNullOrEmpty(item.ShippingAddress.CountryName))
+                                                        {
+                                                            <br />@item.ShippingAddress.CountryName
+                                                        }
+
+                                                        @if (!String.IsNullOrEmpty(item.ShippingAddress.FormattedCustomAddressAttributes))
+                                                        {
+                                                            <br />
+                                                            @Html.Raw(item.ShippingAddress.FormattedCustomAddressAttributes)
+                                                        }
+
+
+                                                        <br />@item.ShippingAddress.Email
+                                                        <br />P: @item.ShippingAddress.PhoneNumber
+
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+
+                                        if ((item.Warnings.Count != 0) || item.ShoppingCartItems.Any())
+                                        {
+                                            <div class="method-lists mt-3">
+                                                @for (int i = 0; i < item.ShippingMethods.Count; i++)
+                                                {
+                                                    var shippingMethod = item.ShippingMethods[i];
+
+                                                    <div class="radio-default">
+                                                        <input id="shippingoption_@(i)_@item.ShippingAddressId" type="radio" name="shippingoption_@item.ShippingAddressId" value="@(item.ShippingAddressId)___@(shippingMethod.Name)___@(shippingMethod.ShippingRateComputationMethodSystemName)" checked="@shippingMethod.Selected" />
+                                                        <label for="shippingoption_@(i)_@item.ShippingAddressId"><span></span> @string.Format("{0} {1} {2}", shippingMethod.Name, shippingMethod.Description, shippingMethod.Fee)</label>
+                                                    </div>
+                                                    @*if (!String.IsNullOrEmpty(shippingMethod.Description)){<div class="method-description">@Html.Raw(shippingMethod.Description)</div>}*@
+                                                }
+                                            </div>
+
+                                            if (item.NotifyCustomerAboutShippingFromMultipleLocations)
+                                            {
+                                                <div class="multiple-locations">
+                                                    @T("Checkout.ShippingMethod.ShippingFromMultipleLocations")
+                                                </div>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <div class="message-error">
+                                                <ul>
+                                                    @foreach (var warning in item.Warnings)
+                                                    {
+                                                        <li>@warning</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+
+                                        <div class="mt-5"><div class="form-group inputs">Order note:<br /><textarea name="note_@item.ShippingAddressId" class="form-control-alternate" style="width:100%;"></textarea></div></div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+       
+
+        <div class="row buttons" id="shipping-buttons-container">
+            <div class="col-6">
+                <p class="back-link"><a href="~/checkout"><small>&laquo; </small>@T("Common.Back")</a></p>
+            </div>
+            <div class="col-6" style="text-align:right;">
+                <input type="submit" name="nextstep" value="@T("Common.Continue")" class="btn btn-default" />
+            </div>
+        </div>
+
+    }
+
+
+</div>
+    }
+
+

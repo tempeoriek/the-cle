@@ -1,0 +1,152 @@
+﻿@model CheckoutConfirmModel
+@using Nop.Web.Models.Checkout;
+@{
+    //title
+    Html.AddTitleParts(T("PageTitle.Checkout").Text);
+   // ViewBag.HideMenu = "true";
+}
+
+@section Left{
+    @*@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Confirm })*@
+}
+
+
+
+<section class="col-main">
+    @*<h1>@T("Checkout.ConfirmYourOrder")</h1>*@
+
+    @Html.Action("OrderSummary", "ShoppingCart", new { prepareAndDisplayOrderReviewData = true })
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="checkout-terms-condition">
+                <div class="hint">
+                    @using (Html.BeginRouteForm("CheckoutConfirm", FormMethod.Post, new { id = "confirm-order-form" }))
+                    {
+                        @*<div class="checkbox">
+                            <label>@Html.CheckBox("newsletter", true) Subscribe to our newsletter</label>
+                        </div>*@
+
+                        if (!String.IsNullOrEmpty(Model.MinOrderTotalWarning))
+                        {
+                            <div class="alert alert-danger">@Model.MinOrderTotalWarning</div>
+                        }
+                        else
+                        {
+                            if (Model.TermsOfServiceOnOrderConfirmPage)
+                            {
+                                <div id="terms-of-service-warning-box" title='@T("Checkout.TermsOfService")' style="display:none;">
+                                    <p>@T("Checkout.TermsOfService.PleaseAccept")</p>
+                                </div>
+
+                                @*<div class="terms-of-service checkbox">
+                                    <label>
+                                        <input id="termsofservice" type="checkbox" name="termsofservice" />
+                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);">@T("Checkout.TermsOfService.IAccept")</a>
+                                    </label>
+
+                                </div>*@
+
+
+                            <div class="radio-default  text-center">
+                                <input id="termsofservice" type="checkbox" name="termsofservice" class="radio-default" >
+                                <label for="termsofservice" style="font-size:0.93em;">
+                                    @*<span></span> &nbsp; <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);" style="font-size:0.93em;">@T("Checkout.TermsOfService.IAccept")</a>*@
+                                    <span></span> 
+                                    
+                                    <div style="display:inline-block; width:75%; text-align:left;">
+                                        By placing your order you agree to our <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "TermsAndConditions" })', 450, 500, true);">Terms & Conditions</a>,
+                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "PrivacyInfo" })', 450, 500, true);">privacy</a> and
+                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "ShippingInfo" })', 450, 500, true);">returns policies</a>.<br />You also consent to some of your data being stored by KNITS, which may be used to make future shopping experiences better for you.
+
+                                    </div>
+                                    
+                                      </label>
+                            </div>
+                            }
+                            <div class="form-group">
+                                <div class="buttons mt-default text-center">
+                                    <button type="submit" id="nextstep" name="nextstep" class="btn btn-default">Confirm</button>
+                                </div>
+                            </div>
+                        }
+
+                        if (Model.Warnings.Count > 0)
+                        {
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (var warning in Model.Warnings)
+                                    {
+                                        <li>@warning</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    }
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $(function () {
+            $('.confirm-order-next-step-button').click(function () {
+                var termOfServiceOk = true;
+                if ($('#termsofservice').length > 0) {
+                    //terms of service element exists
+                    if (!$('#termsofservice').is(':checked')) {
+                        $("#terms-of-service-warning-box").dialog();
+                        termOfServiceOk = false;
+                    } else {
+                        termOfServiceOk = true;
+                    }
+                }
+                if (termOfServiceOk) {
+                    //$('#confirm-order-form').submit();
+                    //$('.confirm-order-next-step-button').attr('disabled', 'disabled');
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+        });
+    </script>
+
+    @if (Model.TermsOfServiceOnOrderConfirmPage)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#nextstep').click(function () {
+                    if ($('#termsofservice').is(':checked')) {
+                        //do some stuff
+                        return true;
+                    }
+                    else {
+                        //just show validation errors, dont post
+                        alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(T("Account.Fields.AcceptPrivacyPolicy.Required").Text))');
+                        return false;
+                    }
+                });
+            });
+        </script>
+    }
+
+}

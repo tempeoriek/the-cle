@@ -1,0 +1,69 @@
+﻿@model BlogPostModel
+@using Nop.Web.Models.Blogs;
+@{
+
+    //title
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+}
+@section left {
+    @*@Html.Action("BlogMonths", "Blog")
+        @Html.Action("BlogTags", "Blog")*@
+}
+
+
+
+<div class="hero" style="background-image:url('@Model.Image')"></div>
+
+
+<div class="col-main">
+    <div class="blog-detail">
+        <h1>@Model.Title</h1>
+        <p class="publisheddate">@Model.CreatedOn.ToString("dd MMM yyyy")</p>
+        @*<p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus ornare dolor, sit amet congue lorem pulvinar in. Lorem ipsum dolor sit amet, consectetur adipiscing elit Quisque eu blandit ligula. Mauris ac ornare nunc. Sed porttitor bibendum ipsum, sit amet ultricies turpis sodales vel. Quisque volutpat ornare hendrerit. Fusce pulvinar nisl sed orci pellentesque, ut sollicitudin massa tempor. Phasellus consectetur non enim vel fringilla. Cras vel mauris nec augue sodales laoreet ac in risus. Curabitur lectus nulla, consequat ac feugiat in, congue id libero. Pellentesque vitae.
+        </p>
+        <p>
+            <img src="~/content/images/uploaded/blog/img1.jpg" class="img-fluid" />
+        </p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus ornare dolor, sit amet congue lorem pulvinar in. Lorem ipsum dolor sit amet, consectetur adipiscing elit Quisque eu blandit ligula. Mauris ac ornare nunc. Sed porttitor bibendum ipsum, sit amet ultricies turpis sodales vel. Quisque volutpat ornare hendrerit. Fusce pulvinar nisl sed orci pellentesque, ut sollicitudin massa tempor. Phasellus consectetur non enim vel fringilla. Cras vel mauris nec augue sodales laoreet ac in risus. Curabitur lectus nulla, consequat ac feugiat in, congue id libero. Pellentesque vitae.
+
+        <p>
+            Quisque eu blandit ligula. Mauris ac ornare nunc. Sed porttitor bibendum ipsum, sit amet ultricies turpis sodales vel. Quisque volutpat ornare hendrerit. Fusce pulvinar nisl sed orci pellentesque, ut sollicitudin massa tempor. Phasellus consectetur non enim vel fringilla. Cras vel mauris nec augue sodales laoreet ac in risus. Curabitur lectus nulla, consequat ac feugiat in, congue id libero. Pellentesque vitae egestas leo, id luctus eros. Morbi dapibus, mi sed tempor finibus, justo tortor convallis lorem, ut sollicitudin nunc risus vel odio. Aenean interdum justo enim. Nunc nec erat ligula. Praesent porttitor tellus vel dolor finibus, sed venenatis est elementum
+        </p>
+        <h2>
+            Quisque eu blandit ligula. Mauris ac ornare nunc. Sed porttitor bibendum ipsum
+        </h2>
+
+        <table class="table">
+            <tr>
+                <td style="width:50%;">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus ornare dolor, sit amet congue lorem pulvinar in. Lorem ipsum dolor sit amet, consectetur adipiscing elit Quisque eu blandit ligula. Mauris ac ornare nunc. Sed porttitor bibendum ipsum, sit amet ultricies turpis sodales vel. Quisque volutpat ornare hendrerit. Fusce pulvinar nisl sed orci pellentesque, ut sollicitudin massa tempor. Phasellus consectetur non enim vel fringilla. Cras vel mauris nec augue sodales laoreet ac in risus. Curabitur lectus nulla, consequat ac feugiat in, congue id libero. Pellentesque vitae.
+                    <br />
+                    Quisque eu blandit ligula. Mauris ac ornare nunc. Sed porttitor bibendum ipsum, sit amet ultricies turpis sodales vel. Quisque volutpat ornare hendrerit. Fusce pulvinar nisl sed orci pellentesque, ut sollicitudin massa tempor. Phasellus consectetur non enim vel fringilla. Cras vel mauris nec augue sodales laoreet ac in risus.
+                </td>
+                <td style="text-align:right;">
+                    <img src="~/content/images/uploaded/blog/img2.jpg" class="img-fluid" />
+                </td>
+            </tr>
+        </table>*@
+
+
+        @Html.Raw(Model.Body)
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section HeaderSection {
+<style>
+    #body-content {padding-top: 0;}
+    body { }
+</style>
+}

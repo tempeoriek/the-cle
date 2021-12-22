@@ -1,0 +1,172 @@
+﻿@using Nop.Web.Models.Checkout;
+@model FlittsCheckoutModel
+
+@{
+
+    ViewBag.Title = "Shipping and Payment";
+    ViewBag.HideMenu = "true";
+}
+
+
+<div class="col-main">
+    @using (Html.BeginForm())
+    {
+
+        <div class="row">
+            <div class="col-sm-6">
+                <!-- Payment metnod -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h1>Payment Method</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="checkout-blox">
+                                
+                            @if (Model.PaymentMethod.PaymentMethods.Count > 0)
+                            {
+                                <div class="method-lists">
+                                    @for (int i = 0; i < Model.PaymentMethod.PaymentMethods.Count; i++)
+                                    {
+                                        var paymentMethod = Model.PaymentMethod.PaymentMethods[i];
+                                        var paymentMethodName = paymentMethod.Name;
+
+                                        //a little hack. site specific (custom)
+                                        // we present "Credit card" instead of Veritrans
+                                        if (paymentMethodName.IndexOf("Veritrans") > -1)
+                                        {
+                                            paymentMethodName = "Credit Card";
+                                        }
+                                        else if(paymentMethodName.IndexOf("Doku") > -1)
+                                        {
+                                            paymentMethodName = "Credit Card";
+                                        }
+
+                                        if (!String.IsNullOrEmpty(paymentMethod.Fee))
+                                        {
+                                            paymentMethodName = T("Checkout.SelectPaymentMethod.MethodAndFee", paymentMethodName, paymentMethod.Fee).Text;
+                                        }
+                                            <div class="radio">
+                                                <label>
+                                                    <input id="paymentmethod_@(i)" type="radio" name="paymentmethod" value="@(paymentMethod.PaymentMethodSystemName)" checked="@paymentMethod.Selected" class="radio-default" /> @paymentMethodName
+                                                    @*@if (!String.IsNullOrEmpty(paymentMethod.LogoUrl)){<img src="@paymentMethod.LogoUrl" alt="@paymentMethodName" style="width:30px; margin-left:5px;" />}*@
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                            }
+                            else
+                            {
+                                <div class="message-error">
+                                    @T("Checkout.NoPaymentMethods")
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- end payment method -->
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h1>Shipping Method</h1>
+                    </div>
+                    <div class="panel-body">
+                        <!-- shipping method -->
+
+                        @if (Model.ShippingMethod.Warnings.Count == 0)
+                        {
+                            for (int i = 0; i < Model.ShippingMethod.ShippingMethods.Count; i++){
+                                
+                                var shippingMethod = Model.ShippingMethod.ShippingMethods[i];
+                        
+                                <div class="radio"><label>
+                                    <input id="shippingoption_@(i)" type="radio" name="shippingoption" value="@(shippingMethod.Name)___@(shippingMethod.ShippingRateComputationMethodSystemName)" checked="@shippingMethod.Selected" />
+                                    @*@T("Checkout.SelectShippingMethod.MethodAndFee", shippingMethod.Name, shippingMethod.Fee)*@
+                                    @string.Format("{0} : {1}", shippingMethod.Name, shippingMethod.Fee)
+                                </label></div>
+                        }
+
+                        }
+                        else
+                        {
+                        <div class="message-error">
+                            <ul>
+                                @foreach (var warning in Model.ShippingMethod.Warnings)
+                                {
+                                    <li>@warning</li>
+                                }
+                            </ul>
+                        </div>
+                        }
+
+                        <!-- end shippig method-->
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+     
+        <div class="row mt-default mb-default">
+
+            <div class="col-sm-12 text-center">
+                <input type="submit" id="confirm-button" name="confirm-button" value="Continue" class="btn btn-default" />
+                <br /><br />
+                <a href="/checkout/billingshipping">back to previous page</a>
+                <br />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    }
+
+   
+
+</div>
+
+
+
+
+
+@section Left{
+    @*@Html.Partial("MenuStatic")*@
+@*@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.Payment })
+@Html.Action("CheckoutProgress", "Checkout", new { step = CheckoutProgressStep.ShippingMethod })*@
+
+}
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        $.validator.setDefaults({
+            ignore: ":hidden"
+        });
+    
+        $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+
+            //$('#confirm-button').click(function () {
+            //    if ($('input[name=paymentmethod]:checked').length <= 0) {
+            //        alert("Please select payment method");
+            //        return false;
+            //    };
+            //});
+        });
+    </script>
+
+ 
+}
+
+

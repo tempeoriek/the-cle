@@ -1,0 +1,93 @@
+﻿@model CategoryModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+
+
+@Html.Action("HeaderLinks", "Common")
+
+@{
+    var pg_i = 0;
+
+
+    <div class="banner">
+        <img src="@Model.PictureModel.ImageUrl" class="img-fluid" />
+    </div>
+
+    <div id="container-alternate">
+        <div class="row mt-5">
+
+
+            @foreach (var item in Model.Products)
+            {
+                var colCss = "col-6 col-sm-6";
+                var type = item.ThumbnailOrientation;
+                if (type.Equals("landscape", StringComparison.OrdinalIgnoreCase))
+                {
+                    colCss = "col-12 col-sm-12";
+                }
+                <div class="@colCss catalog-line">
+                    @Html.Partial("_ProductBox", item)
+                </div>
+
+                pg_i++;
+            }
+            <div class="gap"></div>
+        </div>
+    </div>
+    
+}
+
+
+<br /><br /><br /><br /><br />
+
+
+
+
+@functions{
+    
+    }
+
+
+  
+
+
+@Html.Action("Footer", "Common")
+
+
+@section RootHeaderSection
+{
+
+    <link href="~/Themes/v1/Content/homepage.css" rel="stylesheet" />
+}
+
+@section RootScripts{
+
+    <script>
+       $(document).ready(function () {
+           $("#body-wrapper").toggleClass("clean-all");
+       });
+
+
+    </script>
+
+}
