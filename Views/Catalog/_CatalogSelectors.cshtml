@@ -2,33 +2,28 @@
 @using Nop.Web.Models.Catalog;
 
 <div>
-    @*<div class="product-selectors"></div>*@
-    @*view mode*@
-    @if (Model.AllowProductViewModeChanging)
-    {
-        //diremark sementara
-        @*<div class="product-viewmode">
-                <span>@T("Catalog.ViewMode")</span>
-                @if (Model.AvailableViewModes.Count > 1)
-                {
-                    var gridMode = Model.AvailableViewModes[0];
-                    var listMode = Model.AvailableViewModes[1];
-
-                    <a class="viewmode-icon grid @if(gridMode.Selected){<text>selected</text>}" href="@gridMode.Value" title="@gridMode.Text">@gridMode.Text</a>
-                    <a class="viewmode-icon list @if (listMode.Selected){<text>selected</text>}" href="@listMode.Value" title="@listMode.Text">@listMode.Text</a>
-                }
-            </div>*@
-    }
     @*sorting*@
     @if (Model.AllowProductSorting)
     {
-        @Html.DropDownList("products-orderby", Model.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+         <h4>Sort by</h4>
 
-        //codingan lama
-        @*<div class="product-sorting">
-                <span>@T("Catalog.OrderBy")</span>
-                @Html.DropDownList("products-orderby", Model.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
-            </div>*@
+        var i = 1;
+        foreach (var sort in Model.AvailableSortOptions)
+        {
+            <div class="radio-alternate-new">
+                <label style="cursor: pointer;"><input type="radio" name="SortProduct" class="content-filter-sortby_@(i)" id="sortby_@(i)" value="sortby_@(i)">@sort.Text</label>
+                @* <input type="radio" id="sortby_@(i)" name="orderby" value="@(sort.Value)" @selected><label for="sortby_@(i)">@sort.Text</label> *@
+            </div>
+
+            i++;
+        }
+
+        <div class="radio-alternate-new">
+            @* <label style="cursor: pointer;"><input type="radio" id="removesort" name="SortProduct">Clear</label> *@
+            <p style="cursor: pointer;" id="removesort"></p>
+
+        </div>
+
     }
     @*page size*@
     @if (Model.AllowCustomersToSelectPageSize)

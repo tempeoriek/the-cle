@@ -78,10 +78,10 @@
                 <div class="collapse show" id="collapseFilter">
                     <div class="filter_panel">
                         <div class="row">
-                            <div class="col-12 col-lg-3">@Html.Partial("_CategorySelectors", Model, new ViewDataDictionary())</div>
-                            <div class="col-12 col-lg-3">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div>
-                            <div class="col-12 col-lg-3">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
-                            <div class="col-12 col-lg-3">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
+                            <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CategorySelectors", Model, new ViewDataDictionary())</div>
+                            <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div>
+                            <div class="col-12 col-lg-3 mb-5">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
+                            <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
                         </div>
                         <div class="row">
                             <div class="col-12 text-center mt-3">
@@ -103,14 +103,97 @@
             @if (Model.Products.Any())
             {
 
-                <div class="row catalogue-img">
+                <div class="row catalogue-img" id="sortnormal">
                     @foreach (var item in Model.Products)
                     {
                         var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
-                        <div class="@colCss catalog-line">
+                        <div class="@colCss catalog-line allproducts" data-price="@item.ProductPrice.PriceValue" id="normal-@item.Id">
                             @Html.Partial("_ProductBox", item)
                         </div>
+
+
                     }
+                </div>
+            
+                <div class="row catalogue-img" style="display: none;" id="sortascending">
+                    @{
+                        var productasc = Model.Products.OrderBy(x => x.ProductPrice.PriceValue);
+                        foreach (var item in productasc)
+                        {
+                            var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
+                            <div class="@colCss catalog-line allproducts" data-price="@item.ProductPrice.PriceValue" id="asc-@item.Id">
+                                @Html.Partial("_ProductBox", item)
+                            </div>
+
+
+                        }
+                    }
+                </div>
+
+                <div class="row catalogue-img" style="display: none;" id="sortdescending">
+                    @{
+                        var productdsc = Model.Products.OrderByDescending(x => x.ProductPrice.PriceValue);
+                        foreach (var item in productdsc)
+                        {
+                            var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
+                            <div class="@colCss catalog-line allproducts" data-price="@item.ProductPrice.PriceValue" id="desc-@item.Id">
+                                @Html.Partial("_ProductBox", item)
+                            </div>
+
+
+                        }
+                    }
+                </div>
+                
+                <div class="row catalogue-img" style="display: none;" id="sortascendingname">
+                    @{
+                        var productascname = Model.Products.OrderBy(x => x.Name);
+                        foreach (var item in productascname)
+                        {
+                            var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
+                            <div class="@colCss catalog-line allproducts" data-price="@item.ProductPrice.PriceValue" id="asc-name-@item.Id">
+                                @Html.Partial("_ProductBox", item)
+                            </div>
+
+
+                        }
+                    }
+                </div>
+
+                <div class="row catalogue-img" style="display: none;" id="sortdescendingname">
+                    @{
+                        var productdscname = Model.Products.OrderByDescending(x => x.Name);
+                        foreach (var item in productdscname)
+                        {
+                            var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
+                            <div class="@colCss catalog-line allproducts" data-price="@item.ProductPrice.PriceValue" id="desc-name-@item.Id">
+                                @Html.Partial("_ProductBox", item)
+                            </div>
+
+
+                        }
+                    }
+                </div>
+
+                <div class="row catalogue-img" style="display: none;" id="sortascendingcreate">
+                    @{
+                        var productasccreate = Model.Products.OrderBy(x => x.CreatedOnUtc);
+                        foreach (var item in productasccreate)
+                        {
+                            var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
+                            <div class="@colCss catalog-line allproducts" data-price="@item.ProductPrice.PriceValue" id="asc-create-@item.Id">
+                                @Html.Partial("_ProductBox", item)
+                            </div>
+
+
+                        }
+                    }
+                </div>
+                
+                <div class="row catalogue-img" style="display: none;" id="emptyproduct">
+                    <div class="col-12 col-md-12 col-sm-12 text-center">
+                        <h3>We're still preparing the collection. Please stay tuned.</h3>
+                    </div>
                 </div>
             }
             else
@@ -168,10 +251,395 @@
 	
         });
 
-
         $("#byobcart-wrapper").click(function () {
             $("#byobcart").toggleClass("show");
     });
+
+    </script>
+
+    <script>
+        var arr = [null, null, null, null, null, null], arr_multi_color = [], arr_multi_brand = [];
+        var all_arr = [], arr_none_cat = [], arr_none_color = [], arr_none_brand = [],arr_none_avail = [], arr_none_price = [], arr_none_new = [];
+        
+        function markOnList(ids, isparent, komponen) {
+            $(`${komponen}[id^='${ids}']`).each(function() {
+                if (isparent) {
+                    $(this).parent().css("font-weight", 400)
+                } else {
+                    $(this).css("font-weight", 400)
+                }
+            });
+        }
+
+        // create array for filter
+        $("[name=SortProduct]").click(function(){
+            var str = String(this.className.replace("content-filter-", ""), 10);
+            var chckbox = String(this.id.replace("checkbox-", ""), 10);
+            var val = $('#'+this.id).text();
+            var cat_id = $(this).attr("data-cat-id");
+            var avail_id = $(this).attr("data-avail");
+            var price_id = $(this).attr("data-price");
+            var price_min_id = $(this).attr("data-price-min");
+
+            if (str == "categories") {
+                arr[0] = cat_id;
+                setTimeout(function() {
+                    tag("add", str, val);
+                }, 100);
+            } else if (chckbox == "color") {
+                if (arr_multi_color.find(x => x == cat_id)) {
+                    arr_multi_color = arr_multi_color.filter(x => x != cat_id);
+                    blockproduct(arr_none_color);
+                    arr_none_color = [];
+                } else {
+                    arr_multi_color.push(cat_id);
+                }
+                arr[1] = arr_multi_color;
+            } else if (chckbox == "brand") {
+                if (arr_multi_brand.find(x => x == cat_id)) {
+                    arr_multi_brand = arr_multi_brand.filter(x => x != cat_id);
+                    blockproduct(arr_none_brand);
+                    arr_none_brand = [];
+                } else {
+                    arr_multi_brand.push(cat_id);
+                }
+                arr[2] = arr_multi_brand;
+            } else if (chckbox == "price") {
+                markOnList(`checkbox-price`, false, `a`);
+                $(this).css("font-weight", 600);
+                $('.checkbox-price').each(function(){
+                    $(this).prop('checked', false); 
+                });
+                
+                if (arr[3] != price_id) {
+                    $(this).prop('checked', true);
+                    arr[3] = [price_min_id, price_id];
+                } else {
+                    arr[3] = null;
+                    blockproduct(arr_none_price);
+                    arr_none_price = [];
+                }
+
+
+                setTimeout(function() {
+                    tag("add", chckbox, val);
+                }, 100);
+            } else if (chckbox == "avail") {
+                $('.checkbox-avail').each(function(){
+                    $(this).prop('checked', false); 
+                });
+                
+                if (arr[4] != avail_id) {
+                    $(this).prop('checked', true);
+                    arr[4] = avail_id;
+                } else {
+                    arr[4] = null;
+                    blockproduct(arr_none_avail);
+                    arr_none_avail = [];
+                }
+                setTimeout(function() {
+                    tag("add", chckbox, val);
+                }, 100);
+            } else  if (str == "sortby_1" || str == "sortby_2" || str == "sortby_3" || str == "sortby_5" || str == "sortby_4" || str == "sortby_6") {
+                markOnList(`sortby_`, true, `input`);
+                tag("add", "sort")
+                $(this).parent().css("font-weight", 600)
+                arr[5] = this.id;
+            }
+
+            startfilter();
+            all_arr = [];
+        });
+
+        // remove filter
+        $("p[class^='removeshowfilter-']").click(function(){
+            var str = String(this.className.replace("removeshowfilter-", ""), 10);
+            if (str == "categories") {
+            arr[0] = null;
+            setTimeout(function() {
+                tag("remove", str);
+                
+                //remove display using id
+                blockproduct(arr_none_cat);
+                arr_none_cat = [];
+
+                startfilter();
+            }, 100);
+            }
+
+            if (str == "price") {
+                markOnList(`checkbox-price`, false, `a`);
+                arr[3] = null;
+                setTimeout(function() {
+                    tag("remove", str)
+
+                    //remove display using id
+                    blockproduct(arr_none_price);
+                    arr_none_price = [];
+
+                    startfilter();
+                }, 100);
+            } else if (str == "avail") {
+            arr[4] = null;
+            setTimeout(function() {
+                tag("remove", str)
+
+                //remove display using id
+                blockproduct(arr_none_avail);
+                arr_none_avail = [];
+
+                startfilter();
+            }, 100);
+            }
+            all_arr = [];
+            
+            /*if (str == "color") {
+            arr[1] = null;
+            setTimeout(function() {
+                tag("remove", str);
+                
+                //remove display using id
+                blockproduct(arr_none_color);
+                arr_none_color = [];
+
+                startfilter();
+            }, 100);
+            } else if (str == "brand") {
+            arr[2] = null;
+            setTimeout(function() {
+                tag("remove", str);
+
+                //remove display using id
+                blockproduct(arr_none_brand);
+                arr_none_brand = [];
+
+                startfilter();
+            }, 100);
+            } */
+
+        });
+        
+        // remove sort product
+        $('#removesort').click(function(){
+            if (document.querySelector('input[name="SortProduct"]:checked')) {
+                tag("remove", "sort")
+                markOnList(`sortby_`, true, `input`);
+                document.querySelector('input[name="SortProduct"]:checked').checked = false;
+                displaysortproduct("flex", "none", "none", "none", "none", "none")
+                arr[5] = null
+                removesortnew();
+            }
+            startfilter();
+        });
+
+        function tag (type, filter, value) {
+            if (type == "remove") {
+                if (filter == `sort`) {
+                    $("#removesort").empty();
+                } else {
+                    $(".showfilter-"+filter).empty();
+                    $(".removeshowfilter-"+filter).empty();
+                }
+            } else if (type == "add") {
+                if (filter == `sort`) {
+                    $("#removesort").html("Clear");
+                } else {
+                    $(".showfilter-"+filter).html(value);
+                    $(".removeshowfilter-"+filter).html("Clear");
+                }
+            }
+        }
+
+        function removesortnew () {
+            //remove display using id
+            if (arr_none_new.length > 0) {
+                for (let i = 0; i < arr_none_new.length; i++) {
+                    let temp = arr_none_new[i];
+                    displayproduct(temp, "block");
+                }
+                arr_none_new = [];
+            }
+        }
+
+        function getallarray () {
+            // get all arr
+            $(".allproducts").each(function() {
+                var normal_id = parseInt(this.id.replace("normal-", ""), 10);
+                if (normal_id) {
+                    all_arr.push(parseInt(normal_id))
+                }
+            });
+        }
+
+        function startfilter () {
+            getallarray();
+
+            // start to filter the product
+            $(".allproducts").each(function() {
+                var product_id =  parseInt($(this).attr("id").replace("normal-", ""), 10);
+                if (product_id) {
+                    for (let i = 0; i < arr.length; i++) {
+                    if (i == 0 && arr[i]) {
+                        var category = $(this).attr("data-categories").split(",");
+                        if (arr[i].length > 0) {
+                        if (category.find(x => parseInt(x) == parseInt(arr[i]))) {
+                            if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                            displayproduct(product_id, "block");
+                            }
+                        } else {
+                            all_arr = all_arr.filter(id => parseInt(id) !== parseInt(product_id));
+                            arr_none_cat.push(parseInt(product_id));
+                            arr_none_cat = [...new Set(arr_none_cat)];
+                            displayproduct(product_id, "none");
+                        }
+                        }
+                    } 
+                    
+                    if (i == 1 && arr[i]) {
+                        var category = $(this).attr("data-categories").split(",");
+                        //OR LOGIC
+                        if (arr[i].length > 0) {
+                            if (category.some(r=> arr[i].includes(r))) {
+                                if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                                displayproduct(product_id, "block");
+                                }
+                            } else {
+                                all_arr = all_arr.filter(id => parseInt(id) !== parseInt(product_id));
+                                arr_none_color.push(parseInt(product_id));
+                                arr_none_color = [...new Set(arr_none_color)];
+                                displayproduct(product_id, "none");
+                            }
+                        }
+
+                    } 
+                    
+                    if (i == 2 && arr[i]) {
+                        var category = $(this).attr("data-categories").split(",");
+                        //OR LOGIC
+                        if (arr[i].length > 0) {
+                            if (category.some(r=> arr[i].includes(r))) {
+                                if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                                displayproduct(product_id, "block");
+                                }
+                            } else {
+                                all_arr = all_arr.filter(id => parseInt(id) !== parseInt(product_id));
+                                arr_none_brand.push(parseInt(product_id));
+                                arr_none_brand = [...new Set(arr_none_brand)];
+                                displayproduct(product_id, "none");
+                            }
+                        }
+                    } 
+                    
+                    // filter logic price
+                    if (i == 3 && arr[i]) {
+                        var price = parseInt($(this).attr("data-price"));
+                        if (arr[i].length > 0) {
+                        if (parseInt(price) <= parseInt(arr[i][1]) && parseInt(price) >= parseInt(arr[i][0])) {
+                            if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                                displayproduct(product_id, "block");
+                            }
+                        } else {
+                            if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                                all_arr = all_arr.filter(id => parseInt(id) !== parseInt(product_id));
+                                arr_none_price.push(parseInt(product_id));
+                                arr_none_price = [...new Set(arr_none_price)];
+                                displayproduct(product_id, "none");
+                            }
+                        }
+                        }
+                    } 
+
+                    // filter logic avail
+                    if (i == 4 && arr[i]) {
+                        var avail = $(this).attr("data-avail");
+                        if (arr[i].length > 0) {
+                        if (avail == arr[i]) {
+                            if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                            displayproduct(product_id, "block");
+                            }
+                        } else {
+                            if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                            all_arr = all_arr.filter(id => parseInt(id) !== parseInt(product_id));
+                            arr_none_avail.push(parseInt(product_id));
+                            arr_none_avail = [...new Set(arr_none_avail)];
+                            displayproduct(product_id, "none");
+                            }
+                        }
+                        }
+                    }
+
+                    // filter logic sortby_5
+                    if (i == 5 && arr[i]) {
+                        if (arr[i].length > 0) {
+                            if (arr[i] == "sortby_5") {
+                                displaysortproduct("none", "none", "flex", "none", "none", "none")
+                                removesortnew();
+                            } else if (arr[i] == "sortby_4") {
+                                displaysortproduct("none", "flex", "none", "none", "none", "none")
+                                removesortnew();
+                            }  else if (arr[i] == "sortby_1") {
+                                displaysortproduct("flex", "none", "none", "none", "none", "none")
+                                removesortnew();
+                            } else if (arr[i] == "sortby_2") {
+                                displaysortproduct("none", "none", "none", "flex", "none", "none")
+                                removesortnew();
+                            } else if (arr[i] == "sortby_3") {
+                                displaysortproduct("none", "none", "none", "none", "flex", "none")
+                                removesortnew();
+                            } else if (arr[i] == "sortby_6") {
+                                displaysortproduct("none", "none", "none", "none", "none", "flex")
+                                removesortnew();
+                                @* var marknew = $(this).attr("data-new");
+                                if (marknew == "True") {
+                                if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                                    displayproduct(product_id, "block");
+                                }
+                                } else {
+                                if (all_arr.find(element => parseInt(element) == parseInt(product_id))) {
+                                    all_arr = all_arr.filter(id => parseInt(id) !== parseInt(product_id));
+                                    arr_none_new.push(parseInt(product_id));
+                                    arr_none_new = [...new Set(arr_none_new)];
+                                    displayproduct(product_id, "none");
+                                }
+                                } *@
+                            }
+                        }
+                    }
+                    }
+                }
+            });
+
+            if (all_arr.length == 0) {
+                $('#emptyproduct').css("display", "block");
+            } else {
+                $('#emptyproduct').css("display", "none");
+            }
+        }
+
+        function displaysortproduct (normal, asc, desc, asc_name, desc_name, asc_create) {
+            $("#sortnormal").css("display", normal);
+            $("#sortascending").css("display", asc);
+            $("#sortdescending").css("display", desc);
+            $("#sortascendingname").css("display", asc_name);
+            $("#sortdescendingname").css("display", desc_name);
+            $("#sortascendingcreate").css("display", asc_create);
+        }
+
+        function displayproduct (id, value) {
+            $('#normal-'+id).css("display", value);
+            $('#asc-'+id).css("display", value);
+            $('#desc-'+id).css("display", value);
+            $('#asc-name-'+id).css("display", value);
+            $('#asc-create-'+id).css("display", value);
+            $('#desc-name-'+id).css("display", value);
+        }
+
+        function blockproduct (data) {
+            for (let i = 0; i < data.length; i++) {
+                let temp = data[i];
+                displayproduct(temp, "block");
+            }
+        }
 
     </script>
 

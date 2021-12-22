@@ -33,50 +33,23 @@ else
 }
 
 
-
-<h5>@T("Filtering.PriceRangeFilter")</h5>
+<h4>@T("Filtering.PriceRangeFilter")</h4>
 
 @if (Model.Items.Any())
 {
-    var i = 1;
     foreach (var item in Model.Items)
     {
-        <div class="radio-alternate"><input type="radio" id="price_@(i)" name="price" value="@(item.FilterUrl)"><label for="price_@(i)">@FormatPriceRangeText(item)</label></div>
-
-        i++;
-    }
-}
-
-
-@*<div class="product-filters">
-        <div class="product-filter price-range-filter">
-            <div class="filter-title">
-                <strong>@T("Filtering.PriceRangeFilter")</strong>
-            </div>
-            <div class="filter-content">
-                @if (selectedItem == null)
-                {
-                    <div class="available-items">
-                        <ul class="group price-range-group">
-                            @foreach (var item in Model.Items)
-                            {
-                                <li><a href="@item.FilterUrl">@FormatPriceRangeText(item)</a></li>
-                            }
-                        </ul>
-                    </div>
-                }
-                else
-                {
-                    <div class="filtered-items">
-                        <span class="item">@FormatPriceRangeText(selectedItem)</span>
-                    </div>
-                    <div class="remove-filter">
-                        <a href="@Model.RemoveFilterUrl">@T("Filtering.PriceRangeFilter.Remove")</a>
-                    </div>
-                }
-            </div>
-
+        var price_tag = item.To == null ? 10000000 : 
+            item.To == "IDR 1,000,000" ? 1000000 :
+            item.To == "IDR 500,000" ? 500000 : 200000;
+        var price_min = item.To == null ? 1000000 : 
+            item.To == "IDR 1,000,000" ? 500000 :
+            item.To == "IDR 500,000" ? 200000 : 0;
+        <div class="radio-alternate">
+            <a style="cursor: pointer;" name="SortProduct" data-price="@price_tag" data-price-min="@price_min" id="checkbox-price">@FormatPriceRangeText(item)</a>
         </div>
-
-
-    </div>*@
+    }
+    <div class="radio-alternate-new">
+        <p class="removeshowfilter-price" style="cursor: pointer;"></p>
+    </div>
+}

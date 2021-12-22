@@ -1514,6 +1514,31 @@ input[type="radio"]:checked + label span::before {
     color:#8B8B8B
 }
 
+.radio-alternate-new {
+    display:block;
+    height:24px;
+}
+
+
+
+.radio-alternate-new input[type="checkbox"],
+.radio-alternate-new input[type="radio"] {
+    display: none;
+}
+
+    .radio-alternate-new input[type="checkbox"] label,
+    .radio-alternate-new input[type="radio"] label {
+        padding-left: 0;
+    }
+
+.radio-alternate-new input[type="checkbox"]:checked + label,
+.radio-alternate-new input[type="radio"]:checked + label{
+    text-align: left;
+    padding-left: 0;
+    margin-left: 0;
+    color:#8B8B8B
+}
+
    
 
  
@@ -2190,6 +2215,19 @@ cursor:pointer;
     }
     .mini-menu {
         margin-top: 0px
+    }
+    .modal {
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 10px !important;
+        overflow: hidden !important;
+    }
+    #nieuwsbrief {
+        max-width: 100% !important;
+    }
+    .tab-content {
+        padding: 50px;
     }
 }
 

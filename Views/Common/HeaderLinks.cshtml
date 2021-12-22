@@ -219,18 +219,18 @@
 
 
     <nav class="navbar navbar-expand-md sidebarNavigation fixed-top" data-sidebarClass="navbar-dark" style="background-color:#fff; padding-top:0; ">
-        <div class="header-line1" style="padding:0">
+        @* <div class="header-line1" style="padding:0">
             <div class="container-fluid">
                 <div class="row" style="width:100vw;">
                     <div class="col-4">
                         <div class="d-none d-sm-block">
-                            @*<div class="show-mobile-menu-btn" style="cursor:pointer">
+                            <div class="show-mobile-menu-btn" style="cursor:pointer">
                                     <img src="~/Themes/v1/Content/images/search.png" alt="" srcset="" style="width:14px;"><span> Search</span>
-                                </div>*@
+                                </div>
                         </div>
                     </div>
                     <div class="col-4 text-center">
-                        @*FREE SHIPPING ON YOUR FIRST BOX!*@&nbsp;
+                        FREE SHIPPING ON YOUR FIRST BOX!&nbsp;
                     </div>
                     <div class="col-4 d-flex justify-content-end">
                         <div class="pr-5">
@@ -239,9 +239,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> *@
 
-        <div class="container-fluid" style="padding-top:6px; padding-bottom:6px;">
+        <div class="" style="padding-top:6px; padding-bottom:6px; width: 100%">
             <div class="row align-items-center">
                 <div class="col-3 text-center" style="">
                     <button class="navbar-togglers leftNavbarToggler btn-toggle" type="button" data-target="#navbarsExampleDefault"
@@ -257,7 +257,53 @@
                     <a class="navbar-brand" href="~/"><img class="img-fluid brandImage" src="~/Themes/v1/Content/images/logo.png" /></a>
                 </div>
                 <div class="col-3" style="">
-                    <span style="color:#fff;">Cart</span>
+                    @* <span style="color:#fff;">Cart</span> *@
+                    <div class="row">
+                        <ul class="list-unstyled list-inline mb-0">
+                            @if (Model.IsAuthenticated)
+                            {
+                                <li>
+                                    <div class="dropdown">
+                                        <a href="#" class="nav-item">Account</a>
+                                        <div class="dropdown-content2 text-left">
+                                            <a href="~/order/ConfirmPayments">Confirm Payment</a>
+                                            <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                                            <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
+                                            <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
+                                            <a href="~/customer/addressAdd">Address Book</a>
+                                            <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            }
+                            else
+                            {
+                                <li> <a href="~/login" class="signin btn-login mr-2">Login</a></li>
+                            }
+                        </ul>
+
+                        <div>
+                            @if (Model.ShoppingCartEnabled)
+                            {
+                                var cartItem = "0";
+                                var cssCartItem = "bag-empty";
+                                if (Model.ShoppingCartItems > 0)
+                                {
+                                    cartItem = string.Format("{0}", Model.ShoppingCartItems);
+                                    cssCartItem = "shopping-bag";
+                                }
+                                <a href="#bag" onclick="$('.aside').asidebar('open')">
+                                    <div id="icbag-panel" class="@cssCartItem align-items-center d-flex">
+                                        <div>Bag</div>
+                                        <div id="mCartItemsQty" class="cart-qty" style="margin: 0!important;">@cartItem</div>
+                                    </div>
+                                </a>
+
+                            }
+                        </div>
+                    </div>
                     @*Cart
                         <div class="mini-menu pull-right">
                             @if (Model.ShoppingCartEnabled)
@@ -295,9 +341,9 @@
 
                 <div class="" style="margin-top:20vh;">
 
-                    @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false })
+                    @* @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false }) *@
 
-                    <br /><br />
+                    @* <br /><br /> *@
 
 
 
