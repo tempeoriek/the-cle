@@ -1,0 +1,29 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+
+
+
+@if (!String.IsNullOrWhiteSpace(Model.PageShareCode))
+{
+    @*<div class="product-share-button">
+            @Html.Raw(Model.PageShareCode)
+        </div>*@
+
+
+    var url = Url.Encode(Request.Url.AbsoluteUri);
+    var product = Url.Encode(Model.Name);
+
+    var tweet = string.Format("https://twitter.com/intent/tweet?status={0}&url={1}", product, url);
+    var facebook = string.Format("https://www.facebook.com/sharer/sharer.php?u={1}&title={0}", product, url);
+    var pinterest = string.Format("http://pinterest.com/pin/create/bookmarklet/?media={0}&url={0}&is_video=false&description={1}", url, product);
+
+    <ul class="list-unstyled list-inline lnk-footer">
+
+        <li><a href="@facebook" class="alt" target="_blank"><i class="fa fa-facebook fa-lg"></i></a></li>
+        <li><a href="@pinterest" class="alt" target="_blank"><i class="fa fa-pinterest-p fa-lg" aria-hidden="true"></i></a></li>
+        <li><a href="@tweet" class="alt" target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
+
+        @*<li><a href="https://instagram.com/" class="clean" target="_blank"><i class="fa fa-instagram"></i></a></li>*@
+    </ul>
+
+}

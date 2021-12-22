@@ -1,0 +1,97 @@
+﻿@using Nop.Web.Models.Customer;
+
+@{ //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+
+
+    //current product ID
+    int currentProductId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("productdetails", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
+    }
+
+
+
+    var press = "inactive";
+    var common = "inactive";
+    var topic = "";
+    var controllername = Url.RequestContext.RouteData.Values["controller"].ToString();
+    if (controllername.Equals("press", StringComparison.OrdinalIgnoreCase))
+    {
+        press = "active";
+    }
+    else if (controllername.Equals("common", StringComparison.OrdinalIgnoreCase))
+    {
+        common = "active";
+    }
+    else if (controllername.Equals("topic", StringComparison.OrdinalIgnoreCase))
+    {
+        var url = Request.RawUrl;
+        var seoname = url.Substring(url.LastIndexOf("/") + 1);
+        if (seoname != "")
+        {
+            topic = seoname;
+        }
+    }
+    else if (controllername.Equals("product", StringComparison.OrdinalIgnoreCase))
+    {
+        var url = Request.RawUrl;
+        var seoname = url.Substring(url.LastIndexOf("/") + 1);
+        if (seoname != "")
+        {
+            topic = seoname;
+        }
+
+    }
+}
+
+
+
+
+
+<nav id="slide-menu">
+    <div class="fancybox-close menu-trigger-close"></div>
+    @RenderMenuList(currentCategoryId, currentProductId, press, topic, common, true, "phmenu-mobile", "nieuwsbrieflink-mobile", "nieuwsbrief-mobile", "followlink-m", "lienssmo-m", false)
+
+    @Html.Action("MenuSideMobile", "Common")
+    @*@{
+            var data = HttpContext.Current.Request.RequestContext.RouteData.Values;
+            string actionName = data["action"].ToString();
+            string controllerName = data["controller"].ToString();
+
+            @Html.Action("CurrencySelector", "Common")
+        }*@
+
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+@helper RenderMenuList(int currentCategoryId, int currentProductId, string press, string topic, string common, bool ismobile, string menuid, string newsletterId, string newsletterLink, string followId, string followPanelId, bool isSidebar)
+{
+    <div class="list-group">
+        <ul class="list-unstyled" id="@menuid">
+            <li class="list-group-item panel">
+                @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = isSidebar, isMobile = ismobile })
+            </li>
+        </ul>
+    </div>
+
+
+}
+
+

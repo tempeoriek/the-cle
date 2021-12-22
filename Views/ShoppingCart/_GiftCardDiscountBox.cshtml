@@ -1,0 +1,53 @@
+﻿@model ShoppingCartModel.DiscountBoxModel
+@using Nop.Web.Models.ShoppingCart;
+
+
+@if (Model.Display)
+{
+    <div class="summary-total">
+        <div class="total-row-left">
+            <p>Voucher code</p>
+        </div>
+        <div class="total-row-right">
+            <div class="row no-gutters">
+                <div class="col-8">
+                    <input name="couponcode" type="text" class="form-control tbCoupon" placeholder="Promo Code" />
+                </div>
+                <div class="col-4">
+                    <button type="submit" name="applycouponcode" value="Apply" class="btnCoupon"><i class="fa fa-check"></i> <span>APPLY</span></button>
+                </div>
+            </div>
+
+            @if (!String.IsNullOrEmpty(Model.Message))
+            {
+
+                <div class="row no-gutters">
+                    <div class="col-12">
+                        <div class="text-danger" style="font-size:0.92rem; padding-top:5px;">
+                            @Model.Message
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (!String.IsNullOrEmpty(Model.CurrentCode))
+            {
+                <div class="row no-gutters">
+                    <div class="col-12">
+                        <div class="text-highlight" style="font-style:italic; font-size:11px; padding-top:13px;">
+                            @string.Format(T("ShoppingCart.DiscountCouponCode.CurrentCode").Text, Model.CurrentCode)
+                            <input type="submit" name="removediscountcouponcode" value="[ X ]" title="@T("Common.Remove")" class="remove-discount-button" />
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+
+
+
+    </div>
+
+}
+

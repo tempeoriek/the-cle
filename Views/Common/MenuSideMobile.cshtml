@@ -1,0 +1,86 @@
+﻿@model Nop.Web.Models.Flitts.MenuSideMobile
+
+@{ //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+
+    //current product ID
+    int currentProductId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("productdetails", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
+    }
+
+
+    var press = "inactive";
+    var common = "inactive";
+    var topic = "";
+    var url = Request.RawUrl;
+    
+    var seoname = url.Substring(url.LastIndexOf("/") + 1);
+    if (seoname.Equals("press", StringComparison.OrdinalIgnoreCase))
+    {
+        press = "active";
+    }
+    else if (seoname.Equals("common", StringComparison.OrdinalIgnoreCase))
+    {
+        common = "active";
+    }
+    else
+    {
+       topic = seoname;
+    }
+
+}
+
+
+@*<nav id="slide-menu">
+    <div class="fancybox-close menu-trigger-close"></div>
+    <ul>
+        <li>
+           
+        </li>
+        <li class="timeline">Timeline</li>
+        <li class="events">Events</li>
+        <li class="calendar">Calendar</li>
+        <li class="logout">Logout</li>
+    </ul>
+</nav>*@
+
+@if (Model.IsAuthenticated)
+{
+    <ul class="list-unstyled">
+        <li class="list-group-item"><a href="">HELLO, @Model.Greeting.ToUpper()</a></li>
+        <li class="list-group-item"><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.CustomerInfo").ToString().ToUpper()</a></li>
+        <li class="list-group-item"><a href="@Url.RouteUrl("CustomerAddressAdd")">@T("Account.CustomerAddresses").ToString().ToUpper()</a></li>
+        <li class="list-group-item"><a href="@Url.RouteUrl("CustomerChangePassword")">@T("Account.ChangePassword").ToString().ToUpper()</a></li>
+        <li class="list-group-item"><a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders").ToString().ToUpper()</a></li>
+        <li class="list-group-item"><a href="@Url.RouteUrl("CustomerReturnRequests")">@T("Account.CustomerReturnRequests")</a></li>
+        <li class="list-group-item"><a href="~/order/confirmpayments">CONFIRM PAYMENT</a></li>
+        <li class="list-group-item" style="margin-top:16px;">
+            <a href="@Url.RouteUrl("Logout")">@T("Account.Logout").ToString().ToUpper()</a>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="list-unstyled">
+        <li class="list-group-item">&nbsp;</li>
+        <li class="list-group-item">&nbsp;</li>
+        <li class="list-group-item">&nbsp;</li>
+        <li class="list-group-item">&nbsp;</li>
+        <li class="list-group-item">&nbsp;</li>
+        <li class="list-group-item" style="margin-top:16px;">
+            <a href="~/Login">SIGN IN / REGISTER</a>
+        </li>
+    </ul>
+}
+
+
+
+

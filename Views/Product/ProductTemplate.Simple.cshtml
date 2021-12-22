@@ -1,0 +1,522 @@
+﻿@model ProductDetailsModel
+@using Nop.Core
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Services.Localization;
+@using Nop.Web.Models.Catalog;
+@{
+
+    //var posturl = Html.BeginRouteForm("Product", new { SeName = Model.SeName });
+    if (ViewBag.ShowPopup != null)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+    }
+
+    //title, meta
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var seoSettings = EngineContext.Current.Resolve<SeoSettings>();
+
+    //canonical URL
+    if (seoSettings.CanonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(productUrl);
+    }
+
+    //open graph META tags
+    if (seoSettings.OpenGraphMetaTags)
+    {
+        var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
+        Html.AddHeadCustomParts("<meta property=\"og:type\" content=\"product\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:description\" content=\"" + Html.Encode(Model.MetaDescription) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:url\" content=\"" + Request.Url.AbsoluteUri + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:site_name\" content=\"" + Html.Encode(storeName) + "\" />");
+    }
+
+    //Twitter META tags
+    if (seoSettings.TwitterMetaTags)
+    {
+        var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
+        Html.AddHeadCustomParts("<meta property=\"twitter:card\" content=\"summary\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:site\" content=\"" + Html.Encode(storeName) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:description\" content=\"" + Html.Encode(Model.MetaDescription) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:url\" content=\"" + Request.Url.AbsoluteUri + "\" />");
+    }
+
+
+}
+
+<div class="col-main prod-details">
+    <div class="row">
+        <div class="col-12 col-md-7">
+            @if (ViewBag.ShowPopup != null)
+            {
+                @Html.Partial("_ProductDetailsPicturesBYOB", Model)
+            }
+            else
+            {
+                @Html.Partial("_ProductDetailsPictures", Model)
+            }
+
+        </div>
+        <div class="col-12 col-md-5">
+            <div class="product-description">
+
+                @using (Html.BeginRouteForm("Product", new { SeName = Model.SeName }, FormMethod.Post, new { id = "product-details-form" }))
+                {
+                    <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+                        @if (ViewBag.ShowPopup != null)
+                        {
+                            if (!String.IsNullOrWhiteSpace(Model.ProductPrice.OldPrice))
+                            {
+                                <div class="onsale">SALE</div>
+                            }
+                        }
+
+                        <h1 itemprop="name">@Model.Name</h1>
+                        @{
+                            var dataDictPrice = new ViewDataDictionary();
+                            dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", Model.Id);
+                            @Html.Partial("_ProductPrice", Model.ProductPrice, dataDictPrice)
+
+
+                            @Html.Raw(Model.ShortDescription)
+
+                            <div class="description mb-5">
+                                <div class="accordion" id="accordionExample">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Description</h5>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                @Html.Raw(Model.FullDescription)
+
+                                                @Html.Partial("_DeliveryInfo", Model)
+                                                @*@Html.Partial("_Availability", Model)*@
+                                                @Html.Partial("_SKU_Man_GTIN_Ven", Model)
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (ViewBag.ShowPopup == null)
+                                    {
+
+
+                                        var dataDictAttributes = new ViewDataDictionary();
+                                        dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+                                        @Html.Partial("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+
+
+
+
+                                        <div class="card">
+                                            <div class="card-header" id="headingkartu">
+                                                <h5 class="collapsed" data-toggle="collapse" data-target="#collapseKartu" aria-expanded="false" aria-controls="collapseKartu">Card</h5>
+                                            </div>
+                                            <div id="collapseKartu" class="collapse" aria-labelledby="headingkartu" data-parent="#accordionExample">
+                                                <div class="card-body">
+
+                                                    @*<div class="radio-default">
+                                                            <input type="radio" id="Kartu_0" name="Kartu" value="0" checked="checked" class="radio-default">
+                                                            <label for="Kartu_0"><span></span> No card</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="radio-default">
+                                                                <input type="radio" id="Kartu_1" name="Kartu" value="1" class="radio-default">
+                                                                <label for="Kartu_1"><span></span> I want a card as well</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <br /><input id="categories" style="width: 100%;" /><br />
+
+                                                    *@
+                                                    @Html.Action("ShowAvailableCards", "Catalog")
+
+                                                    <div class="form-group text-left">
+                                                        <textarea name="CardMessage" placeholder="Enter your card message here. 250 characters max. Please leave it empty if you want to write yourself" class="form-control-alternate" style="width:100%; height:100px"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="headingShipping">
+                                                <h5 class="collapsed" data-toggle="collapse" data-target="#collapseShipping" aria-expanded="false" aria-controls="collapseShipping">Shipping &amp; Dimensions</h5>
+                                            </div>
+                                            <div id="collapseShipping" class="collapse" aria-labelledby="headingShipping" data-parent="#accordionExample">
+                                                <div class="card-body">
+
+                                                    @string.Format("Box Size: {0:0.##}x{1:0.##}x{2:0.##} cm", Model.Length, Model.Width, Model.Height)
+                                                    <br />
+                                                    @string.Format("Approx. Weight: {0:0.##} kg", Model.Weight)
+                                                    @if (Model.IsFragile)
+                                                    {
+                                                        <br /><p>Shipping available via Gojek or Pickup at The Clementines Studio only.</p>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                </div>
+                            </div>
+
+
+                            //notify me if oos
+                            var totalstock = 0;
+
+                            //if (Model.ProductAttributes.Any())
+                            //{
+                            //    foreach (var pa in Model.ProductAttributes)
+                            //    {
+                            //        foreach (var s in pa.Values)
+                            //        {
+                            //            totalstock += s.VariantStockQuantity;
+                            //        }
+                            //    }
+
+
+                            //}
+                            //else
+                            //{
+                            totalstock = Model.StockQuantity;
+                            //}
+
+
+                            if (totalstock >= 1)
+                            {
+                                //Cart & quantity
+                                var dataDictAddToCart = new ViewDataDictionary();
+                                dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+
+                                if (ViewBag.ShowPopup != null)
+                                {
+                                        @Html.Partial("_AddToCartBYOB", Model.AddToCart, dataDictAddToCart)
+                                }
+                                else
+                                {
+                                        @Html.Partial("_AddToCart", Model.AddToCart, dataDictAddToCart)
+                                }
+
+                                <!--Back in stock subscription-->
+                                @*@Html.Partial("_BackInStockSubscription", Model)*@
+                            }
+                            else
+                            {
+
+                                <!--Back in stock subscription-->
+                                @*@Html.Partial("_BackInStockSubscription", Model)*@
+
+                                <p class="out-of-stock mt-5" style="font-style:italic;">
+                                    Sorry, this product is completely out of stock
+                                </p>
+
+                            }
+
+                        }
+
+
+                    </div>
+
+                }
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+    <!-- recommendation--->
+    @*Automatic*@
+    @*@Html.Action("ProductsAlsoPurchased", "Product", new { productId = Model.Id })*@
+
+    @*Manual*@
+    @*@Html.Action("CrossSellProducts", "Product", new { productId = Model.Id })*@
+
+
+
+</div>
+
+@if (ViewBag.ShowPopup == null)
+{
+    @Html.Action("RelatedProducts", "Product", new { productId = Model.Id })
+
+    @Html.Action("RecentlyViewedProductsBlock", "Product", new { productThumbPictureSize = 1000 })
+}
+
+
+
+<script>
+    $('.add').click(function () {
+        if ($(this).prev().val() < 9) {
+            $(this).prev().val(+$(this).prev().val() + 1);
+        }
+    });
+    $('.sub').click(function () {
+        if ($(this).next().val() > 1) {
+            if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
+        }
+    });
+
+    function btnclick() {
+        if ($(".btn-addcart").innerHTML == "ADD TO BAG") {
+            $(".btn-addcart").innerHTML = "✓ SEE BAG";
+        }
+        else {
+            $(".btn-addcart").innerHTML = "ADD TO BAG";
+        }
+    }
+
+
+
+</script>
+
+
+
+@if (ViewBag.ShowPopup != null)
+{
+    @section RootHeaderSection{
+
+        <style>
+            .prod-details {
+                padding:20px;
+                padding-bottom:0;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+        </style>
+
+    }
+
+}
+else
+{
+
+
+
+
+    @section scripts
+{
+        <script>
+            $(document).ready(function () {
+
+                $(".ddlAttrb").change(function () {
+                    $(this).find("option:selected").each(function () {
+                        var optionValue = $(this).attr("value");
+
+
+                        if (optionValue == "-1") {
+                            //$(".box").not("." + optionValue).hide();
+                            $("#back-in-stock-subscription").show();
+                            $(".select-quantity").hide();
+                            $(".btn-addcart").hide();
+                        } else {
+                            $("#back-in-stock-subscription").hide();
+                            $(".select-quantity").show();
+                            $(".btn-addcart").show();
+                        }
+                    });
+                }).change();
+
+
+                $('.txtInitials').on('input propertychange', function () {
+                    CharLimit(this, 5);
+                });
+
+
+            });
+
+
+            function CharLimit(input, maxChar) {
+                var len = $(input).val().length;
+                if (len > maxChar) {
+                    $(input).val($(input).val().substring(0, maxChar));
+                }
+            }
+
+
+
+        </script>
+
+        @*<script src="~/Scripts/app/select2/dist/js/select2.min.js"></script>
+            <script>
+
+                $(document).ready(function () {
+                    $("#social").select2({
+                        templateResult: formatState
+                    });
+                });
+
+                function formatState(state) {
+                    if (!state.id) { return state.text; }
+                    var $state = $(
+                        '<span ><img sytle="display: inline-block;" src="' + state.element.attr("data-icon")  + '" class="img-fluid" /> ' + state.text + '</span>'
+                    );
+                    return $state;
+                }
+            </script>*@
+
+        @*<script src="~/Scripts/kendo/2020.2.513/kendo.all.min.js"></script>*@
+        <script>
+
+            //$(document).ready(function () {
+            //    $("#categories").kendoDropDownList({
+            //        dataTextField: "Id",
+            //        dataValueField: "ProductID",
+            //        dataSource: {
+            //            transport: {
+            //                read: {
+            //                    dataType: "jsonp",
+            //                    url: "/catalog/ShowAvailableCardsJson",
+            //                }
+            //            }
+            //        }
+            //    });
+            //});
+
+
+
+            //function onChange(e) {
+            //    var orders = $("#shipTo").data("kendoDropDownList");
+            //    orders.value("");
+
+            //    if (e.sender.value() == "") {
+            //        orders.enable(false);
+            //    }
+            //    else {
+            //        orders.enable(true);
+            //    }
+            //}
+        </script>
+
+
+
+        <script src="~/Scripts/app/fancyBox/dist/jquery.fancybox.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                //    $('a').click(function () {
+                //        var largeImage = $(this).attr('data-full');
+                //        $('.selected').removeClass();
+                //        $(this).addClass('selected');
+                //        $('.full img').hide();
+                //        $('.full img').attr('src', largeImage);
+                //        $('.full img').fadeIn();
+                //    });
+
+
+                //$('.full').on('click', function () {
+                //    var modalImage = $(this).attr('src');
+                //    $.fancybox.open(modalImage);
+                //});
+
+
+                $('[data-fancybox="gallery"]').fancybox({
+                    afterLoad: function (instance, current) {
+                        var pixelRatio = window.devicePixelRatio || 1;
+
+                        if (pixelRatio > 1.5) {
+                            current.width = current.width / pixelRatio;
+                            current.height = current.height / pixelRatio;
+                        }
+                    },
+                    thumbs: {
+                        // autoStart: true
+                    },
+                    infobar: false,
+                    toolbar: false,
+                    arrows: false
+                    , gutter: 20
+                    ,
+                });
+
+                $('[data-fancybox]').fancybox({
+                    thumbs: {
+                        // autoStart: true
+                    },
+                    infobar: true,
+                    toolbar: false,
+                    arrows: false,
+                    openEffect: 'none',
+                    closeEffect: 'elastic'
+                });
+
+
+            });
+
+
+
+        </script>
+
+
+        @*<script src="~/Scripts/app/magnify/js/jquery.jqZoom.js"></script>
+            <script>
+                $(function () {
+                    $(".magnifying").jqZoom({
+                        selectorWidth: 50,
+                        selectorHeight: 50,
+                        viewerWidth: 600,
+                        viewerHeight: 600
+                    });
+                })
+            </script>*@
+
+        <script src="~/Scripts/app/zoom/jquery.zoom.js"></script>
+        <script>
+            $(document).ready(function () {
+                /*$('a.photo').zoom({ url: 'photo-big.jpg' });*/
+
+                $('.zoom1').zoom();
+            });
+
+
+        </script>
+
+    }
+
+
+    @section HeaderSection{
+
+        @*<link href="~/Scripts/app/select2/dist/css/select2.min.css" rel="stylesheet" />*@
+
+        @*<link href="~/Content/kendo/2020.2.513/kendo.common.min.css" rel="stylesheet" />
+            <link href="~/Content/kendo/2020.2.513/kendo.office365.min.css" rel="stylesheet" />
+            <link href="~/Content/kendo/2020.2.513/kendo.office365.mobile.min.css" rel="stylesheet" />
+
+            <script src="~/Administration/Content/jquery-2.2.4.min.js"></script>*@
+
+
+        <link href="~/Scripts/app/fancyBox/dist/jquery.fancybox.min.css" rel="stylesheet" />
+
+
+
+        @*<link href="~/Scripts/app/magnify/css/jquery.jqZoom.css" rel="stylesheet" />*@
+
+
+    }
+
+
+    <script src="~/Scripts/app/zoom/jquery.zoom.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.zoom1').zoom();
+        });
+    </script>
+}
+

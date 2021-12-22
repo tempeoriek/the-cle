@@ -1,0 +1,51 @@
+﻿@model ProductDetailsModel.ProductBreadcrumbModel
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@{
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+@if (Model.Enabled)
+{
+    <div class="breadcrumb">
+        @*<ul class="list-unstyled list-inline">
+            <li>
+                <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <a href="@Url.RouteUrl("HomePage")" itemprop="url">
+                        <span itemprop="title">@T("Products.Breadcrumb.Top")</span>
+                    </a>
+                </span>
+               
+            </li>
+            <li><span class="delimiter">@breadcrumbDelimiter</span></li>
+            @foreach (var category in Model.CategoryBreadcrumb)
+            {
+                <li>
+                    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                        <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" itemprop="url">
+                            <span itemprop="title">@category.Name</span>
+                        </a>
+                    </span>
+                   
+                </li>
+                <li><span class="delimiter">@breadcrumbDelimiter</span></li>
+            }
+            <li>
+                <strong class="current-item">@Model.ProductName</strong>
+            </li>
+        </ul>*@
+
+        <a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a><span class="delimiter">@breadcrumbDelimiter</span>
+        @foreach (var cat in Model.CategoryBreadcrumb)
+        {
+            <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="@Url.RouteUrl("Category", new { SeName = cat.SeName })" itemprop="url">
+                    <span itemprop="title">@cat.Name</span>
+                </a>
+            </span>
+            <span class="delimiter">@breadcrumbDelimiter</span>
+        }
+        <span class="current-item">@Model.ProductName</span>
+    </div>
+
+}

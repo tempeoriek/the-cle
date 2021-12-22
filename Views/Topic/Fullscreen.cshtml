@@ -1,0 +1,72 @@
+﻿@model TopicModel
+@using Nop.Core.Domain.Seo
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Topics;
+@{
+
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var topicUrl = Url.RouteUrl("Topic", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(topicUrl);
+    }
+
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+
+@if (string.IsNullOrEmpty(ViewBag.HideHeader))
+{
+    @Html.Action("HeaderLinks", "Common")
+}
+
+
+
+@{
+    if (string.IsNullOrEmpty(ViewBag.HideMenu))
+    {
+        @Html.Partial("MenuMobile");
+    }
+}
+
+
+@*Menu Mobile*@
+@*@Html.Action("MenuSideMobile", "Common")*@
+
+
+@if (!String.IsNullOrEmpty(Model.Title))
+{
+    <h1>@Model.Title</h1>
+}
+
+
+<div id="fscreen">
+    <div class="inner-but-full">
+
+        @Html.Raw(Model.Body)
+    </div>
+    @Html.Action("Footer", "Common")
+</div>
+
+    
+
+
+
+@section RootHeaderSection{
+
+    <style>
+        p{margin-bottom:0;}
+       /*img.store-logo{ margin-top:101px;}*/
+    </style>
+
+
+
+}

@@ -1,0 +1,103 @@
+﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+
+
+
+
+<div class="col-main-sml mt-8">
+        <div class="page-content text-center">
+            <div class="contactus">
+                <div class="contactus_bottom">
+                    @if (Model.SuccessfullySent)
+            {
+                        <div class="result text-center">
+                            @Model.Result
+                        </div>
+                    }
+                    else
+                    {
+                        @*@using (Ajax.BeginForm("CreateNewAddress", "Common", new AjaxOptions
+                        {
+                            InsertionMode = InsertionMode.Replace,
+                            HttpMethod = "POST",
+                            OnFailure = "reqfailed",
+                            LoadingElementId = "ajax-loader",
+                            UpdateTargetId = "pnlform"
+
+                        }, new { id = "form1" }))*@
+                    using (Html.BeginForm("ContactUs", "Common", FormMethod.Post, new { name="form1" }))
+                    {
+                            @Html.AntiForgeryToken()
+
+                            <div class="message-error">
+                                @Html.ValidationSummary(true)
+                            </div>
+                            <div class="fieldset">
+
+                                <div class="form-group text-left">
+                                    Name/Company
+                                    @*@Html.LabelFor(model => model.FullName)*@ @Html.ValidationMessageFor(model => model.FullName)
+                                    @Html.TextBoxFor(model => model.FullName, new { @class = "form-control contactus-form"})
+                                </div>
+
+                                <div class="form-group text-left">
+                                    Phone
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control contactus-form" })
+                                </div>
+
+                                <div class="form-group text-left">
+                                    Email
+                                    @*@Html.LabelFor(model => model.Email)*@ @Html.ValidationMessageFor(model => model.Email)
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control contactus-form" })
+                                </div>
+
+                                <div class="form-group text-left">
+                                    Inquiries
+                                    <select name="topic" class="form-control classic">
+                                        <option value="Wedding Souvenir">Wedding Souvenir</option>
+                                        <option value="Kids & Baby Hampers">Kids & Baby Hampers</option>
+                                        <option value="Social Events">Social Events</option>
+                                        <option value="Corporate">Corporate</option>
+                                        <option value="Collaborations">Partnership/ Collaborations</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+
+                               
+
+                                @*@if (Model.SubjectEnabled)
+                            {
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(model => model.Subject, new { @class = "form-control contactus-form", placeholder = T("ContactUs.Subject.Hint") })
+
+                                    </div>
+                            }*@
+
+                                <div class="form-group contactus-form text-left">
+                                    Message
+                                    @*@Html.LabelFor(model => model.Enquiry, new { @class = "control-label" }, " *")*@ @Html.ValidationMessageFor(model => model.Enquiry)
+                                    @Html.TextAreaFor(model => model.Enquiry, new { @class = "enquiry form-control" })
+                                </div>
+
+                                @if (Model.DisplayCaptcha)
+                            {
+                                    <div class="captcha-box">
+                                        @Html.Raw(Html.GenerateCaptcha())
+                                    </div>
+                            }
+
+                                <div class="buttons pull-right mt-30">
+                                   <input type="text" name="subject" style="border:none;apperance:none; width:1px; height:1px;" />
+                                     <button type="submit" name="send-email" class="btn btn-default" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Sending...">Send</button>
+                                   
+                                </div>
+                            </div>
+                    }
+                }
+
+                </div>
+            </div>
+
+        </div>
+    </div>

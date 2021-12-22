@@ -1,0 +1,113 @@
+﻿
+@model MiniShoppingCartModel
+@using Nop.Web.Models.ShoppingCart;
+
+
+    <div class="byob-cart" id="byobcart">
+        <div class="arrow-up"></div>
+        <div class="p-4">
+
+            @if (Model.TotalProducts == 0)
+            {
+                @T("ShoppingCart.Mini.NoItems")
+            }
+            else
+            {
+                <div class="collapsed-cart">
+                    <div class="byobcart__boxsize">
+
+                        <div class="row">
+                            <div class="col-12 col-md-8 col-lg-9">
+                                @{
+                                    var box = "Small Box";
+                                    var progressbarwidth = (Model.TotalWeightFactor * 6);
+
+                                    if(progressbarwidth == 0)
+                                    {
+                                        progressbarwidth = 10;
+                                    }
+                                    else if(progressbarwidth == 96)
+                                    {
+                                        progressbarwidth = 100;
+                                    }
+
+                                    if (Model.TotalWeightFactor > 5)
+                                    {
+                                        box = "Regular Box";
+                                    }
+                                    if (Model.TotalWeightFactor > 10)
+                                    {
+                                        box = "Large Box";
+                                    }
+                                }
+                       
+                                <div class="progress">
+                                    <div class="progress-bar bg-progress" role="progressbar" style="width: @string.Format("{0}%", progressbarwidth)" aria-valuenow="@progressbarwidth" aria-valuemin="0" aria-valuemax="100">@box</div>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3">
+                                <a href="~/byob/step3" class="btn btn-cart-byob" style="width:100%;">Complete Your Box</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="byobcart__list">
+                        <div class="col-main-slim">
+                            <h2>Your Box</h2>
+                            <div style="border:solid 1px #fff; padding:5px;">
+                                <table>
+
+                                    @using (Html.BeginForm("DeleteBYOBItem", "ShoppingCart", FormMethod.Post, new { id = "form3", @class = "login-form" }))
+                                    {
+                                        foreach (var item in Model.Items)
+                                        {
+                                            <tr class="">
+                                                <td style="width:40px;">@string.Format("{0}x", item.Quantity)</td>
+                                                <td>@item.ProductName</td>
+                                                <td style="width:25%;">@item.UnitPrice</td>
+                                                <td style="width:25px;">
+                                                    @if (!item.isBox)
+                                                    {
+                                                        <button type="submit" value="@string.Format("{0}",item.Id)" name="id" class="btn btn-link btn__link-byob"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td colspan="3">&nbsp;</td>
+                                        </tr>
+                                        <tr class="subtotal">
+                                            <td></td>
+                                            <td>Subtotal</td>
+                                            <td>@Model.SubTotal</td>
+                                            <td></td>
+                                        </tr>
+                                    }
+
+
+                                    </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @if (Model.TotalProducts > 0)
+                    {
+                        <div class="items scroll-cart1">
+                            @foreach (var item in Model.Items)
+                            {
+                                <div class="byobitem">
+                                    <div class="text-left d-flex">
+                                        <img class="img-fluid" alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title" />
+                                        @*<div class="delete">X</div>*@
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+    </div>

@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "My Account";
+}
+
+
+<div class="container" style="margin-top:120px;">
+    <div class="account__info">
+        <h1>MY ACCOUNT</h1><br />
+        <p>
+            Hello @ViewBag.Name, this is your Kivee account.
+            Via the different options we will show you, you can modify your personal details and view your orders.
+        </p><br />
+    </div>
+    <div class="detail-accounts">
+        
+        <div class="detail-account">
+            <a href="/order/ConfirmPayments">Payment Confirmation</a>
+            <p>Confirm your payment.</p>
+        </div>
+
+        <div class="detail-account">
+            <a href="/order/history">My Order</a>
+            <p>Check your orders’ status and history or print the returns form.</p>
+        </div>
+
+        @*<div class="detail-account">
+            <a href="/returnrequest/history">Return Request</a>
+            <p>Check your return request status and history.</p>
+        </div>*@
+
+        <div class="detail-account">
+            <a href="/customer/info">Personal Info</a>
+            <p>Review your personal information.</p>
+        </div>
+        <div class="detail-account">
+            <a href="/customer/info">Change Password</a>
+            <p>Change your password</p>
+        </div>
+        <div class="detail-account">
+            <a href="/customer/addressAdd">My Addresses</a>
+            <p>Manage your address book</p>
+        </div>
+       
+       
+       
+        <div class="detail-account"><a href="~/logout">Log Out</a></div>
+    </div>
+
+   
+
+</div>
+

@@ -1,0 +1,90 @@
+﻿@model IList<ProductOverviewModel>
+@using Nop.Web.Models.Catalog;
+@if (Model.Count > 0)
+{
+    @*<div class="product-grid cross-sells">
+        <div class="title">
+            <strong>@T("ShoppingCart.CrossSells")</strong>
+        </div>
+        <div class="item-grid">
+            @foreach (var product in Model)
+            {
+                <div class="item-box">
+                    @Html.Partial("_ProductBox", product)
+                </div>
+            }
+        </div>
+    </div>*@
+}
+
+<div class="w-100"></div>
+<div class="cross-sells">
+    <h2 class="text-left" style="margin:40px 0 20px 0;font-size:16px;">Similar Pieces</h2>
+    <div class="row  d-none d-md-table">
+        <div class="col-12 col-md-4 d-md-table-cell">
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3106.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3225.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3269_sq.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3225.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div>
+        <div class="d-flex justify-content-between">
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3106.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3225.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3269_sq.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+            <div class="img-similar-overlay">
+                <img src="~/content/images/IMG_3225.png" class="img-fluid image-similar-thumb" />
+                <div class="text-overlay">
+                    <p>PRAYA TOP IN LIGHT BLUE<br />MOROCCAN PRINT</p>
+                    <p>IDR 329,000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

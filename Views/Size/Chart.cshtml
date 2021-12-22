@@ -1,0 +1,257 @@
+﻿@model Nop.Web.Models.Flitts.Size.SizeChartModel
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    ViewBag.Title = "Chart";
+}
+
+
+    <div id="tabs-bottom">
+        <div class="chart-tab">
+
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <ul class="list-unstyled list-inline">
+                        <li style="padding-right:20px;"><a href="#tab-chart">Sizing Chart</a></li>
+                        <li><a href="#tab-howtomeasure">How to measure</a></li>
+                    </ul>
+                </div>
+            </div>
+
+           
+        </div>
+
+        @*<div class="span_loader">
+            <div class="typing_loader"> </div>
+        </div>*@
+
+        <div id="tab-chart">
+            <div class="col-main-sml mt-normal">
+                <!--chart-->
+                <div id="tabs-1">
+                    <div class="text-center mb-normal">
+                        <ul class="list-unstyled list-inline">
+                            <li><a class="clean">Measurement</a></li>
+                            <li><a href="#tabs-2">Cm</a></li>
+                            <li><a href="#tabs-3">Inch</a></li>
+                        </ul>
+                    </div>
+
+
+                        <div id="tabs-2">
+                            @{
+                                var SizeCm = Model.ItemsCm;
+                            }
+
+
+                            <table class="table basic tblSize">
+                                <colgroup>
+                                    <col style=" width:20%" />
+                                    <col style="width:20%" />
+                                    <col style="width:20%" />
+                                    <col style="width:20%" />
+                                    <col style="width:20%" />
+                                </colgroup>
+                                    <tr>
+                                        <td>Size</td>
+                                        @foreach (var item in SizeCm)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Size1)
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Bust
+                                        </td>
+                                        @foreach (var item in SizeCm)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Bust)
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Waist
+                                        </td>
+                                        @foreach (var item in SizeCm)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Waist)
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Hip
+                                        </td>
+                                        @foreach (var item in SizeCm)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Hip)
+                                            </td>
+                                        }
+                                    </tr>
+                            </table>
+
+                        </div>
+
+                        <div id="tabs-3">
+                            @{
+                                var SizeInch = Model.ItemsInch;
+                            }
+                            <table class="table basic tblSize">
+                                <colgroup>
+                                    <col style=" width:20%" />
+                                    <col style="width:20%" />
+                                    <col style="width:20%" />
+                                    <col style="width:20%" />
+                                    <col style="width:20%" />
+                                </colgroup>
+                                <tr>
+                                    <td>Size</td>
+                                    @foreach (var item in SizeInch)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Size1)
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Bust
+                                    </td>
+                                    @foreach (var item in SizeInch)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Bust)
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Waist
+                                    </td>
+                                    @foreach (var item in SizeInch)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Waist)
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Hip
+                                    </td>
+                                    @foreach (var item in SizeInch)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Hip)
+                                        </td>
+                                    }
+                                </tr>
+                            </table>
+
+
+
+
+                          
+                        </div>
+</div>
+
+                <div class="table-responsive">
+                    <table class="table basic tblSize" style="margin-top:48px;">
+                        <caption class="mb-20">
+                            Size Guide
+                        </caption>
+                        <colgroup>
+                            <col style="width:20%" />
+                            <col style="width:20%" />
+                            <col style="width:20%" />
+                            <col style="width:20%" />
+                            <col style="width:20%" />
+                        </colgroup>
+                        <tr>
+                            <td>Universal</td>
+                            <td>XS</td>
+                            <td>S</td>
+                            <td>M</td>
+                            <td>L</td>
+                        </tr>
+                        <tr>
+                            <td>France</td>
+                            <td>34</td>
+                            <td>36</td>
+                            <td>38</td>
+                            <td>40</td>
+                        </tr>
+                        <tr>
+                            <td>US</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>6</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>UK</td>
+                            <td>6</td>
+                            <td>8</td>
+                            <td>10</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>ITALY</td>
+                            <td>38</td>
+                            <td>40</td>
+                            <td>42</td>
+                            <td>44</td>
+                        </tr>
+                        <tr>
+                            <td>EUROPE</td>
+                            <td>32</td>
+                            <td>34</td>
+                            <td>36</td>
+                            <td>38</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+                <!--end chart-->
+            </div>
+        </div>
+        <div id="tab-howtomeasure">
+            <div class="mt-normal" style="padding-left:10%; padding-right:10%;">
+                <img src="~/Content/Images/uploaded/assets/size guide-how to measure.jpg" class="img-responsive" />
+            </div>
+
+            </div>
+
+    </div>
+
+
+
+    @section RootHeaderSection{
+        <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+    }
+
+
+    @section RootScripts{
+
+        <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+
+        <script>
+            $(function () {
+                $("#tabs-1").tabs();
+                $("#tabs-bottom").tabs();
+
+            });
+        </script>
+    }
+
+
+

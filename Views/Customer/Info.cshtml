@@ -1,0 +1,202 @@
+﻿@model CustomerInfoModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    //ViewBag.HideMenu = "true";
+    //ViewBag.HideDesktopMenu = "true";
+}
+
+@section left
+{
+
+
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Info })*@
+}
+
+
+
+<div class="col-main">
+
+    <div class="col-main-slim  mt-5">
+
+        @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Info, isMobile = true })*@
+
+        <h1>@T("Account.CustomerInfo")</h1>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            var validationSummary = Html.ValidationSummary(true);
+            if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+            {
+                <div class="message-error">@validationSummary</div>
+            }
+
+            <div class="form-fields">
+
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "First name" })
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Last name" })
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </div>
+
+                @if (Model.PhoneEnabled)
+                {
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", placeholder = "Phone number" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                }
+
+                @if (Model.FaxEnabled)
+                {
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", placeholder = "Fax" })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+                }
+
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email", disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+
+
+                @if (Model.DateOfBirthEnabled)
+                {
+                    @*<div class="form-group row">
+                            <label class="col-xs-4 control-label">@T("Account.Fields.DateOfBirth"):</label>
+
+                            <div class="col-xs-8 text-right">
+                                @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                                                                  Html.FieldNameFor(x => x.DateOfBirthMonth),
+                                                                  Html.FieldNameFor(x => x.DateOfBirthYear),
+                                                                  DateTime.Now.Year - 85,
+                                                                  DateTime.Now.Year,
+                                                                  Model.DateOfBirthDay,
+                                                                  Model.DateOfBirthMonth,
+                                                                  Model.DateOfBirthYear)
+                                @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                                @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                                @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                            </div>
+                        </div>*@
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.Dob, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = "Date of birth" })
+                    </div>
+
+
+                }
+
+                @if (Model.GenderEnabled)
+                {
+                    @*<div class="form-group row">
+                            <label class="col-xs-6 control-label">
+                                @T("Account.Fields.Gender"):
+                            </label>
+                            <div class="col-xs-3 text-right">
+                                <label class="radio-inline" for="gender-male">
+                                    @Html.RadioButton("Gender", "M", (Model.Gender == "M"), new { id = "gender-male" }) @T("Account.Fields.Gender.Male")
+                                </label>
+                            </div>
+                            <div class="col-xs-3 text-right">
+                                <label class="radio-inline" for="gender-female">
+                                    @Html.RadioButton("Gender", "F", (Model.Gender == "F"), new { id = "gender-female" }) @T("Account.Fields.Gender.Female")
+                                </label>
+
+                            </div>
+                        </div>*@
+
+                    <div class="form-group">
+                        <select name="Gender" class="form-control">
+                            <optgroup label="Gender">
+                                <option value="M">@T("Account.Fields.Gender.Male")</option>
+                                <option value="F">@T("Account.Fields.Gender.Female")</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                }
+
+
+
+
+                @if (Model.UsernamesEnabled)
+                {
+                    if (Model.AllowUsersToChangeUsernames)
+                    {
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Username, new { @class = "col-md-2 control-label" }, ":")
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.ValidationMessageFor(model => model.Username)
+                                @if (Model.CheckUsernameAvailabilityEnabled)
+                                {
+                                    @Html.Partial("_CheckUsernameAvailability")
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Username, new { @class = "col-md-2 control-label" }, ":")
+                            <div class="col-md-10">
+                                @Model.Username
+                            </div>
+                        </div>
+                    }
+                }
+
+
+                @*@if (Model.AllowCustomersToSetTimeZone || Model.SignatureEnabled)
+                    {
+                    <div class="fieldset">
+                        <div class="title">
+                            <strong>@T("Account.Preferences")</strong>
+                        </div>
+                        <div class="form-fields">
+                            @if (Model.AllowCustomersToSetTimeZone)
+                            {
+                                <div class="inputs">
+                                    @Html.LabelFor(model => model.TimeZoneId, new { }, ":")
+                                    @Html.DropDownList("TimeZoneId", Model.AvailableTimeZones)
+                                    @Html.ValidationMessageFor(model => model.TimeZoneId)
+                                </div>
+                            }
+                            @if (Model.SignatureEnabled)
+                            {
+                                <div class="inputs">
+                                    @Html.LabelFor(model => model.Signature, new { }, ":")
+                                    @Html.TextAreaFor(model => model.Signature, new { @class = "account-signature-text" })
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    }*@
+
+
+
+            </div>
+
+            <div class="form-fields">
+                <div class="buttons">
+                    <button type="submit" value="@T("Common.Save")" name="save-info-button" class="btn btn-default">@T("Common.Save")</button>
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+</div>

@@ -1,0 +1,139 @@
+﻿@model ProductOverviewModel
+@using Nop.Core
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Extensions
+@using Nop.Web.Models.Catalog;
+
+@helper Text_Truncate(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(@input)
+    }
+    else
+    {
+        @Html.Raw(@input.Substring(0, length))<text>...</text>
+    }
+}
+
+
+@helper Price_Modifier(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(@input)
+    }
+    else
+    {
+        @Html.Raw(@input.Substring(0, length))<text>...</text>
+    }
+}
+
+@{
+    //prepare "Add to cart" AJAX link
+    string addtocartlink = "";
+    var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+    var quantity = 1;
+    if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+    }
+    else
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+    }
+
+}
+
+
+
+
+<div class="product-item">
+
+    <div class="row">
+        <div class="col-xs-3 col-md-2">
+            <div class="afbelding">
+                @if (Model.AlternateImage != null)
+                {
+                    <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" title="@Html.DisplayFor(m => m.Name)" class="clean">
+                        <img data-alt-src="@Model.AlternateImage.ImageUrl" src="@Model.DefaultPictureModel.ImageUrl" class="img-responsive swapImg" />
+                    </a>
+
+                }
+                else
+                {
+                    <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" title="@Html.DisplayFor(m => m.Name)" class="clean">
+                        <img src="@Model.DefaultPictureModel.ImageUrl" class="img-responsive" />
+                    </a>
+                }
+
+            </div>
+        </div>
+        <div class="col-xs-4 col-md-7">
+            <div class="description">
+                <h5>
+                    <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">@Html.DisplayFor(m => m.Name)</a>
+                </h5>
+            </div>
+
+            <div class="prices">
+                @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) || Model.ProductPrice.DisplayTaxShippingInfo)
+                {
+                    if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice))
+                    {
+                        <span class="price old-price">@Model.ProductPrice.OldPrice</span>
+                    }
+
+                    <span class="price actual-price">@Model.ProductPrice.Price</span>
+
+                    @*@if (Model.ProductPrice.DisplayTaxShippingInfo)
+                    {
+                        var inclTax = EngineContext.Current.Resolve<IWorkContext>().TaxDisplayType == TaxDisplayType.IncludingTax;
+                        //tax info is already included in the price (incl/excl tax). that's why we display only shipping info here
+                        //of course, you can modify appropriate locales to include VAT info there
+                        <div class="tax-shipping-info">
+                            @T(inclTax ? "Products.Price.TaxShipping.InclTax" : "Products.Price.TaxShipping.ExclTax", Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("shippinginfo") }))
+                        </div>
+                    }*@
+                }
+                else
+                {
+                    <span class="price actual-price">@Model.ProductPrice.Price</span>
+                }
+            </div>
+
+            @* New tag *@
+            @if (Model.MarkAsNew)
+            {
+                <span class="asNew">New</span>
+            }
+        </div>
+        <div class="col-xs-5 col-md-3">
+            @if (!Model.ProductPrice.DisableBuyButton)
+            {
+                <div class="text-center">
+
+                    @*show sale ribbon*@
+                    @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) && (!string.IsNullOrWhiteSpace(Model.ProductPrice.Price)))
+                    {
+                        if (Model.ProductPrice.DiscountPercentage > 0)
+                        {
+                            <span class="korting">@string.Format("- {0}%", Model.ProductPrice.DiscountPercentage)</span>
+                            <br /><br />
+                        }
+                    }
+
+                    <button class="btn btn-default btn-sm" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;">
+                        <i class="fa fa-cart-plus" aria-hidden="true"></i> @(Model.ProductPrice.AvailableForPreOrder ? T("ShoppingCart.PreOrder") : T("ShoppingCart.AddToCart"))
+
+                    </button>
+                </div>
+            }
+        </div>
+
+
+    </div>
+</div>
+

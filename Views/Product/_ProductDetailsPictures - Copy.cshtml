@@ -1,0 +1,218 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+@{
+    //Html.AddScriptParts("~/Scripts/jquery.magnific-popup.min.js");
+    //Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+}
+
+
+@if (Model.PictureModels.Count > 0)
+{
+
+    <div class="d-none d-md-block" style="position: absolute;top: 350px;left: -20px; z-index:5; max-width:256px;">
+        @*Skip the first image*@
+        @if (Model.PictureModels.Count > 1)
+        {
+            <div class="">
+                <img src="@Model.PictureModels[1].FullSizeImageUrl" class="img-fluid" id="" />
+            </div>
+        }
+    </div>
+
+
+
+    @*Mobile View*@
+    <div class="carousel d-block d-md-none" data-flickity='{ "autoPlay": true, "prevNextButtons": false, "pageDots": true }'>
+
+
+
+        @for (int i = 0; i < Model.PictureModels.Count; i++)
+        {
+            var css = "";
+            if (i == 0)
+            {
+                css = "selected";
+            }
+            var pic = Model.PictureModels[i];
+            if (i != 1)
+            {
+                <div class="carousel-product"><img class="img-responsive" src="@pic.FullSizeImageUrl" alt="" title="" /></div>
+            }
+        }
+
+
+
+    </div>
+
+    //large
+    <div class="zoom-slider-ok d-none d-md-block" style="">
+        <div class="zoom-slider-thumbnail-list">
+            <div class="thumbnail-list-container" data-role="thumbnail-list-container">
+                @for (int i = 0; i < Model.PictureModels.Count; i++)
+                {
+                    var css = "";
+                    if (i == 0)
+                    {
+                        css = "selected";
+                    }
+                    var pic = Model.PictureModels[i];
+                    if (i != 1)
+                    {
+
+
+                        <img src="@pic.FullSizeImageUrl" class="show-small-img img-fluid" alt="">
+                    }
+                }
+
+
+            </div>
+        </div>
+        @if (Model.PictureModels.Count > 1)
+        {
+            <div class="zoom-slider-big-box d-none d-md-block img-fluid" data-role="slider-big-box" href="@Model.PictureModels[0].FullSizeImageUrl" style="margin-top: -500px;margin-left: 80px;">
+                <img src="@Model.PictureModels[0].FullSizeImageUrl" id="show-img img-fluid">
+            </div>
+        }
+    </div>
+    @*<div class="d-none d-md-block" style="position: absolute;top: 350px;left: -20px;"><img src="~/content/images/FleshyLips.png" style="" /></div>*@
+
+
+
+
+    @*<div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                @foreach (var look in Model.PictureModels)
+                {
+                    var active = "";
+
+
+
+                    <div class="item @active">
+                        <table class="table table-responsive tblLook">
+                            <colgroup>
+                                <col style="width:30%;" />
+                                <col style="width:40%;" />
+                                <col style="width:30%;" />
+                            </colgroup>
+                            <tr>
+                                <td colspan="6" style="padding:32px 0;"></td>
+                            </tr>
+                            <tr>
+
+                                <td class="hidden-xs hidden-sm">
+                                    <div class="titel">
+                                      xxx
+                                    </div>
+                                </td>
+                                <td style="padding:0;" class="col-img">
+                                    <img src="@look.ImageUrl" class="img-fluid center-block" />
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    <div class="titel1">
+                                        <h2 class="Alternate" style="margin-bottom:25px;">
+                                            @look.Title
+                                        </h2>
+                                        <div class="cshareIcons collapse">
+
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="padding:0 0 32px;"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                                                }
+            </div>
+
+            <a class="left carousel-control clean" href="#myCarousel" role="button" data-slide="prev">
+                <img src="~/Themes/peg/Content/images/arrow-left.png" style="max-width:10px;" />
+            </a>
+            <a href="#myCarousel" role="button" data-slide="next" title="Next" class="right carousel-control clean">
+                <img src="~/Themes/peg/Content/images/arrow.png" style="max-width:10px;" />
+            </a>
+
+        </div>*@
+
+}
+
+<script>
+    jQuery(document).ready(function ($) {
+
+        $('#myCarousel').carousel({
+            interval: 5000
+        });
+
+        //Handles the carousel thumbnails
+        $('[id^=carousel-selector-]').click(function () {
+            var id_selector = $(this).attr("id");
+            try {
+                var id = /-(\d+)$/.exec(id_selector)[1];
+                //console.log(id_selector, id);
+                jQuery('#myCarousel').carousel(parseInt(id));
+            } catch (e) {
+                // console.log('Regex failed!', e);
+            }
+        });
+        // When the carousel slides, auto update the text
+        $('#myCarousel').on('slid.bs.carousel', function (e) {
+            var id = $('.item.active').data('slide-number');
+            $('#carousel-text').html($('#slide-content-' + id).html());
+        });
+    });
+
+    //var $slides = document.querySelector('#slides');
+    //var $slidesControls = Array.from(document.querySelectorAll('#slides_controls input'));
+    //var $slideWidth = document.querySelector('#slide_width');
+    //var $slidesVisible = document.querySelector('#slides_visible');
+    //var slide = $slides.dataset.slide;
+
+    //$slidesControls.forEach(function (element, index) {
+    //    element.addEventListener('change', function () {
+    //        document.documentElement.style.setProperty('--slide', index);
+    //    });
+    //});
+
+    //$slideWidth.addEventListener('keyup', function (e) {
+    //    if (e.keyCode == 13) {
+    //        document.documentElement.style.setProperty('--slideWidth', this.value + 'px');
+    //    }
+    //});
+
+    //$slidesVisible.addEventListener('input', function () {
+    //    document.documentElement.style.setProperty('--slidesVisible', this.value);
+    //})
+
+
+
+
+
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('a').click(function () {
+            var largeImage = $(this).attr('data-full');
+            $('.selected').removeClass();
+            $(this).addClass('selected');
+            $('.full img').hide();
+            $('.full img').attr('src', largeImage);
+            $('.full img').fadeIn();
+        });
+
+        $('.full img').on('click', function () {
+            var modalImage = $(this).attr('src');
+            $.fancybox.open(modalImage);
+        });
+
+    });
+</script>
+
+
+

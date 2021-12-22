@@ -1,0 +1,518 @@
+﻿@model HeaderLinksModel
+@using Nop.Web.Models.Common;
+@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Services.Localization
+@{
+
+    //logo path
+    var currentThemeName = "v1"; //EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    var logo = "~/Themes/" + currentThemeName + "/Content/images/logo.png";
+
+    //store name
+    var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
+
+    //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+
+
+    //current product ID
+    int currentProductId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("productdetails", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
+    }
+
+    var press = "inactive";
+    var common = "inactive";
+    var topic = "";
+    var controllername = Url.RequestContext.RouteData.Values["controller"].ToString();
+    if (controllername.Equals("press", StringComparison.OrdinalIgnoreCase))
+    {
+        press = "active";
+    }
+    else if (controllername.Equals("common", StringComparison.OrdinalIgnoreCase))
+    {
+        common = "active";
+    }
+    else if (controllername.Equals("topic", StringComparison.OrdinalIgnoreCase))
+    {
+        var url = Request.RawUrl;
+        var seoname = url.Substring(url.LastIndexOf("/") + 1);
+        if (seoname != "")
+        {
+            topic = seoname;
+        }
+    }
+}
+
+@*desktop navbar*@
+<div class="mobile-left-sidebar-overlay"></div>
+<div class="mobile-left-sidebar d-flex justify-content-center">
+    <div class=" d-flex flex-column" style="top:40vh;color:#D3A774">
+        <form action="~/search" autocomplete="on">
+            <input id="search_submit" value="" type="submit"><input class="search-nav mb-5" id="search" name="q" type="text" placeholder="SEARCH">
+        </form>
+    </div>
+</div>
+
+<div class="container-fluid d-none d-md-block p-0">
+
+    <div class="header-line1">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <div class="d-none d-sm-block">
+                        @*<div class="show-mobile-menu-btn" style="cursor:pointer">
+                                <img src="~/Themes/v1/Content/images/search.png" alt="" srcset="" style="width:14px;"><span> Search</span>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="col-6 text-center">
+                    FREE SHIPPING ON YOUR FIRST BOX! USE CODE SPRING2021
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                    <div class="pr-5">
+                        <ul class="list-unstyled list-inline mb-0">
+                            @if (Model.IsAuthenticated)
+                            {
+                                <li>
+                                    <div class="dropdown">
+                                        <a href="#" class="nav-item">Account</a>
+                                        <div class="dropdown-content2 text-left">
+                                            <a href="~/order/ConfirmPayments">Confirm Payment</a>
+                                            <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                                            <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
+                                            <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
+                                            <a href="~/customer/addressAdd">Address Book</a>
+                                            <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            }
+                            else
+                            {
+                                <li> <a href="~/login" class="signin btn-login mr-2">Login</a></li>
+                            }
+                        </ul>
+
+
+                    </div>
+
+
+
+                    <div class="pr-5">
+                        @if (Model.ShoppingCartEnabled)
+                        {
+                            var cartItem = "0";
+                            var cssCartItem = "bag-empty";
+                            if (Model.ShoppingCartItems > 0)
+                            {
+                                cartItem = string.Format("{0}", Model.ShoppingCartItems);
+                                cssCartItem = "shopping-bag";
+                            }
+                            <a href="#bag" onclick="$('.aside').asidebar('open')"><div id="icbag-panel" class="@cssCartItem align-items-center d-flex"><div>Bag</div><div id="mCartItemsQty" class="cart-qty">@cartItem</div></div></a>
+
+                        }
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row "><div class="col-12 text-center"><a href="~/"><img src="~/Themes/v1/Content/images/logo.png" class="brandImage" /></a></div></div>
+
+
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="container text-center">
+
+                <nav class="navbar navbar-expand-lg" style="padding:0;">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav main-menu-middle">
+                            @*<li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                For them
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Ramadhan</a>
+                <a class="dropdown-item" href="#">Valentines</a>
+                <a class="dropdown-item" href="#">Xmas</a>
+            </div>
+        </li>
+                            *@
+                            @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false })
+
+                            <li class="nav-item"><a class="nav-link" href="~/byob/step1"><span>Build Your Own Box</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="~/about"><span>About Us</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="~/contactus"><span>Contact</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="~/blog"><span>Blog</span></a></li>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    @*<div class="row ">
+        <div class="col-12 text-center">
+            <ul class="list-unstyled list-inline menunavigation">
+                <li class="list-inline-item"><a href="~/for-them"><span>For Them</span></a></li>
+                <li class="list-inline-item"><a href="~/for-you"><span>For You</span></a></li>
+                <li class="list-inline-item"><a href="~/byob/step1"><span>Build Your Own Box</span></a></li>
+                <li class="list-inline-item"><a href="~/about"><span>About Us</span></a></li>
+                <li class="list-inline-item"><a href="~/contactus"><span>Contact</span></a></li>
+                <li class="list-inline-item"><a href="~/blog"><span>Blog</span></a></li>
+            </ul>
+            <div class="d-flex">
+                        <div>
+                            <a class="nav-item mr-5 navbar-togglers leftNavbarToggler btn-toggle" data-target="#navbarsExampleDefault" style="cursor:pointer;"
+                               aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">Shop</a>
+                        </div>
+                        <div><a href="~/about" class="nav-item">About</a></div>
+                    </div>
+                <div class="menu_shop" style="margin-top:30px;">
+                    <ul class="list-unstyled list-inline m-0">
+                        <li class=""> <a href="~/new-arrivals" class="nav-item">NEW ARRIVALS</a></li>
+                    </ul>
+
+                    <ul class="list-unstyled list-inline">
+                        <li class=""> <a href="~/sale" class="nav-item">Sale</a></li>
+                    </ul>
+                    </div>
+        </div>
+    </div>*@
+</div>
+
+
+
+@*mobile navbar*@
+<div class="d-block d-md-none">
+
+
+    <nav class="navbar navbar-expand-md sidebarNavigation fixed-top" data-sidebarClass="navbar-dark" style="background-color:#fff; padding-top:0; ">
+        <div class="header-line1" style="padding:0">
+            <div class="container-fluid">
+                <div class="row" style="width:100vw;">
+                    <div class="col-4">
+                        <div class="d-none d-sm-block">
+                            @*<div class="show-mobile-menu-btn" style="cursor:pointer">
+                                    <img src="~/Themes/v1/Content/images/search.png" alt="" srcset="" style="width:14px;"><span> Search</span>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="col-4 text-center">
+                        @*FREE SHIPPING ON YOUR FIRST BOX!*@&nbsp;
+                    </div>
+                    <div class="col-4 d-flex justify-content-end">
+                        <div class="pr-5">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="padding-top:6px; padding-bottom:6px;">
+            <div class="row align-items-center">
+                <div class="col-3 text-center" style="">
+                    <button class="navbar-togglers leftNavbarToggler btn-toggle" type="button" data-target="#navbarsExampleDefault"
+                            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                        <div class="hamburger">
+                            <div class="top-bun"></div>
+                            <div class="meat"></div>
+                            <div class="bottom-bun"></div>
+                        </div>
+                    </button>
+                </div>
+                <div class="col-6">
+                    <a class="navbar-brand" href="~/"><img class="img-fluid brandImage" src="~/Themes/v1/Content/images/logo.png" /></a>
+                </div>
+                <div class="col-3" style="">
+                    <span style="color:#fff;">Cart</span>
+                    @*Cart
+                        <div class="mini-menu pull-right">
+                            @if (Model.ShoppingCartEnabled)
+                            {
+                                var cartItem = "";
+                                var cssCartItem = "bag-empty";
+                                if (Model.ShoppingCartItems > 0)
+                                {
+                                    cartItem = string.Format("{0}", Model.ShoppingCartItems);
+                                    cssCartItem = "bag";
+                                }
+                                <a href="#bag" onclick="$('.aside').asidebar('open')">
+                                    <div id="icbag-panel" class="@cssCartItem align-items-center d-flex">
+                                        <div><img src="~/Themes/v1/Content/images/bag.png" style="height:18px;" /></div><span id="mCartItemsQty"
+                                                                                                                              class="xans-element-xans-layout xans-layout-orderbasketcount cart-qty"><span style="color:#000;margin-left:-8px;">@cartItem</span></span>
+                                                                                                                        </div>
+                                                                                                                    </a>
+                                                                                                                                                                            <div class="aside">
+                                                                                                                                                                                <div class="aside-header"><span class="close" data-dismiss="aside" aria-hidden="true">&times;</span></div>
+                                                                                                                                                                                <div class="aside-contents">
+                                                                                                                                                                                    <div id="bag">@Html.Action("FlyoutShoppingCart", "ShoppingCart")</div>
+                                                                                                                                                                                </div>
+                                                                                                                                                                            </div>
+                                                                                                                                                                            <div class="aside-backdrop"></div>
+                            }
+                        </div>*@
+
+                </div>
+            </div>
+
+            <div class="navbar-collapse" id="navbarsExampleDefault" style="text-transform:uppercase;">
+
+                <div><span class="closeIcon mclose" onclick="mclosemenu()">&nbsp;</span></div>
+
+
+                <div class="" style="margin-top:20vh;">
+
+                    @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false })
+
+                    <br /><br />
+
+
+
+                    <div class="d-block d-md-none">
+                        <ul class="list-unstyled list-inline  mm-category1">
+                            <li><a href="~/for-you"><span>For You</span></a></li>
+                            <li><a href="~/for-them"><span>For Them</span></a></li>
+                            <li><a href="~/byob/step1"><span>Build Your Own Box</span></a></li>
+                            <li><a href="~/about">About</a></li>
+                            <li><a href="~/blog">Blog</a></li>
+                            @*<li class="dropdown dropright-list">
+            <a href="#" class="dropbtn" style="" data-toggle="collapse" data-target="#collapse-nav2" aria-expanded="false" aria-controls="collapse-nav2">Our Services</a>
+            <div class="collapse mt-3 pl-3" id="collapse-nav2">
+                <a href="/ourservices/wedding">Weddings</a>
+                <a href="~/ourservices/Baby-kids">Baby &amp; Kids</a>
+                <a href="~/ourservices/social-events">Social Events</a>
+                <a href="~/ourservices/corporate">Corporate</a>
+                <a href="~/ourservices/Packaging">Packaging &amp; Gift Wraps</a>
+                <a href="~/ourservices/collaborations">Collaborations</a>
+            </div>
+        </li>*@
+                            @*@if (Model.IsAuthenticated)
+        {
+            <li class="dropdown dropright-list">
+                <a href="#" class="dropbtn" style="" data-toggle="collapse" data-target="#collapse-nav2" aria-expanded="false" aria-controls="collapse-nav2">My Account</a>
+                <div class="collapse" id="collapse-nav2">
+                    <a href="~/order/ConfirmPayments">Confirm Payment</a>
+                    <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                    <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
+                    <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
+                    <a href="~/customer/addressAdd">Address Book</a>
+
+                </div>
+            </li>
+                <li>
+                    <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logoff</a>
+                </li>
+        }
+        else
+        {
+            <li><a href="~/login" class="signin btn-login">Sign in/ Sign up</a></li>
+        }*@
+
+
+                            @*<li><a href="#" class="" onclick="openSearch()">Search</a></li>*@
+                            @*<li style="padding-left:48px;">
+            @Html.Action("CurrencySelector", "Common")
+        </li>*@
+                        </ul>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                @*<div class="mb-4">
+                        <a class="navbar-brand" href="~/"><img class="img-responsive store-logo" src="~/Themes/v1/Content/images/logo.png" /></a>
+                    </div>
+                    @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
+                    <ul class="list-unstyled list-inline">
+                        <li> <a href="~/sale" class="signin" style="font-size:12px;">SALE</a></li>
+                        <li> <a href="#" class="" onclick="openSearch()" style="font-size:12px;">Search</a></li>
+                        @if (Model.IsAuthenticated)
+                        {
+                            <li class="dropdown dropright-list">
+                                <a href="#" class="dropbtn" style="font-size:12px;" data-toggle="collapse" data-target="#collapse-nav2" aria-expanded="false" aria-controls="collapse-nav2">My Account</a>
+                                <div class="collapse" id="collapse-nav2" style="font-size:12px;">
+                                    <a href="~/order/ConfirmPayments">Confirm Payment</a>
+                                    <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                                    <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
+                                    <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
+                                    <a href="~/customer/addressAdd">Address Book</a>
+                                    <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="~/login" class="signin btn-login" style="font-size:12px;">SIGN IN/SIGN UP</a></li>
+                        }
+
+                    </ul>*@
+            </div>
+
+        </div>
+
+
+    </nav>
+</div>
+
+
+<div class="overlay2 d-sm-none" id="myOverlay">
+    <span class="closebtn" onclick="closeSearch()" title="Close Overlay">close</span>
+    <div class="overlay-content">
+        <form action="~/search" autocomplete="on">
+            <input id="search_submit" value="" type="submit"><input class="search-nav mb-5" id="search" name="search" type="text" placeholder="SEARCH OUR STORE|">
+        </form>
+    </div>
+</div>
+
+<div class="aside">
+    <div class="aside-header"><span class="close" data-dismiss="aside" aria-hidden="true">&times;</span></div>
+    <div class="aside-contents">
+        <div id="bag">@Html.Action("FlyoutShoppingCart", "ShoppingCart")</div>
+    </div>
+</div>
+<div class="aside-backdrop"></div>
+
+<script>
+    window.onload = function () { if (window.jQuery) { $(document).ready(function () { $(".sidebarNavigation .navbar-collapse").hide().clone().appendTo("body").removeAttr("class").addClass("sideMenu").show(); $("body").append("<div class='overlay'></div>"); $(".navbar-toggle, .navbar-togglers").on("click", function () { $(".sideMenu").addClass($(".sidebarNavigation").attr("data-sidebarClass")); $(".sideMenu, .overlay").toggleClass("open"); $(".overlay").on("click", function () { $(this).removeClass("open"); $(".sideMenu").removeClass("open") }) }); $("body").on("click", ".sideMenu.open .nav-item", function () { if (!$(this).hasClass("dropdown")) { $(".sideMenu, .overlay").toggleClass("open") } }); $(window).resize(function () { if ($(".navbar-toggler").is(":block")) { $(".sideMenu, .overlay").hide() } else { $(".sideMenu, .overlay").show() } }) }) } else { console.log("sidebarNavigation Requires jQuery") } }
+
+    $(document).on('click', '.dropdown', function (e) {
+        e.stopPropagation();
+        $('.dropdown').not($(this)).removeClass('active');
+        $(this).toggleClass('active');
+    });
+
+    $(document).on('click', function () {
+        $('.dropdown').removeClass('active');
+    });
+
+    $(document).on('click', '.dropdown-content', function (e) {
+        e.stopPropagation();
+    })
+
+    $(document).ready(function () {
+        $(".dropdown").mouseleave(function () {
+            setTimeout(function () {
+                $(".dropdown-content2").toggleClass("show");
+            }, 3000);
+        });
+    });
+
+</script>
+
+@if (Model.ShoppingCartEnabled)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if (
+                $('.toggle > input').is(':checked') &&
+                !$(event.target).parents('.toggle').is('.toggle')
+            ) {
+                $('.toggle > input').prop('checked', false);
+            }
+
+
+            $('.li-header-mini-cart').on('mouseenter', '#topcartlink', function () {
+                $('#flyout-cart').addClass('active');
+            });
+            $('.li-header-mini-cart').on('mouseleave', '#topcartlink', function () {
+                $('#flyout-cart').removeClass('active');
+            });
+            $('.li-header-mini-cart').on('mouseenter', '#flyout-cart', function () {
+                $('#flyout-cart').addClass('active');
+            });
+            $('.li-header-mini-cart').on('mouseleave', '#flyout-cart', function () {
+                $('#flyout-cart').removeClass('active');
+            });
+
+        });
+
+        function openSearch() {
+            document.getElementById("myOverlay").style.display = "block";
+        }
+
+        function closeSearch() {
+            document.getElementById("myOverlay").style.display = "none";
+        }
+        $(document).ready(function () {
+            $(".close-btn").click(function () {
+                $(".sideMenu").removeClass("open");
+            });
+        });
+
+        function showMobileMenu() {
+            $('.mobile-left-sidebar').addClass('active');
+            $('.mobile-left-sidebar-overlay').addClass('active');
+        }
+        function closeMobileMenu() {
+            $('.mobile-left-sidebar').removeClass('active');
+            $('.mobile-left-sidebar-overlay').removeClass('active');
+        }
+        $('.show-mobile-menu-btn').click(showMobileMenu);
+        $('.mobile-left-sidebar-overlay').click(closeMobileMenu);
+        $('.close-mobile-menu-btn').cli
+
+
+
+        function mclosemenu() {
+            $(".sideMenu, .overlay").toggleClass('open');
+        }
+
+    </script>
+
+
+
+
+
+    <script>
+        $(".dropdown-menu").css('margin-top', 0);
+        $(".dropdown")
+            .mouseover(function () {
+                $(this).addClass('show').attr('aria-expanded', "true");
+                $(this).find('.dropdown-menu').addClass('show');
+            })
+            .mouseout(function () {
+                $(this).removeClass('show').attr('aria-expanded', "false");
+                $(this).find('.dropdown-menu').removeClass('show');
+            });
+    </script>
+
+}

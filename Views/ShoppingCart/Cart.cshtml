@@ -1,0 +1,243 @@
+﻿@model ShoppingCartModel
+@using Nop.Web.Models.Checkout
+@using Nop.Web.Models.ShoppingCart;
+@{
+    //title
+    Html.AddTitleParts(T("PageTitle.ShoppingCart").Text);
+}
+
+
+@*@if (!Model.OnePageCheckoutEnabled){@Html.Action("CheckoutProgress", "Checkout", new {step = CheckoutProgressStep.Cart})}*@
+
+@*@section Left{@Html.Partial("MenuStatic")}*@
+
+<div class="container mt-5">
+    @*<div class="cart-page">
+        <div class="cart-header">
+            <h3>Check Out</h3>
+        </div>
+        <div id="accordion">
+            <div class="card cart-accordion">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link header-cart" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Billing Address
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+
+                        <div>
+                            <p>Select a billing address from your address book or enter a new address</p>
+
+                            <select class="select-address" onchange="newAddress(this);">
+                                <option value="">Jane Doe - Graha Raya, Tangerang, Banten 15324, Indonesia</option>
+                                <option value="other">New Address</option>
+                            </select>
+                            <div id="ifNewbil" style="display: none;">
+                                <input class="input-cart" data-val="true" data-val-required="First name is required." id="FirstName" name="FirstName" placeholder="First name" type="text" value="">
+                                <input class="input-cart" data-val="true" data-val-required="First name is required." id="LastName" name="LastName" placeholder="Last name" type="text" value="">
+                                <input type="tel" id="yourphone" name="yourphone" placeholder="Mobile" class="input-cart" />
+                                <input type="email" id="email" name="email" placeholder="Email" class="input-cart" />
+                                <input type="password" id="psw" name="psw" placeholder="Create a password" class="input-cart" />
+                                <input type="country" id="country" name="country" placeholder="Indonesia" class="input-cart" />
+                                <input type="text" id="address" name="address" placeholder="Address" class="input-cart" />
+                                <input type="tel" id="address" name="address" placeholder="Post Code" class="input-cart" />
+                                <input type="tel" id="address" name="address" placeholder="Town/City" class="input-cart" />
+                                <input type="tel" id="address" name="address" placeholder="Province/State" class="input-cart" />
+                            </div>
+                        </div>
+                        <br /><button class="btn-cart collapsed header-cart" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width:135.68px; height:26.16px; f">CONTINUE</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed header-cart" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Shipping Address
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+
+
+
+                        <div>
+                            <p>Select a shipping address from your address book or enter a new address</p>
+
+                            <select class="select-address" onchange="newAddress2(this);">
+                                <option value="">Jane Doe - Graha Raya, Tangerang, Banten 15324, Indonesia</option>
+                                <option value="other">New Address</option>
+                            </select>
+                            <div id="ifNewship" style="display: none;">
+                                <input class="input-cart" data-val="true" data-val-required="First name is required." id="FirstName" name="FirstName" placeholder="First name" type="text" value="">
+                                <input class="input-cart" data-val="true" data-val-required="First name is required." id="LastName" name="LastName" placeholder="Last name" type="text" value="">
+                                <input type="tel" id="yourphone" name="yourphone" placeholder="Mobile" class="input-cart" />
+                                <input type="email" id="email" name="email" placeholder="Email" class="input-cart" />
+                                <input type="password" id="psw" name="psw" placeholder="Create a password" class="input-cart" />
+                                <input type="country" id="country" name="country" placeholder="Indonesia" class="input-cart" />
+                                <input type="text" id="address" name="address" placeholder="Address" class="input-cart" />
+                                <input type="tel" id="address" name="address" placeholder="Post Code" class="input-cart" />
+                                <input type="tel" id="address" name="address" placeholder="Town/City" class="input-cart" />
+                                <input type="tel" id="address" name="address" placeholder="Province/State" class="input-cart" />
+                            </div>
+                            <br /><button class="btn-cart collapsed header-cart" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed header-cart" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Shipping Method
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card-body option-cart">
+                        <input type="radio" value="jnereg" /> JNE REG (IDR 9000)<br />
+                        <input type="radio" value="jnereg" /> JNE YES (IDR 18000)<br />
+                        <input type="radio" value="jnereg" /> SiCepat (IDR 0)
+                        <br /><button class="btn-cart  collapsed header-cart" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">CONTINUE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed header-cart" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Payment Method
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                    <div class="card-body option-cart">
+                        <input type="radio" value="Bank Transfer" /> Bank Transfer<br />
+                        <input type="radio" value="Bank Transfer" /> Credit Card
+                    </div>
+                    <br /><button class="btn-cart collapsed header-cart" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">CONTINUE</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFive">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed header-cart" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Order Confirmation
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                    <div class="card-body">
+
+                        <div class="order-confirmation">
+                            <div class="order-detail-column" id="detail-column-left">
+                                <p style="font-size:20px; color:#FFAF42;">CUSTOMER DETAILS</p>
+                                <p style="font-size:14px;color:#000;">
+                                    JL. ABC no.09 rt.001 rw.001
+                                    12332 Jakarta Selatan
+                                    DKI Jakarta Indonesia
+                                </p>
+                                <p style="font-size:14px;color:#000;">
+                                    Jane Doe
+                                    janedoe@emailaddress.com
+                                    +62 8123344533
+                                </p>
+                            </div>
+                            <div class="order-detail-column" id="detail-column-right">
+                                <p style="font-size:20px; color:#FFAF42;">SHIPPING ADDRESS</p>
+                                <p style="font-size:14px;color:#000;">
+                                    JL. ABC no.09 rt.001 rw.001
+                                    12332 Jakarta Selatan
+                                    DKI Jakarta Indonesia
+                                </p>
+                                <p style="font-size:14px;color:#000;">
+                                    Jane Doe
+                                    janedoe@emailaddress.com
+                                    +62 8123344533
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+
+    <div class="col-main mt-normal">
+        <h2 class="text-center mb-3">YOUR BAG</h2>
+        <div id="pleasewait" style="display:none;" class="text-shop">
+            <img src="~/Themes/v1/Content/images/ajax_loader_small.gif" style="display:block;" /> <i>Please wait...</i>
+        </div>
+        @Html.Partial("OrderSummary", Model)
+
+
+    </div>
+    </div>
+<br /><br /><br /><br />
+
+      
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        function newAddress(that) {
+            if (that.value == "other") {
+                document.getElementById("ifNewbil").style.display = "block";
+            } else {
+                document.getElementById("ifNewbil").style.display = "none";
+            }
+        }
+        function newAddress2(that) {
+            if (that.value == "other") {
+                document.getElementById("ifNewship").style.display = "block";
+            } else {
+                document.getElementById("ifNewship").style.display = "none";
+            }
+        }
+
+
+        function reqfailed() {
+            $("#pnlfailure").html("Sorry, an error occured.");
+        }
+
+        function frmUpdateComplete(data, status, xhr) {
+            if (typeof data.uri != "undefined")
+                window.location = data.uri;
+
+            if ($('#cartqty').html() != "undefined") {
+                var q = ($('#cartqty').html());
+
+                if (q > 0) {
+                    $('.cart-qty').html(q);
+                }
+                else {
+                    var width = $(window).width(), height = $(window).height();
+                    //if ((width >= 1080)) {
+                    //    $('.cart-qty').html('0');
+                    //}
+                    //else {
+                    $('.cart-qty').empty();
+                    //}
+                }
+
+            }
+        }
+
+        $("#continueshopping").click(function () {
+            $("#pleasewait").css("display", "block");
+        });
+        $("#checkout").click(function () {
+            $("#pleasewait").css("display", "block");
+        });
+
+    </script>
+}

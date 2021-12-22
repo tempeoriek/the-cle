@@ -1,0 +1,112 @@
+﻿@model List<Nop.Web.Models.Flitts.Project.ProjectViewModel>
+
+@{
+    ViewBag.Title = "Our Services";
+
+}
+
+<div class="container text-center">
+    @*<h1 class="mb-10">Our Services</h1>*@
+    <ul class="list-unstyled list-inline menunavigation submenu">
+        @foreach (var item in Model)
+        {
+            <li class="list-inline-item"><a href="~/ourservices/@item.project.SystemName"><span>@item.project.Name</span></a></li>
+        }
+    </ul>
+</div>
+
+<div class="container d-none d-md-block">
+    <div class="serviceslider serviceoverviewslider">
+       
+            @foreach (var item in Model)
+            {
+                <div>
+                    <table style="width:95%; border-right:1px solid #000;">
+                        <tr>
+                            <td style="vertical-align:bottom; padding-bottom:40px; padding-top:40px;">
+                                <h1>@item.project.Name</h1>
+                                <p>@item.project.Title</p>
+                                <br />
+                                <a href="~/ourservices/@item.project.SystemName" class="btn btn-default">View Project</a>
+                            </td>
+                            <td style="width:50%; padding:40px 5%;">
+                                <a href="~/ourservices/@item.project.SystemName"><img src="@item.Thumbnail" class="img-fluid" /></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+    </div>
+</div>
+
+@*mobile*@
+<div class="container d-md-none">
+   
+
+        @foreach (var item in Model)
+        {
+        <div style="display:block;padding-bottom:40px;">
+
+            <h1 style="margin-bottom:10px;">@item.project.Name</h1>
+            <p>@item.project.Title</p>
+            <a href="~/ourservices/@item.project.SystemName"><img src="@item.Thumbnail" class="img-fluid" /></a>
+            <br /><br />
+            <a href="~/ourservices/@item.project.SystemName" class="btn btn-default">View Project</a>
+        </div>
+        }
+</div>
+
+
+@*@Html.Partial("_ContactForm", new Nop.Web.Models.Common.ContactUsModel())*@
+
+@section HeaderSection{
+    
+    <link rel="stylesheet" type="text/css" href="~/Scripts/Plugins/slick/slick.css">
+<link rel="stylesheet" type="text/css" href="~/Scripts/Plugins/slick/slick-theme.css">
+
+}
+
+@section scripts{
+    <script src="~/Scripts/Plugins/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+    
+<script>
+    $(document).ready(function () {
+        $('.serviceslider').slick({
+            slidesToShow: 1,
+            dots: false,
+            centerMode: true,
+            arrows: true,
+            autoplay: false,
+            autoplaySpeed: 2000,
+            responsive: [
+                {
+                     breakpoint: 578,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            arrows: false,
+                        }
+                }
+            ]
+        });
+
+        //$('.single-item').slick({
+        //    slidesToShow: 1,
+        //    dots: false,
+        //    centerMode: true,
+        //    arrows: false,
+        //    autoplay: true,
+        //    autoplaySpeed: 8000,
+        //});
+
+    });
+
+
+
+
+
+  
+
+</script>
+
+}

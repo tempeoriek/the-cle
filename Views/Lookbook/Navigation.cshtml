@@ -1,0 +1,113 @@
+﻿@using Nop.Services.Flitts.Collection
+@model IEnumerable<Collection>
+
+
+@{
+
+    var selected = "active";
+    var seoname = "";
+    var collapseMenu = "collapse";
+    var archive = "";
+
+    var controllername = Request.RequestContext.RouteData.Values["controller"].ToString();
+    if (controllername.Equals("collection", StringComparison.OrdinalIgnoreCase))
+    {
+        var actionname = Request.RequestContext.RouteData.Values["action"].ToString();
+        if (actionname.Equals("archive", StringComparison.OrdinalIgnoreCase))
+        {
+            archive = "active";
+            collapseMenu = "";
+        }
+        else if (actionname.Equals("show", StringComparison.OrdinalIgnoreCase))
+        {
+            //get seoname
+            var url = Request.RawUrl;
+            seoname = url.Substring(url.LastIndexOf("/") + 1);
+            if (seoname != "")
+            {
+                collapseMenu = "";
+            }
+
+        }
+        else if (actionname.Equals("new", StringComparison.OrdinalIgnoreCase))
+        {
+            //archive = "active";
+            collapseMenu = "";
+
+            var raw = Request.Url.ToString();
+            seoname = raw.Split('/').Last();
+
+        }
+        else if (actionname.Equals("index", StringComparison.OrdinalIgnoreCase))
+        {
+            //get seoname
+            var url = Request.RawUrl;
+            seoname = url.Substring(url.LastIndexOf("/") + 1);
+            if (seoname != "")
+            {
+                collapseMenu = "";
+
+                //archive = "active";
+
+            }
+
+        }
+    }
+
+    var id = (ViewBag.isMobile != null) ? "collection-mobile" : "collection";
+    var parentId = (ViewBag.isMobile != null) ? "lookbook-mobile" : "lookbook";
+
+
+}
+
+
+<li class="dropdown dropdown-meganav mega-dropdown-fluid">
+    <a class="dropdown-toggle" href="#lookbook" data-toggle="dropdown">Lookbook</a>
+    @if (Model != null)
+    {
+        var thumbnails = (Dictionary<int, string>)ViewBag.Thumbnails;
+
+        <ul class="dropdown-menu">
+            <div class="container-fluid">
+                <div class="row">
+                    @foreach (var i in Model)
+                    {
+                        <div class="col-xs-3 col-sm-2 mega-nav-section-wr nav-collectie">
+                            <div class="mega-nav-section">
+                                @if (thumbnails != null)
+                                {
+                                    foreach (var thumbnail in thumbnails)
+                                    {
+                                        if (thumbnail.Key == i.Id)
+                                        {
+                                            <a class="clean" href="/lookbook/@i.SystemName">
+                                                <img class="img-responsive hidden-xs hidden-sm" src="@thumbnail.Value">
+                                            </a>
+
+                                            break;
+                                        }
+                                    }
+                                }
+
+                              
+                               
+
+
+                                <h3 class="mega-nav-section-title" style="width:100%; text-align:left;">
+                                    <a href="/lookbook/@i.SystemName">@i.Name</a>
+                                </h3>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </ul>
+
+
+        }
+
+
+
+</li>
+
+

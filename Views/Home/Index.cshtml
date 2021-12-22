@@ -1,0 +1,351 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .col-12, .col-6 {
+        /*padding: 0 !important;*/
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="~/Scripts/Plugins/slick/slick.css">
+<link rel="stylesheet" type="text/css" href="~/Scripts/Plugins/slick/slick-theme.css">
+
+
+
+<div class="">@Html.Action("HeaderLinks", "Common")</div>
+
+
+<div class="container-fluid pl-0 pr-0 text-center homeslider">
+    <div class="single-item">
+        <div onclick="location.href='//the-clementines.com/ourservices/wedding';" style="cursor:pointer;"><img src="~/content/images/uploaded/homepage/MainBanner_01.jpg" class="img-fluid w-100"></div>
+        @*<div onclick="location.href='//the-clementines.com/contactus';" style="cursor:pointer;"><img src="~/content/images/uploaded/homepage/MainBanner_02.png" class="img-fluid w-100"></div>*@
+    </div>
+    @*<div class="pagingInfo"><span class="slideInfo"></span><span class="slideTotal"></span></div>*@
+</div>
+
+
+
+<div class="container text-center mt-8 mb-normal">
+    <div class="row align-items-center">
+        <div class="col-12">
+
+            <p style="max-width:50%; margin-left:auto; margin-right:auto;">
+                Celebrate perfect little moments in a big way!<br />
+                Send personalized gift wherever, whenever.<br />
+                24/7
+                <br /><br />
+                With Clé - Gifts
+            </p>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@*@Html.Action("HomepageProducts", "Product")*@
+<div class="container pl-0 pr-0 homepage-products" style="margin-top:80px;">
+    <h1 class="text-center mb-5 text-uppercase">Shop gifts for every occassion</h1>
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <img src="~/Content/Images/uploaded/product/Shop our currated gift 1.png" class="img-fluid" />
+            <p class="text-center mt-20">
+                <h3>Eunoia x Cle Spray</h3>
+                <span>IDR 220.000</span><br />
+
+            </p>
+        </div>
+        <div class="col-6 col-md-3">
+            <img src="~/Content/Images/uploaded/product/Shop our currated gift 2.png" class="img-fluid" />
+            <p class="text-center mt-20">
+                <h3>Time to relax</h3>
+                <span>IDR 550.000</span><br />
+            </p>
+        </div>
+        <div class="col-6 col-md-3">
+            <img src="~/Content/Images/uploaded/product/Shop our currated gift 3.png" class="img-fluid" />
+            <p class="text-center mt-20">
+                <h3>Welcome Home</h3>
+                <span>IDR 295.000</span><br />
+
+            </p>
+        </div>
+        <div class="col-6 col-md-3">
+            <img src="~/Content/Images/uploaded/product/Shop our currated gift 4.png" class="img-fluid" />
+            <p class="text-center mt-20">
+                <h3>CHRISTMAS EDITION DIFFUSER</h3>
+                <span>IDR 295.000</span><br />
+
+            </p>
+        </div>
+    </div>
+    <br /><br />
+    <a href="~/for-them" class="btn btn-link">See more gifts >></a>
+</div>
+<div class="container-fluid mt-8 mb-8" style="background-color:#eae5dd">
+
+    <div class="row align-items-center" style="background-color:#eae5dd">
+
+        <div class="col-12 col-md-6 text-center">
+            <h1 class="stress text-uppercase">BE MINE, VALENTINE</h1>
+            <p class="plusone">Gifts for every relationship status</p>
+            <div class="" style="margin-top:15vh">
+                <a href="#" class="btn btn-link plusone">Shop Our Valentine Collections ></a>
+            </div>
+           
+        </div>
+        <div class="col-12 col-md-6 px-md-0"><img class="img-fluid" src="~/Content/Images/uploaded/homepage/h2.jpg" alt=""></div>
+    </div>
+
+
+    <div class="row align-items-center" style="background-color:#eae5dd">
+        <div class="col-12 col-md-6 px-md-0"><img class="img-fluid" src="~/Content/Images/uploaded/homepage/h3.jpg" alt=""></div>
+        <div class="col-12 col-md-6 text-center">
+            <h1 class="stress text-uppercase">The Lucky Mandarin</h1>
+            <p class="plusone">
+                Send well wishes to those you love this<br />
+                Lunar New Year
+            </p>
+          <div class="" style="margin-top:15vh"><a href="#" class="btn btn-link plusone">Shop our Lunar Collections ></a></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="container-fluid instagram-container px-0">
+    <div class="row align-items-center">
+        <div class="col-12 text-center">
+            <h1 class="stress text-center">"Gifts dreamt by you, made true by us."</h1>
+            <br />
+            <h2 class="mt-3" style="text-transform:unset">#YourGiftButler</h2>
+            <br />
+            <div id="instagram-feed" />
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="modal-popup-close">&times;</span>
+        <p>Subscribe now and get 10% off of your first order.</p>
+    </div>
+
+</div>
+
+
+
+@Html.Action("Footer", "Common")
+
+
+
+@section RootHeaderSection
+{
+    <link href="~/Scripts/app/InstaGet/css/instaget.css" rel="stylesheet" />
+    <link href="~/Themes/v1/Content/homepage.css" rel="stylesheet" />
+    <style>
+
+
+        .brand-menu {
+            position: absolute;
+        }
+
+        .ig-instagram-items {
+            grid-gap: 0;
+        }
+
+
+
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 5%;
+            top: 80vh;
+            width: 500px; /* Full width */
+            height: 95px; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            /*   background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4); */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #ffffff;
+            margin: 0 auto; /* 15% from the top and centered */
+            padding: 5px 10px 5px 20px;
+            border: 1px solid #000000;
+            width: 100%; /* Could be more or less, depending on screen size */
+            color: #a78664;
+            text-transform: uppercase;
+            border-radius: 0;
+            font-size: 1rem;
+            letter-spacing: 0.6px;
+        }
+
+            .modal-content p {
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+
+        /* The Close Button */
+        .close {
+            color: #000;
+            display: block;
+            text-align: right;
+            font-size: 1rem;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+
+
+
+
+
+
+
+}
+
+@section RootScripts{
+
+    <script>
+        $(document).ready(function () {
+            $('.carousel').carousel({
+                touch: true
+            });
+
+        });
+
+    </script>
+
+
+    <script src="~/Scripts/Plugins/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $(document).ready(function () {
+            $('.igslider').slick({
+                slidesToShow: 6,
+                dots: false,
+                centerMode: true,
+                arrows: false,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                responsive: [
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+
+
+
+
+
+            $('.single-item').slick({
+                slidesToShow: 1,
+                dots: true,
+                centerMode: false,
+                arrows: false,
+                autoplay: true,
+                autoplaySpeed: 5000,
+            });
+
+        });
+
+
+
+
+
+        $('.left').click(function () {
+            $('.carouselmobile').slick('slickPrev');
+        })
+
+        $('.right').click(function () {
+            $('.carouselmobile').slick('slickNext');
+        })
+
+
+    </script>
+
+
+    <script src="~/Scripts/app/InstaGet/js/instaget-min.js"></script>
+    <script>
+        new instaGet('#instagram-feed', {
+            token: 'IGQVJXMHd4THZA0WGE4OHBXQy12VVBfeVJGX3pRMjRVemM0b0VHTml0NHhMUTN4M3JUQy1nV0JEQ2hnZATVNbFJnYUlEWTFHQTh4OXhoaUJkcG5LNTk1aVF6UTBpbVlBVkpUdTA5Q0RPQjFuNjRWb194dwZDZD',
+            counter: 6,
+            numcol: 6,
+            moreBtn: false,
+            info: false,
+            width: '100%',
+            height: '100%',
+        });
+    </script>
+
+
+
+
+    <script>
+
+        $(document).ready(function () {
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            //var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            //var span = document.getElementsByClassName("close")[0];
+            //var span = $("#modal-popup-close").style.display = "none";
+
+
+            // When the user clicks on the button, open the modal
+            //btn.onclick = function () {
+            //    modal.style.display = "block";
+            //}
+
+
+            modal.style.display = "block";
+
+
+            // When the user clicks on <span> (x), close the modal
+            //span.onclick = function () {
+            //    modal.style.display = "none";
+            //}
+
+            $("#modal-popup-close").click(function () {
+                modal.style.display = "none";
+            });
+
+
+
+            // When the user clicks anywhere outside of the modal, close it
+            //window.onclick = function (event) {
+            //    if (event.target == modal) {
+            //        modal.style.display = "none";
+            //    }
+            //}
+        });
+
+
+    </script>
+}

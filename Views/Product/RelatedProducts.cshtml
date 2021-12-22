@@ -1,0 +1,127 @@
+﻿@model IList<ProductOverviewModel>
+
+@using Nop.Web.Models.Catalog;
+
+
+
+
+
+
+@if (Model.Count > 0)
+{
+    <div class="container-fluid px-0" >
+
+        <div class="related-products">
+            <div class="container">
+                <h2 class="mb-5">Things you might like...</h2>
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="related-products-item col-6 col-md-3">
+
+                            @Html.Partial("_ProductBox", item)
+
+                            @*<div class="img-similar-overlay">
+                        <a href="@Url.RouteUrl("Product", new { SeName = item.SeName })" class="clean">
+                            <img src="@item.DefaultPictureModel.ImageUrl" class="img-fluid image-similar-thumb" />
+                        </a>
+                        <div class="text-overlay">
+                            <p>@item.Name</p>
+
+                            <p>
+                                @if (item.Quantity > 0)
+                                    {
+
+                                    <div class="prices">
+                                        @if (!String.IsNullOrEmpty(item.ProductPrice.OldPrice) || item.ProductPrice.DisplayTaxShippingInfo)
+                                            {
+                                                if (!String.IsNullOrEmpty(item.ProductPrice.OldPrice))
+                                                {
+                                            <span class="price old-price">@item.ProductPrice.OldPrice</span>
+                                                }
+
+                                            <span class="price actual-price">@item.ProductPrice.Price</span>
+                                            }
+                                            else
+                                            {
+                                            <span class="price actual-price">@item.ProductPrice.Price</span>
+                                            }
+                                    </div>
+
+                                    }
+                                    else
+                                    {
+                                    <div class="prices"><span class="out-of-stock">Out of stock</span></div>
+                                    }
+                            </p>
+
+                        </div>
+                    </div>*@
+
+                        </div>
+
+
+
+
+                    }
+
+                </div>
+            </div>
+            
+        
+
+
+
+
+            @*Mobile*@
+            @*<div class="related-products d-block d-sm-none">
+                @foreach (var item in Model)
+        {
+
+            <div class="col-xs-2 col-sm-2 catalog-line">
+                <div class="product-item">
+                    <a href="@Url.RouteUrl("Product", new { SeName = item.SeName})" class="clean">
+                        <img src="@item.DefaultPictureModel.ImageUrl" class="img-responsive center-block" />
+                    </a>
+                    <div class="description">
+                        @if (item.Quantity > 0)
+                        {
+                    <div class="prices">
+                        @if (!String.IsNullOrEmpty(item.ProductPrice.OldPrice) || item.ProductPrice.DisplayTaxShippingInfo)
+                                {
+                                    if (!String.IsNullOrEmpty(item.ProductPrice.OldPrice))
+                                    {
+                            <span class="price old-price">@item.ProductPrice.OldPrice</span>
+                                    }
+
+                            <span class="price actual-price">@item.ProductPrice.Price</span>
+                                }
+                                else
+                                {
+                            <span class="price actual-price">@item.ProductPrice.Price</span>
+                                }
+                    </div>
+
+                        }
+                        else
+                        {
+                    <div class="prices"><span class="out-of-stock">Out of stock</span></div>
+                        }
+
+                        <h3><a class="clean" href="@Url.RouteUrl("Product", new { SeName = item.SeName})">@item.Name</a></h3>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        }
+            </div>*@
+
+
+
+        </div>
+    </div>
+}

@@ -1,0 +1,39 @@
+﻿@model IList<ProductOverviewModel>
+@{
+    Layout = "~/Views/Shared/_LayoutThree.cshtml";
+    //title
+    Html.AddTitleParts(T("PageTitle.NewProducts").Text);
+}
+@using Nop.Web.Models.Catalog;
+
+
+   
+<div class="container-fluid">
+    @if (Model.Any())
+    {
+        <div class="row catalogue-img">
+            @foreach (var item in Model)
+            {
+                var colCss = "col-6 col-sm-6 col-md-4 col-lg-4";
+                //var type = item.ThumbnailOrientation;
+                //if (type.Equals("landscape", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    colCss = "col-6";
+                //}
+
+                <div class="@colCss catalog-line">
+                    @Html.Partial("_ProductBox", item)
+                </div>
+               
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-main-slim mt-5"><h3>We're still preparing the collection. Please stay tuned.</h3></div>
+    }
+    <div class="gap"></div>
+</div>
+
+
+

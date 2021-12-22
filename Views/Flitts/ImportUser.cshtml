@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "ImportUser";
+}
+
+<h2>ImportUser</h2>
+
+@using (Html.BeginForm("ImportUser", "Flitts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container col-main-sml">
+        <input type="file" id="importexcelfile" name="importexcelfile" class="k-input" />
+        <button type="submit" class="btn btn-default" value="Import now">Import Now</button>
+    </div>
+
+}

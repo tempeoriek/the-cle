@@ -1,0 +1,35 @@
+﻿@model IList<ProductOverviewModel>
+
+@using Nop.Web.Models.Catalog;
+
+@if (Model.Count > 0)
+{
+ 
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-6 col-md-3 text-left"><h1 class="text-uppercase">Best seller</h1></div>
+            <div class="col-md-6 d-none d-md-block"></div>
+            <div class="col-6 col-md-3 text-right"><h1 class="text-capitalize"><a href="~/shop">shop all</a></h1></div>
+        </div>
+        
+        <div class="row  mt-5">
+            @foreach (var item in Model)
+            {
+                <div class="col-6 col-md-3 text-center homepage__bestseller">
+                    @Html.Partial("_ProductBox", item)
+                </div>
+            }
+
+            @*<div class="col-6 col-md-3 text-center"><a href="#">
+                <img src="~/content/images/uploaded/homepage/a.png" class="img-fluid w-100 mb-5" />
+                <h4>Ayara Dress In Ice</h4>
+                <p>IDR 729.000</p>
+                </a>
+            </div>*@
+           
+        </div>
+    </div>
+
+
+}

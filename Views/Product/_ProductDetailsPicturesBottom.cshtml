@@ -1,0 +1,28 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+
+
+
+@if (Model.PictureModels.Count > 0)
+{
+    <div class="row no-gutters ">
+        @*Skip the first image*@
+        @for (int i = 1; i < Model.PictureModels.Count; i++)
+        {
+            var pic = Model.PictureModels[i];
+            <div class="col-4 d-none d-md-block">
+                <a href="@pic.FullSizeImageUrl" data-fancybox="gallery">
+                    <img src="@pic.FullSizeImageUrl" class="img-fluid" id="prodimg-@i"/>
+                </a>
+                
+            </div>
+
+
+        }
+    </div>
+
+
+  
+
+
+}

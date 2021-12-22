@@ -1,0 +1,84 @@
+﻿@model IEnumerable<GiftCardViewModel>
+@using Nop.Web.Models.Flitts.Customer;
+@using Nop.Web.Models.Customer;
+
+@{
+    ViewBag.Title = "GiftCards";
+    ViewBag.HideMenu = "true";
+}
+
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards })
+}
+
+
+<section class="col-main mt-normal mijnaccount">
+
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards, isMobile = true })
+
+    <h1>Voucher</h1>
+
+    <div class="giftcard-list">
+        @if (Model.Any())
+        {
+
+            foreach (var giftcard in Model)
+            {
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3>@giftcard.GiftCardCouponCode</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="table-responsive">
+                            <table class="table basic">
+                                <tfoot>
+                                    <tr>
+                                        <td class="no-leftpadding" colspan="3">
+                                            Remaining credit: @giftcard.RemainingAmountStr
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr>
+                                        <td class="no-leftpadding">Order no.</td>
+                                        <td>Used</td>
+                                        <td>Date</td>
+                                    </tr>
+                                    @foreach (var usage in giftcard.UsageHistory)
+                                    {
+                                        <tr>
+                                            <td class="no-leftpadding">
+                                                @usage.OrderId
+                                            </td>
+                                            <td>
+                                                @usage.UsedValue
+                                            </td>
+
+                                            <td>
+                                                @usage.CreatedOn
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <br /><br />
+            }
+        }
+        else
+        {
+            @Html.Label("There is no voucher available at your disposal")
+        }
+
+    </div>
+
+
+</section>

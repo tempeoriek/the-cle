@@ -1,0 +1,177 @@
+﻿@model ProductOverviewModel
+@using Nop.Core
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Extensions
+@using Nop.Web.Models.Catalog;
+
+@helper Text_Truncate(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(@input)
+    }
+    else
+    {
+        @Html.Raw(@input.Substring(0, length))<text>...</text>
+    }
+}
+
+
+@helper Price_Modifier(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(@input)
+    }
+    else
+    {
+        @Html.Raw(@input.Substring(0, length))<text>...</text>
+    }
+}
+
+@{
+    //prepare "Add to cart" AJAX link
+    string addtocartlink = "";
+    var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+    var quantity = 1;
+    if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+    }
+    else
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+    }
+    
+    @* [Flitts] Site specific. Add border when product on sale*@
+    var CssOnSale = "";
+    
+    if(Model.ProductPrice.DiscountPercentage != null)
+    {
+        if( Model.ProductPrice.DiscountPercentage > 0)
+        {
+            CssOnSale = "product-item-onsale";
+        }
+       
+    }
+    
+    if (Model.MarkAsNew)
+    {
+        CssOnSale = "product-item-onsale";
+    }
+}
+
+
+
+<div class="product-item @CssOnSale">
+    <div class="product-card">
+        <div class="product-front">
+           
+    @if (Model.AlternateImage != null)
+        {
+            <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" title="@Html.DisplayFor(m => m.Name)" class="clean">
+                <img data-alt-src="@Model.AlternateImage.ImageUrl" src="@Model.DefaultPictureModel.ImageUrl" class="img-responsive swapImg" />
+            </a>
+
+        }
+        else
+        {
+            <img src="@Model.DefaultPictureModel.ImageUrl" class="img-responsive img-thumbnail" />
+        }
+           
+             @*<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" title="@Html.DisplayFor(m => m.Name)" class="clean">
+                <img src="~/Content/Images/dummy.jpg" class="img-responsive" />
+            </a>*@
+           
+
+
+            <div class="image_overlay"></div>
+            @*@if (!Model.ProductPrice.DisableBuyButton)
+            {
+                <div class="view_details_cart">
+                    <button class="" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;">
+                       @(Model.ProductPrice.AvailableForPreOrder ? T("ShoppingCart.PreOrder") : T("ShoppingCart.AddToCart"))
+                    </button>
+                </div>
+            }*@
+
+            <a class="productbox_viewdetails" href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">view details</a>
+
+            @*<div class="view_details">
+                <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">view details</a>
+            </div>*@
+
+
+            <div class="stats">
+                <div class="stats-container">
+
+                    <table class="table tblItem">
+                        <tr>
+                            <td>
+                                <div class="description">
+                                    <h4><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">@Html.DisplayFor(m => m.Name)</a></h4>
+                                    <span class="altColor">top</span>
+                                </div>
+
+                            </td>
+                            <td>
+                                @if (Model.Quantity > 0)
+                                {
+                                    <div class="prices">
+                                        @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) || Model.ProductPrice.DisplayTaxShippingInfo)
+                                        {
+                                            if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice)) {
+                                                <span class="price old-price">@Model.ProductPrice.OldPrice</span>
+                                            }
+
+                                            <span class="price actual-price">@Model.ProductPrice.Price</span>
+
+                                        @*@if (Model.ProductPrice.DisplayTaxShippingInfo){
+                                            var inclTax = EngineContext.Current.Resolve<IWorkContext>().TaxDisplayType == TaxDisplayType.IncludingTax;
+                                           
+                                             //tax info is already included in the price (incl/excl tax). that's why we display only shipping info here
+                                            //of course, you can modify appropriate locales to include VAT info there
+                                            <div class="tax-shipping-info">
+                                                @T(inclTax ? "Products.Price.TaxShipping.InclTax" : "Products.Price.TaxShipping.ExclTax", Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("shippinginfo") }))
+                                            </div>
+                                        }*@
+                                        }
+                                        else
+                                        {
+                                            <span class="price actual-price">@Model.ProductPrice.Price</span>
+                                        }
+                                </div>
+
+                                }
+                                else
+                                { 
+                                    <div class="prices">
+                                        <span class="out-of-stock">Out of stock</span>
+                                    </div>
+                                    
+                                }
+
+                                
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-top:0;">
+                                <div class="product-options">
+                                    Colors
+                                    <div class="colors">
+                                        <div class="c-blue"><span></span></div>
+                                        <div class="c-red"><span></span></div>
+                                        <div class="c-white"><span></span></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

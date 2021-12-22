@@ -1,0 +1,77 @@
+﻿@model CustomerNavigationModel           
+@using Nop.Web.Models.Customer;
+
+
+<div class="hidden-md hidden-lg">
+    <div class="list-group" style="text-align:left; padding-left:0; padding-bottom:40px; margin-bottom:40px; border-bottom:1px solid #bebebe;">
+        <ul class="list-unstyled">
+            @if (!Model.HideInfo)
+        {
+        <li class="list-group-item">
+            <a href="@Url.RouteUrl("CustomerInfo")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Info)
+                                                                   {<text>active</text>}
+                                                                   else
+                                                                   {<text>inactive</text>}">Account details@*@T("Account.CustomerInfo")*@</a>
+                                                            </li>
+        }
+            @if (!Model.HideAddresses)
+                    {
+        <li class="list-group-item">
+            <a href="@Url.RouteUrl("CustomerAddressAdd")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Addresses)
+                                                                        {<text>active</text>}
+                                                                        else
+                                                                        {<text>inactive</text>}">Address book@*@T("Account.CustomerAddresses")*@</a>
+                                                                    </li>
+                    }
+
+            @if (!Model.HideChangePassword)
+                    {
+        <li class="list-group-item">
+            <a href="@Url.RouteUrl("CustomerChangePassword")" class="@if (Model.SelectedTab == CustomerNavigationEnum.ChangePassword)
+                                                                             {<text>active</text>}
+                                                                             else
+                                                                             {<text>inactive</text>}">@T("Account.ChangePassword")</a>
+                                                                        </li>
+                    }
+
+            @if (!Model.HideOrders)
+                    {
+        <li class="list-group-item">
+            <a href="@Url.RouteUrl("CustomerOrders")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Orders)
+                                                                     {<text>active</text>}
+                                                                     else
+                                                                     {<text>inactive</text>}">@T("Account.CustomerOrders")</a>
+                                                                </li>
+                    }
+
+        @*Giftcards*@
+        <li class="list-group-item">
+            <a href="~/giftcards" class="@if (Model.SelectedTab == CustomerNavigationEnum.GiftCards)
+                                                                           {<text>active</text>}
+                                                                           else
+                                                                           {<text>inactive</text>}">E-Gift card</a>
+        </li>
+
+        <li class="list-group-item">
+            <a href="~/giftcards/PendingPaymentByQty" class="@if (Model.SelectedTab == CustomerNavigationEnum.GiftCardsPendingPayment)
+                                                                               {<text>active</text>}
+                                                                               else
+                                                                               {<text>inactive</text>}">Pending Payments</a>
+        </li>
+
+        <li class="list-group-item">
+            <a href="~/Order/ConfirmPayments" class="@if (Model.SelectedTab == CustomerNavigationEnum.ConfirmPayment)
+                                                                                 {<text>active</text>}
+                                                                                 else
+                                                                                 {<text>inactive</text>}">Confirm payment</a>
+        </li>
+        <li class="list-group-item">
+            <a href="@Url.RouteUrl("Logout")">@T("Account.Logout")</a>
+        </li>
+
+    </ul>
+</div>
+
+</div>
+ 
+

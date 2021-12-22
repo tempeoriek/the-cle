@@ -1,0 +1,210 @@
+﻿@model Nop.Web.Models.Flitts.Giftcards.GiftcardViewModel
+@using Nop.Web.Models.Customer;
+
+@{
+    ViewBag.Title = "GiftCards";
+    //ViewBag.HideMenu = "true";
+    ViewBag.HideDesktopMenu = "true";
+}
+
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards })
+}
+
+
+
+<div class="col-main mijnaccount">
+
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards, isMobile = true })
+
+    <div class="row">
+        <div class="col-sm-6">
+            <!-- form -->
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-fields">
+
+                    <div class="">
+
+
+                        <div class="form-group gctype" style="display:block">
+                            @Html.DropDownListFor(model => Model.GiftCardTypeId, Model.CustomTypes, null, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group byvalue">
+                            @Html.DropDownListFor(model => Model.CurrencyID, Model.Currencies, "Currency", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CurrencyID, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group byvalue">
+                            <input type="text" name="GiftcardValue" class="form-control" placeholder="IDR 1000" />
+                            @Html.ValidationMessageFor(model => model.GiftcardValue, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group byqty">
+                            <select id="Quantity" name="@Html.NameFor(x => x.Quantity)" class="form-control">
+                                <option value="1">Quantity</option>
+                                @for (int i = 1; i <= 10; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.RecipientName, new { htmlAttributes = new { @class = "form-control", placeholder = "To" } })
+                            @Html.ValidationMessageFor(model => model.RecipientName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.SenderName, new { htmlAttributes = new { @class = "form-control", placeholder = "From" } })
+                            @Html.ValidationMessageFor(model => model.SenderName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.RecipientEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Recipient Email" } })
+                            @Html.ValidationMessageFor(model => model.RecipientEmail, "", new { @class = "text-danger" })
+                        </div>
+
+
+
+                        <div class="form-group">
+                            @*<input type="date" name="@Html.NameFor(x => x.DeliveryTime)" id="DeliveryTime" class="form-control datepicker" placeholder="Delivery Date" />*@
+                            <input type="text" name="@Html.NameFor(x => x.DeliveryTime)" id="DeliveryTime" class="form-control datepicker" placeholder="Delivery Date" />
+                            @Html.ValidationMessageFor(model => model.DeliveryTime, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.TextAreaFor(model => model.Message, new { @class = "form-control", placeholder = "Your message" })
+                            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group buttons">
+                            <input type="submit" value="Proceed" class="btn btn-default" />
+                            <br />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            }
+            <!--end form-->
+        </div>
+        <div class="col-sm-6">
+
+            <div class="mijnaccount-gc-xs">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Terms &amp; Conditions
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                @Html.Action("TopicBlock", "Topic", new { systemName = "GiftcardTermsConditions" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                Check E-Gift card balance
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                @Html.Partial("_CheckBalance")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                Enquiry
+                            </a>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <a href="mailto:shop@peggyhartanto.com">Shop@PeggyHartanto.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section HeaderSection{
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+    <style>
+        .form-group {
+            display: none;
+        }
+    </style>
+}
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+
+            $('.datepicker').datepicker({
+                //dateFormat: 'mm/dd/yy',
+                //defaultDate: -1,
+                changeYear: false,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                changeMonth: true,
+                yearRange: "@DateTime.Now.Year:@DateTime.Now.AddYears(1).Year",
+                defaultDate: new Date()
+            });
+        });
+
+        $(document).ready(function () {
+            $("#@Html.FieldIdFor(model => model.GiftCardTypeId)").change(toggleDiscountType);
+        });
+
+        function toggleDiscountType() {
+            var selectedDiscountTypeId = $("#@Html.FieldIdFor(model => model.GiftCardTypeId)").val();
+
+            if (selectedDiscountTypeId != "") {
+
+                if (selectedDiscountTypeId == 0) {
+                    $('.form-group').show();
+                    $('.byvalue').show();
+                    $('.byqty').hide();
+                }
+                else if (selectedDiscountTypeId == 2) {
+                    $('.form-group').show();
+                    $('.byvalue').hide();
+                    $('.byqty').show();
+                }
+
+            }
+            else {
+                $('.form-group').hide();
+                $('.gctype').show();
+            }
+        };
+
+   
+     function checkbalancefailed() {
+         $("#giftcardcheckbalanceresult").html("Sorry, an error occured. Please try again.");
+    }
+</script>
+}

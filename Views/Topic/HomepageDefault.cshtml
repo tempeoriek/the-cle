@@ -1,0 +1,29 @@
+﻿@model TopicModel
+@using Nop.Core.Domain.Seo
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Topics;
+@{
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var topicUrl = Url.RouteUrl("Topic", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(topicUrl);
+    }
+
+
+    Layout = "~/Views/Shared/_LayoutThreeAlternate.cshtml";
+   
+}
+
+
+
+
+
+@if (!String.IsNullOrEmpty(Model.Title))
+{
+        <h1>@Model.Title</h1>
+}
+
+@Html.Raw(Model.Body)
+

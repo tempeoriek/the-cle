@@ -1,0 +1,265 @@
+﻿@model AddressModel
+@using Nop.Web.Models.Common;
+@if (Model.CountryEnabled && Model.StateProvinceEnabled)
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#@Html.FieldIdFor(model => model.CountryId)").change(function () {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#@Html.FieldIdFor(model => model.StateProvinceId)");
+                var statesProgress = $("#states-loading-progress");
+                statesProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                    data: { "countryId": selectedItem, "addSelectStateItem": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        statesProgress.hide();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                        statesProgress.hide();
+                    }
+                });
+            });
+
+
+
+
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#@Html.FieldIdFor(model => model.StateProvinceId)").change(function () {
+
+                //var selectedItem = $(this).val();
+                var selectedItem = $("#@Html.FieldIdFor(model => model.StateProvinceId) option:selected").text();
+
+                var selectedCountry = $("#@Html.FieldIdFor(model => model.CountryId)").val();
+                var ddlCities = $("#@Html.FieldIdFor(model => model.City)");
+                var estimateProgress = $("#cities-loading-progress");
+                estimateProgress.show();
+
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "/ShippingConnector/GetCitiesByProvinceId",
+                    data: {
+                        "provinceId": selectedItem,
+                        "addSelectStateItem" : true
+                    },
+                success: function (data) {
+                    ddlCities.html('');
+
+                    $.each(data, function (i, optgroups) {
+                        $.each(optgroups, function (groupName, options) {
+
+                            if (groupName != "Districts")
+                            {
+                                var $optgroup = $("<optgroup>", { label: options });
+                                $optgroup.appendTo(ddlCities);
+                            }
+                            else
+                            {
+                                // districts
+                                $.each(options, function (j, option) {
+                                    var $option = $("<option>", { text: option.District, value: option.Code });
+                                    $option.appendTo(ddlCities);
+                                });
+                            }
+                        });
+                    });
+                    estimateProgress.hide();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve cities.');
+                    estimateProgress.hide();
+                }
+            });
+        });
+
+
+            $("#stad").change(function () {
+                var inpt = $(this).val();
+                var city = $('#@Html.FieldIdFor(model => model.City)');
+                city.append($('<option></option>').val(inpt).html(inpt));
+                city.val($(this).val());
+            });
+
+            var ddlCities = $("#@Html.FieldIdFor(model => model.City)");
+            ddlCities.val('@Model.CitySelected');
+        });
+
+
+        function ShipOverseas() {
+            var country = $("#@Html.FieldIdFor(model => model.CountryId)");
+            if (country.val() != 42)
+            {
+                //overseas
+                $("#@Html.FieldIdFor(model => model.City)").hide();
+                $("#@Html.FieldIdFor(model => model.City)").attr('disabled', 'disabled');
+
+                $("#tbCity_@Html.FieldIdFor(model => model.City)").show();
+                $("#tbCity_@Html.FieldIdFor(model => model.City)").removeAttr('disabled');
+
+            }
+            else
+            {
+                //lokal
+                $("#@Html.FieldIdFor(model => model.City)").show();
+                $("#@Html.FieldIdFor(model => model.City)").removeAttr('disabled');
+
+                $("#tbCity_@Html.FieldIdFor(model => model.City)").hide();
+                $("#tbCity_@Html.FieldIdFor(model => model.City)").attr('disabled', 'disabled');
+            }
+        }
+    </script>
+
+
+
+
+
+
+}
+@Html.HiddenFor(model => model.Id)
+
+
+<div class="row billing-form">
+    <div class="col-md-12">
+        <div class="">
+            <div class="form-horizontal">
+                @if (Model.CompanyEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @Html.TextBoxFor(model => model.Company, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Company" })
+                            @Html.ValidationMessageFor(model => model.Company, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group inputs">
+                    <div class="col-12">
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "First Name" })
+                        @Html.ValidationMessageFor(model => model.FirstName, string.Empty, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group inputs">
+                    <div class="col-12">
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(model => model.LastName, string.Empty, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group inputs">
+                    <div class="col-12">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Email" })
+                        @Html.ValidationMessageFor(model => model.Email, string.Empty, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @if (Model.StreetAddressEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @Html.TextBoxFor(model => model.Address1, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Address Line 1" })
+                            @Html.ValidationMessageFor(model => model.Address1, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.StreetAddress2Enabled)
+                {<div class="form-group inputs">
+                        <div class="col-12">
+                            @Html.TextBoxFor(model => model.Address2, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Address Line 2" })
+                            @Html.ValidationMessageFor(model => model.Address2, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CountryEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @*@Html.DropDownList("CountryId", Model.AvailableCountries, new { @class = "form-control square-box" })*@
+                            @Html.DropDownListFor(x => x.CountryId, Model.AvailableCountries, new { @class = "form-control square-box" })
+                            @Html.ValidationMessageFor(model => model.CountryId, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CountryEnabled && Model.StateProvinceEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @Html.DropDownList("StateProvinceId", Model.AvailableStates, new { @class = "form-control square-box" })
+                        </div>
+                        <div class="col-xs-12">
+                            <span id="states-loading-progress" style="display: none;" class="text-info">@T("Common.Wait...")</span>
+                            @Html.ValidationMessageFor(model => model.StateProvinceId, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CityEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @*@Html.TextBoxFor(model => model.City, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "City" })*@
+
+                            @Html.DropDownListFor(model => model.City, Model.AvailableCities, "Select city", new { @class = "form-control square-box", })
+                            <span id="cities-loading-progress" style="display: none;" class="text-info">@T("Common.Wait...")</span>
+                            @*<input type="text" name="Address.City" id="tbCity" class="form-control" style="display:none;" disabled="disabled" />*@
+                            @Html.ValidationMessageFor(model => model.City, string.Empty, new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ZipPostalCodeEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @Html.TextBoxFor(model => model.ZipPostalCode, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Zip" })
+                            @Html.ValidationMessageFor(model => model.ZipPostalCode, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @if (Model.PhoneEnabled)
+                {
+                    <div class="form-group inputs">
+                        <div class="col-12">
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "Phone" })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                @*@if (Model.FaxEnabled)
+                    {
+                        <div class="form-group inputs">
+                            <div class="col-xs-12">
+                                @Html.TextBoxFor(model => model.FaxNumber, new { @class = "form-control square-box", autofocus = "autofocus", placeholder="Fax" })
+                                @if (Model.FaxRequired)
+                                {
+                                    @Html.RequiredHint()
+                                }
+                                @Html.ValidationMessageFor(model => model.FaxNumber, string.Empty, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }*@
+
+            </div>
+        </div>
+    </div>
+</div>
+

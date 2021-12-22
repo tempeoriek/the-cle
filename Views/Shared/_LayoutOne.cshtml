@@ -1,0 +1,114 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Services.Localization
+@using Nop.Web.Framework.Themes
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@*<div id="sidebar-fixed" class="sidebar hidden-xs hidden-sm">
+        <a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content(logo)" title="commonwear" class="img-responsive store-logo center-block" /></a>
+        <div class="sidebar-menu">
+            @{
+
+                if (string.IsNullOrEmpty(ViewBag.HideMenu))
+                {
+                    @Html.Partial("Menu");
+                }
+
+                if (IsSectionDefined("Left"))
+                {
+                    @RenderSection("Left", false);
+                }
+
+            }
+        </div>
+    </div>*@
+
+
+@if (IsSectionDefined("Left"))
+{
+    @RenderSection("Left", false);
+}
+
+@*<div class="hidden-xs hidden-sm flashinfo ">
+        FREE SHIPPING ON YOUR ORDER
+        @Html.Action("TopicBlock", "Topic", new { systemName = "FreeShippingBar" })
+    </div>*@
+
+@*<div class="alert alert-info alert-dismissible fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @Html.Action("TopicBlock", "Topic", new { systemName = "FreeShippingBar" })
+    </div>*@
+
+
+@if (string.IsNullOrEmpty(ViewBag.HideHeader))
+{
+    @Html.Action("HeaderLinks", "Common")
+}
+
+
+
+
+<div id="body-content">
+    @if (IsSectionDefined("Breadcrumb"))
+    {
+        @section Breadcrumb {
+            @RenderSection("Breadcrumb")
+        }
+    }
+
+    @RenderBody()
+</div>
+
+
+@if (string.IsNullOrEmpty(ViewBag.HideFooter))
+{
+    @Html.Action("Footer", "Common")
+}
+
+
+
+@section RootScripts{
+
+  
+    <script>
+        $(document).ready(function () {
+
+            $('a[href="#search"]').on('click', function (event) {
+                $('#search').addClass('open');
+                $('#search > form > input[type="search"]').focus();
+            });
+            $('#search, #search button.close').on('click keyup', function (event) {
+                if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+                    $(this).removeClass('open');
+                }
+            });
+
+            $(function () {
+                $('.accordion').find('.accordion-toggle').click(function () {
+                    $(this).next().slideToggle('0');
+                    //$(".accordion-content").not($(this).next()).slideUp('0');
+                });
+                $('.accordion-toggle').on('click', function () {
+                    //$(this).toggleClass('active').siblings().removeClass('active');
+                });
+            });
+        });
+    </script>
+
+
+    @if (IsSectionDefined("scripts"))
+    {
+        @RenderSection("scripts", required: false)
+    }
+}
+
+@section RootHeaderSection{
+    @if (IsSectionDefined("HeaderSection"))
+    {
+        @RenderSection("HeaderSection", false)}
+}

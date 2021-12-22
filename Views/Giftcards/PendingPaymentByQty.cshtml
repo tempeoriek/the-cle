@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Nop.Web.Models.Flitts.Giftcards.PendingPaymentViewModel>
+@using Nop.Web.Models.Customer;
+
+@{
+    ViewBag.Title = "GiftCards";
+    //ViewBag.HideMenu = "true";
+    ViewBag.HideDesktopMenu = "true";
+}
+
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCardsPendingPayment })
+}
+
+
+
+
+
+<div class="col-main mijnaccount">
+
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCardsPendingPayment, isMobile = true })
+
+    <h1>
+        E-Gift Card - Pending Payments
+    </h1>
+
+
+    @if (Model == null)
+    {
+        <p>
+            There is no pending payment
+        </p>
+    }
+    else
+    {
+
+        using (Html.BeginForm("PayOrderGiftCardByQty", "Giftcards"))
+        {
+            @Html.AntiForgeryToken()
+
+
+
+            <div class="table-responsive">
+                <table class="table basic bestelling">
+                    <tr>
+                        <td style="padding-left:0;">@T("Account.CustomerOrders.OrderNumber")</td>
+                        <td>@T("Account.CustomerOrders.OrderDate")</td>
+                        <td>@T("Account.CustomerOrders.OrderTotal")</td>
+                        <td>Recipient</td>
+                        <td>Payment Status</td>
+                        <td>
+                            E-Gift Card Ref
+                        </td>
+                        <td style="text-align:right"></td>
+                    </tr>
+
+
+                    @foreach (var order in Model)
+                    {
+
+
+                        <tr>
+                            <td style="padding-left:0;">
+                                # @order.OrderId
+                                @*<a href="@Url.RouteUrl("OrderDetails", new { orderId = Html.AttributeEncode(order.Id) })"># @order.Id</a>*@
+                            </td>
+                            <td>
+                                @string.Format("{0:dd / MM / yy}", order.OrderDate)
+                            </td>
+
+                            <td>
+                                @order.OrderTotal
+                            </td>
+                            <td>
+                                @order.RecipientName
+                            </td>
+                            <td>@order.PaymentStatus.ToString()</td>
+                            <td>
+                                @order.GcOrder.Id
+                            </td>
+                            <td style="text-align:right">
+                                @if (order.GcOrder.PaymentStatus == Nop.Core.Domain.Payments.PaymentStatus.Pending)
+                                {
+                                    <button type="submit" class="btn btn-default" value="@order.GcOrder.OrderGuid" name="guid">Pay</button>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+
+
+
+                </table>
+            </div>
+
+        }
+    }
+
+</div>
+
+

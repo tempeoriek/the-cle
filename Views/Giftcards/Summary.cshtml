@@ -1,0 +1,108 @@
+﻿@model Nop.Web.Models.Flitts.Giftcards.GiftcardViewModel
+@using Nop.Web.Models.Customer;
+
+@{
+    ViewBag.Title = "GiftCards";
+    //ViewBag.HideMenu = "true";
+    ViewBag.HideDesktopMenu = "true";
+}
+
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards })
+}
+
+
+<div class="col-main">
+    <div class="row">
+        <div class="col-sm-12">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+
+    <div class="table-responsive">
+        <table class="table">
+            <colgroup>
+                <col style="width:30%" />
+                <col />
+            </colgroup>
+            <tr>
+                <td>
+                    E-Giftcard Type
+                </td>
+                <td>
+                    : @ViewBag.Gc
+                </td>
+            </tr>
+
+            @if (Model.GiftCardType == Nop.Core.Domain.Catalog.GiftCardType.Virtual)
+            {
+                <tr>
+                    <td>Value</td>
+                    <td>: @String.Format("{0} {1:##,###}", Model.SelectedCurrency, Model.GiftcardValue)</td>
+                </tr>
+            }
+
+            @if (Model.GiftCardType == Nop.Core.Domain.Catalog.GiftCardType.VirtualByQuantity)
+            {
+                <tr>
+                    <td>Quantity</td>
+                    <td>: @Model.Quantity</td>
+                </tr>
+            }
+
+            <tr>
+                <td>
+                    Recipient Name
+                </td>
+                <td>: @Model.RecipientName</td>
+            </tr>
+            <tr>
+                <td>Recipient Email</td>
+                <td>: @Model.RecipientEmail</td>
+            </tr>
+            <tr>
+                <td>
+                    From
+                </td>
+                <td>: @Model.SenderName</td>
+            </tr>
+            <tr>
+                <td>Delivery Date</td>
+                <td>
+                    : @Model.DeliveryTime.ToString("dd MMM yyyy")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Message
+                </td>
+                <td>
+                    : @Model.Message
+                </td>
+            </tr>
+                
+            <tr>
+                <td>Payment method</td>
+                <td>: @Model.paymentmethod</td>
+            </tr>
+           
+            <tr>
+                <td colspan="2" style="padding-top:40px;">
+                    <input type="submit" value="Proceed" class="btn btn-default" />
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+

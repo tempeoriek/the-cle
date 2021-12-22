@@ -1,0 +1,41 @@
+﻿@model ChangePasswordModel
+@using Nop.Web.Models.Customer;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    //ViewBag.HideMenu = "true";
+    //ViewBag.HideDesktopMenu = "true";
+}
+@section left
+{
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.ChangePassword })*@
+}
+
+
+
+
+<div class="col-main">
+    <div class="col-main-slim mt-large mijnaccount">
+        <h1 class="text-center">MY ACCOUNT</h1>
+        <p class="text-center">
+            Hello Jane Doe, this is your Kilda Beauty account.
+            Via the different options we will show you, you can modify your personal details and view your orders.
+        </p>
+
+        <a href="#" class="title-account">My Details</a>
+        <p>Review your personal information.</p>
+        <a>My Orders</a>
+        <p>
+            Check your orders’ status and history or print the returns form.
+        </p>
+        <a href="#" class="title-account>Change Password</a>
+        <p>Change your password.</p>
+        <a href="#" class="title-account>Payment Confirmation</a>
+        <p>Confirm your payment.</p>
+        <a href="#" class="title-account>Log Out</a>
+    </div>
+
+
+</div>
+

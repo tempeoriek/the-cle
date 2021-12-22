@@ -1,0 +1,48 @@
+﻿
+@model Nop.Web.Models.Flitts.Instagram.MediaData
+
+
+
+
+@if (Model != null)
+{
+
+
+    @*<div class="container-fluid instagram-container">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-3">
+                <h1 class="text-center">Follow<br /><a href="https://www.instagram.com/the-clementines/" target="_blank">@@the_clementines</a></h1>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="igslider">
+                    @for (int i = 0; i < 8; i++)
+                    {
+                        var post = Model.data[i];
+                        <div><a href="@post.permalink" target="_blank"><img src="@post.media_url" class="img-fluid" /></a></div>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+
+      <div class="container-fluid instagram-container">
+          <div class="row align-items-center">
+              <div class="col-12">
+                  <h1 class="text-center">Follow us on Instagram <a href="https://www.instagram.com/the-clementines/" target="_blank">@@the_clementines</a></h1>
+                  <div class="igslider">
+                      @for (int i = 0; i < 12; i++)
+                      {
+                          var post = Model.data[i];
+                          <div><a href="@post.permalink" target="_blank"><img src="@post.media_url" class="img-fluid" /></a></div>
+
+                      }
+                  </div>
+              </div>
+
+          </div>
+    </div>
+
+
+}

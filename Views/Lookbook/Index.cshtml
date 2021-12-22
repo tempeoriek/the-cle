@@ -1,0 +1,210 @@
+﻿@using Nop.Web.Models.Flitts.Lookbook
+@model LookViewModel
+
+@{
+    ViewBag.Title = "Lookbook";
+    if(Model != null)
+    {
+        ViewBag.Title = "Lookbook - " + Model.CollectionName;
+    }
+    
+    var id = (ViewBag.isMobile != null) ? "collection-mobile" : "collection";
+
+
+    var actionname = Request.RequestContext.RouteData.Values["action"].ToString();
+
+}
+
+
+@{
+    if (Model == null)
+    {
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h1>Lookbook</h1>
+                <p>
+                    We're still preparing our new collection. Stay tuned!
+                </p>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        @*type 1*@
+        @*<div class="row">
+            <div class="col-xs-12 text-center">
+                <h1>@Model.CollectionTitle</h1>
+            </div>
+        </div>
+        <section class="pnl-xtarget" id="@Model.CollectionSeoName">
+            <ul class="list-unstyled row">
+                @foreach (var item in Model.Look)
+                {
+                    <li class="col-xs-6 col-sm-3">
+                            <div class="collectie">
+                                    <img src="@item.ImageUrl" class="img-responsive" />
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </section>*@
+
+    @*Type 2*@
+
+var index = 0;
+var indexLast = Model.TotalLooks - 1;
+
+    <section class="lookbook pnl-xtarget" id="@Model.CollectionSeoName">
+           
+        <img src="@Model.Look[0].ImageUrl" class="img-responsive" />
+
+        <div class="row">
+            <div class="col-xs-12 text-center mt-40">
+                <h1>@Model.CollectionTitle</h1>
+            </div>
+        </div>
+
+        <div class="container" style="max-width:802px">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <div style="font-style:italic;">
+                        @Model.CollectionDescription
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            <ul class="list-unstyled row">
+                @foreach (var item in Model.Look)
+                {
+                    if ((index > 0) && (index < indexLast))
+                    {
+                        <li class="col-xs-12">
+                            <div class="collectie">
+                                <img src="@item.ImageUrl" class="img-responsive" />
+                            </div>
+                        </li>
+                    }
+                    
+
+                    index++;
+                }
+            </ul>
+
+          
+            
+
+        </div>
+      
+        @if (indexLast > 0)
+        {
+
+            <div style="padding:0 0 10px;">
+                <img src="@Model.Look[indexLast].ImageUrl" class="img-responsive" />
+            </div>
+
+        }
+
+    </section>
+    <br /><br /><br /><br /><br />
+    }
+}
+
+
+
+@section HeaderSection{
+    <link href="~/Scripts/app/fancyBox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" />
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/app/fancyBox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script>
+        $(document).ready(function () {
+
+            $(".open_ajax").fancybox({
+                    type: 'ajax',
+                    padding: 0,
+                    margin: 0,
+                    autoCenter: false,
+                    width: "100%",
+                    height: "100%",
+                    autoSize: false,
+                    scrolling: 'auto'
+
+                });
+
+        });
+
+
+
+
+    </script>
+
+
+    @if (actionname.ToLower() == "new")
+    {
+
+        <script>
+            $(document).ready(function () {
+                $(document).on("scroll", onScroll);
+
+                //smoothscroll
+                $('a[href^="#"]').on('click', function (e) {
+                    e.preventDefault();
+
+                    if (this.hash.toLowerCase() != "#collection") {
+
+                        $(document).off("scroll");
+
+                        $('a').each(function () {
+                            $(this).removeClass('active');
+                        })
+                        $(this).addClass('active');
+
+                        var target = this.hash,
+                            menu = target;
+                        $target = $(target);
+                        $('html, body').stop().animate({
+                            'scrollTop': $target.offset().top + 2
+                        }, 500, 'swing', function () {
+                            window.location.hash = target;
+                            $(document).on("scroll", onScroll);
+                        });
+
+                    };
+
+                });
+            });
+
+            function onScroll(event) {
+                var scrollPos = $(document).scrollTop();
+                $('#@id span a').each(function () {
+                    var currLink = $(this);
+
+
+                    if ((currLink.attr("id")) != "lnkArchive") {
+                        var refElement = $(currLink.attr("href"));
+
+                        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+                            $('#@id span a').removeClass("active");
+                            currLink.addClass("active");
+                        }
+                        else {
+                            currLink.removeClass("active");
+                        }
+                    }
+
+
+                });
+            }
+
+
+            @*$(document).ready(function () {
+                var target = '@Model.CollectieActive'; //this.hash;
+                window.location.hash = target;
+            });*@
+        </script>
+    }
+
+}

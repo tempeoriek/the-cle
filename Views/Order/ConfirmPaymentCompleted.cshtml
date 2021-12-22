@@ -1,0 +1,60 @@
+﻿@using Nop.Web.Models.Customer;
+@model Nop.Web.Models.Flitts.ConfirmPaymentModel
+
+@{
+    ViewBag.Title = "Confirm Payment - Completed";
+    //ViewBag.HideMenu = "true";
+   // ViewBag.HideDesktopMenu = "true";
+}
+
+@section left
+{
+@{
+    @*if (Model.Guest < 1)
+    {
+        @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.ConfirmPayment })
+    }
+    else
+    {
+        @Html.Partial("MenuStatic")
+    }*@
+
+}
+
+  
+}
+
+
+
+<section class="col-main-sml mijnaccount mt-large text-center">
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.ConfirmPayment, isMobile = true })*@
+
+    <h1>You have confirmed your payment</h1>
+    <p>
+        We have received your request successfully. Please allow 1-2 working days to verify your payment.
+     <br />
+        @{
+            if (Model.Guest < 1)
+            {
+                <text> You can check the status of your order in <a class="alt" href="@Url.RouteUrl("OrderDetails", new { orderID=Html.AttributeEncode(Model.Id)})">Order History</a></text>
+
+            }
+            else
+            {
+                <text>
+                    <a href="~/">Back to shop</a>
+                </text>
+            }
+        }
+
+    </p>
+</section>
+
+
+
+
+@section HeaderSection{
+
+  
+
+}

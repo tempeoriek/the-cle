@@ -1,0 +1,178 @@
+﻿@using Nop.Core
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Infrastructure;
+@{
+    var displayMiniProfiler = EngineContext.Current.Resolve<Nop.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@Html.NopTitle(true)</title>
+    <meta name="description" content="@(Html.NopMetaDescription())" />
+    <meta name="keywords" content="@(Html.NopMetaKeywords())" />
+    <meta name="Author" content="The Clementines, flitts">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="~/favicon/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/favicon/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/favicon/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/favicon/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="a~/favicon/pple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="~/favicon/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="~/favicon/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="~/favicon/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="~/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="~/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="~/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="~/favicon/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="~/favicon/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="the-clementines" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+    <link href="~/favicon.ico" rel="shortcut icon">
+
+    <link href="~/Themes/v1/Content/Layout.css" rel="stylesheet" />
+    <link href="~/Themes/v1/Content/ProductDetail.css" rel="stylesheet" />
+    <link href="~/Themes/v1/Content/Default.css" rel="stylesheet" />
+    <link href="~/Themes/v1/Content/Catalogue.css" rel="stylesheet" />
+
+
+
+
+    @Styles.Render("~/Content/bootstrapcss")
+    <link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    @Styles.Render("~/app/css")
+
+    @Html.Partial("Head")
+
+    @if (displayMiniProfiler)
+    {
+        @StackExchange.Profiling.MiniProfiler.RenderIncludes();
+    }
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Html.NopCanonicalUrls()
+
+    @if (IsSectionDefined("RootHeaderSection"))
+    {
+        @RenderSection("RootHeaderSection", false)
+    }
+
+    @{
+        var scrollspy = "";
+        if (ViewBag.UseScrollSpy != null)
+        {
+            scrollspy = "data-spy=scroll data-target=#productgallery";
+        }
+    }
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162288034-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-162288034-1');
+    </script>
+
+
+</head>
+<body @scrollspy>
+
+    <div id="body-wrapper">
+        @Html.Action("JavaScriptDisabledWarning", "Common")
+        @Html.Partial("OldInternetExplorerWarning")
+
+        @* Search - mobile *@
+        @*<div id="overlay-menu" class="overlay-menu">
+                <a href="#" id="overlay-menu-hide" class="navigation-hide"></a>
+                <div class="overlay-menu-inner">
+                    <nav class="overlay-menu-nav">
+                        @Html.Partial("~/Views/Catalog/SearchBoxMobile.cshtml")
+                    </nav>
+                </div>
+            </div>*@
+
+
+
+
+        @RenderBody()
+
+    </div>
+
+
+    @Html.Partial("NewsletterPopup")
+
+
+    <script src="~/Scripts/modernizr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    @Scripts.Render("~/bundles/bootstrapjs")
+
+
+    @*dropdown hover*@
+    <script src="~/Scripts/app/dropdownhover/js/bootstrap-dropdownhover.min.js"></script>
+
+    <script src="~/Scripts/jquery.menu-aim.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    <script src="~/Scripts/public.ajaxcart.js"></script>
+    <script src="~/Scripts/public.common.js"></script>
+
+
+
+
+    <script src="~/Scripts/asidebar.jquery.js"></script>
+    @*<script src="~/Themes/v1/Scripts/waypoints.min.js"></script>*@
+
+
+
+    @Scripts.Render("~/app/script")
+
+    @if (IsSectionDefined("RootScripts"))
+    {
+        @RenderSection("RootScripts", required: false)
+    }
+
+
+    <script type="text/javascript">
+        AjaxCart.init(false, '.cart-qty', '.wishlist-qty', '#flyout-cart', '#byobcart');
+    </script>
+
+    @*ajax loading window*@
+    <div class="ajax-loading-block-window" style="display: none;">
+        <div class="loading-image">
+        </div>
+    </div>
+
+
+    <script>
+        $('.signin').hover(function () {
+            //$(this).find('.dropmenu').stop(true, true).delay(200).fadeIn(500);
+            $('.myaccount-menu').fadeIn("slow", function () {
+            });
+
+        }, function () {
+            //$(this).find('.dropmenu').stop(true, true).delay(200).fadeOut(500);
+            $('.myaccount-menu').delay(3000).fadeOut("slow", function () { });
+        });
+
+        $(".accordion").on("click", ".accordion-header", function () {
+            $(this).toggleClass("active").next().slideToggle();
+        });
+
+    </script>
+</body>
+</html>

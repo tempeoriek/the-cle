@@ -1,0 +1,51 @@
+﻿@model Nop.Web.Models.RajaOngkir.City
+
+@{
+    ViewBag.Title = "RajaOnkirCities";
+}
+
+<h2>RajaOnkir - Cities</h2>
+
+<table class="table">
+    <tr>
+        <th>Provinde ID</th>
+        <th>
+            Province
+        </th>
+        <th>City ID</th>
+        <th>City Name</th>
+        <th>
+            Postalcode
+        </th>
+        <th>
+            Type
+        </th>
+    </tr>
+
+@foreach (var item in Model.rajaongkir.results)
+{
+
+    <tr>
+        <td>
+            @item.province_id
+        </td>
+        <td>
+            @item.province
+        </td>
+        <td>
+            @item.city_id
+        </td>
+        <td>
+            @item.city_name
+        </td>
+        <td>
+            @item.postal_code
+        </td>
+       
+        <td>
+            @item.type
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,121 @@
+﻿@*
+    https://www.thepolyglotdeveloper.com/2018/02/create-email-subscription-popup-jquery/*@
+
+
+
+<div id="list-builder"></div>
+<div id="popup-box">
+    @*<img src="~/Themes/v1/Content/images/ic-close.png"   id="popup-close" />*@
+
+    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTYgMHYxNkgwVjB6Ii8+PHBhdGggZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJub256ZXJvIiBkPSJNMTQuMzU0IDIuMzUzbC0uNzA4LS43MDdMOCA3LjI5MyAyLjM1MyAxLjY0NmwtLjcwNy43MDdMNy4yOTMgOGwtNS42NDcgNS42NDYuNzA3LjcwOEw4IDguNzA3bDUuNjQ2IDUuNjQ3LjcwOC0uNzA4TDguNzA3IDh6Ii8+PC9nPjwvc3ZnPg==" id="popup-close" />
+
+    <div id="popup-box-content">
+        <h2>Subscribe to The Cle Newsletter</h2>
+        <p>
+            Stay up to date on the latest news
+        </p>
+        @*<form id="popup-form" action="https://email_list_service_api.com">
+                <input type="hidden" name="list" value="key_list_etc" />
+                <input type="text" name="name" placeholder="Full Name" />
+                <input type="text" name="email" placeholder="Email Address" />
+                <button type="button" name="subscribe">Subscribe</button>
+            </form>*@
+        <div id="nieuwsbrief-popup">
+            <form action="https://the-clementines.us18.list-manage.com/subscribe/post?u=157c03f2e352a315863e1d82f&amp;id=38b7d32b66" method="post" id="mc-embedded-subscribe-form"
+                  name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                <div class="form-group d-flex" style="vertical-align:top;">
+                    <input id="mce-EMAIL" class="email" type="email" style="" name="EMAIL" placeholder="Your e-mail" value="" required />
+                    <button id="mc-embedded-subscribe1" type="submit" name="subscribe">Subscribe</button>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_157c03f2e352a315863e1d82f_38b7d32b66" tabindex="-1" value=""></div>
+                </div>
+            </form>
+            <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+            <script type='text/javascript'>(function ($) { window.fnames = new Array(); window.ftypes = new Array(); fnames[0] = 'EMAIL'; ftypes[0] = 'email'; fnames[1] = 'FNAME'; ftypes[1] = 'text'; fnames[2] = 'LNAME'; ftypes[2] = 'text'; }(jQuery)); var $mcj = jQuery.noConflict(true);</script>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<style>
+    #list-builder {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        filter: alpha(opacity=80);
+        opacity: 0.8;
+        display: none;
+    }
+
+    #popup-box {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        width: 90%;
+        max-width: 600px;
+        padding: 30px;
+        border: 10px solid #FFFFFF;
+        display: none;
+    }
+
+    #popup-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        width: 14px;
+    }
+
+    #popup-box h1 {margin: 0;}
+    #popup-box form {margin-bottom: 0;}
+    #popup-box input {}
+    #popup-box button {
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        var delay = 600000; // milliseconds (10 mins)
+        var cookie_expire = 0; // days
+
+        var cookie = localStorage.getItem("list-builder");
+        if (cookie == undefined || cookie == null) {
+            cookie = 0;
+        }
+
+        if (((new Date()).getTime() - cookie) / (1000 * 60 * 60 * 24) > cookie_expire) {
+            $("#list-builder").delay(delay).fadeIn("fast", () => {
+                $("#popup-box").fadeIn("fast", () => { });
+            });
+
+            $("button[name=subscribe]").click(() => {
+                $.ajax({
+                    type: "POST",
+                    url: $("#popup-form").attr("action"),
+                    data: $("#popup-form").serialize(),
+                    success: (data) => {
+                        $("#popup-box-content").html("<p style='text-align: center'>Thank you for subscribing to our newsletter. One more step, please confirm the link in your email</p>");
+                    }
+                });
+            });
+
+            $("#popup-close").click(() => {
+                $("#list-builder, #popup-box").hide();
+                localStorage.setItem("list-builder", (new Date()).getTime());
+            });
+        }
+
+    });
+</script>
+

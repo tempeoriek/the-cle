@@ -1,0 +1,15 @@
+﻿
+@{
+
+    List<SelectListItem> cities;
+    if (ViewBag.AvailableCities != null)
+    {
+        cities = (List<SelectListItem>)ViewBag.AvailableCities;
+        @Html.DropDownList("Address.City", cities, new { @class = "form-control square-box" })
+
+    }
+}
+
+   @*@Html.DropDownListFor(model => model.SelectedListItem, Model.ListItems)*@
+
+

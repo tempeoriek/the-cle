@@ -1,0 +1,162 @@
+﻿@model LoginModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Login").Text);
+
+    //register URL with return URL (if specified)
+    var registerUrl = Url.RouteUrl("Register");
+
+    var returnurl = "";
+    if (!String.IsNullOrEmpty(this.Context.Request.QueryString["returnUrl"]))
+    {
+        returnurl = this.Context.Request.QueryString["returnUrl"];
+
+        var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+
+        registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
+    }
+
+
+    }
+
+
+
+
+<div class="col-main pnl-login" style="margin-top:100px;">
+
+    <div class="row tab__header">
+        <div class="col-12 col-md-4">
+            <ul class="nav list-unstyled form-caption">
+                <li class="list-item"><a class="active" data-toggle="pill" href="#signin">Log In</a></li>
+                <li class="list-item"><a class="" data-toggle="pill" href="#signup">Create New Account</a></li>
+            </ul>
+
+        </div>
+
+        <div class="col-12 col-md-8">
+
+            <div class="form-login">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="signin">
+                        <h1 class="mb-4">Hello, Welcome Back</h1>
+                        @*@using (Html.BeginForm("Login", "Customer", FormMethod.Post, new { id = "form1", @class = "login-form" }))*@
+                        @using (Ajax.BeginForm("Login", "Customer", new AjaxOptions
+                        {
+                            InsertionMode = InsertionMode.InsertAfter,
+                            HttpMethod = "POST",
+                            LoadingElementId = "ajax-loader",
+                            OnSuccess = "loginCallback",
+                            UpdateTargetId = "pnlMsg"
+                        }, new { id = "form1", @class = "login-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("ReturnUrl", @returnurl)
+
+                            var validationSummary = Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text);
+                            <div id="pnlMsg" class="text-danger">@validationSummary</div>
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    @if (Model.UsernamesEnabled)
+                                    {
+                                      
+                                        @Html.TextBoxFor(m => m.Username, new { @class = "form_signin", autofocus = "autofocus", placeholder = "Username" })
+                                        @Html.ValidationMessageFor(m => m.Username)
+                                    }
+                                    else
+                                    {
+                                        <input type="email" placeholder="Email" name="Email" class="form_signin" required>
+                                        @*@Html.TextBoxFor(m => m.Email, new { @class = "form_signin", autofocus = "autofocus", placeholder = "Email" })*@
+                                        @Html.ValidationMessageFor(m => m.Email)
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form_signin pb-2", placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.Password)
+                                </div>
+                                <div class="form-group">
+                                    <span class="psw">
+                                        @Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
+                                    </span>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-default button_signin">SIGN IN</button>
+
+
+                                @*<div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="buttons">
+                                        <input class="btn btn-default btn-general" type="submit" value="LOGIN" />
+                                        <br /><br />
+                                        <input type="button" class="btn btn-inverse btn-block" onclick="location.href='@registerUrl'" value="@T(" Account.Register")" />
+                                    </div>
+                                </div>
+                            </div>*@
+                                @if (Model.DisplayCaptcha)
+                                {
+                                    <div class="captcha-box">
+                                        @Html.Raw(Html.GenerateCaptcha())
+                                    </div>
+                                }
+                            </div>
+                        }
+
+
+                    </div>
+                    <div class="tab-pane fade" id="signup">
+                        <h1 class="mb-4">Create New Account</h1>
+                        @Html.Action("Register", "Customer")
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+@section scripts
+{
+
+  @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+
+
+
+        function loginCallback(data) {
+            if (data.ok) {
+                $("#pnlMsg").html('');
+                window.location = data.newurl;
+            }
+            else {
+                $("#pnlMsg").html(data.message);
+            }
+        }
+    </script>
+
+    <script>
+        function reqfailed() {
+            $("#pnlfailure").html("Sorry, an error occured.");
+        }
+    </script>
+
+
+    }
+
+
+    

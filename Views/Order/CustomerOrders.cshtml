@@ -1,0 +1,145 @@
+﻿@model CustomerOrderListModel
+@{
+
+    //title
+    //Html.AddTitleParts(T("PageTitle.Account").Text);
+    Html.AddTitleParts("Order History");
+    //ViewBag.HideMenu = "true";
+    //ViewBag.HideDesktopMenu = "true";
+
+}
+
+@using Nop.Web.Models.Customer
+@using Nop.Web.Models.Order;
+
+@section left
+{
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Orders })*@
+}
+
+
+<div class="col-main mt-5 mijnaccount">
+
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Orders, isMobile = true })*@
+
+    <h1>@T("Account.CustomerOrders")</h1>
+    <h4 class="mb-4">
+        View your past and current orders
+    </h4>
+
+    @if (Model.Orders.Count == 0)
+    {
+        @T("Account.CustomerOrders.NoOrders")
+    }
+    else
+    {
+
+        <div class="table-responsive">
+            <table class="table basic bestelling order-history">
+                <tr class="text-uppercase">
+                    <td style="padding-left:0;">@T("Account.CustomerOrders.OrderNumber")</td>
+                    <td>@T("Account.CustomerOrders.OrderDate")</td>
+                    <td>@T("Account.CustomerOrders.OrderTotal")</td>
+                    @*<td>Payment method</td>*@
+                    <td>Tracking no.</td>
+                    <td>@T("Account.CustomerOrders.OrderStatus")</td>
+                </tr>
+
+
+                @foreach (var order in Model.Orders)
+                {
+
+
+                    <tr>
+                        <td style="padding-left:0;">
+                            <a href="@Url.RouteUrl("OrderDetails", new { orderId = Html.AttributeEncode(order.Id) })"># @order.Id</a>
+                        </td>
+                        <td>
+                            @string.Format("{0:dd / MM / yy}", order.CreatedOn)
+                        </td>
+
+                        <td>
+                            @order.OrderTotal
+                        </td>
+
+                        @*<td>
+                                @order.PaymentMethod
+                            </td>*@
+                        <td>
+                            <a href="@order.TrackingUrl" target="_blank" class="alt">@order.TrackingNumber</a>
+                        </td>
+
+                        <td style="text-align:left">
+                            @order.BestellingStatus
+                            @*@if (order.IsReturnRequestAllowed)
+                                {
+                                    @:| <a href="@Url.RouteUrl("ReturnRequest", new { orderId = Html.AttributeEncode(order.Id) })">@T("Account.CustomerOrders.ReturnItems")</a>
+
+                                }*@
+                        </td>
+
+                    </tr>
+                }
+
+
+
+            </table>
+        </div>
+    }
+
+  
+    <br />
+</div>
+
+@*<div class="container" style="margin-top:120px;">
+    <div class="account__history">
+            <h1>MY ORDERS</h1>
+        <p>Query the status of your order and the details of all your purchases.</p>
+        </div>
+    <table class="table order-history">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th class="d-none d-sm-table-cell">Total</th>
+                <th class="d-none d-sm-table-cell">Tracking no.</th>
+                <th>Status</th>
+                <th class="d-none d-sm-table-cell"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#18</td>
+                <td>21 Sept 2018</td>
+                <td class="d-none d-sm-table-cell">IDR 300.987</td>
+                <td class="d-none d-sm-table-cell">123241221</td>
+                <td>Shipped</td>
+                <td class="d-none d-sm-table-cell"><a href="#">View</a></td>
+            </tr>
+        </tbody>
+            <tbody>
+            <tr>
+                <td>#18</td>
+                <td>21 Sept 2018</td>
+                <td class="d-none d-sm-table-cell">IDR 300.987</td>
+                <td class="d-none d-sm-table-cell">123241221</td>
+                <td>Shipped</td>
+                <td class="d-none d-sm-table-cell"><a href="#">View</a></td>
+            </tr>
+        </tbody>
+            <tbody>
+            <tr>
+                <td>#18</td>
+                <td>21 Sept 2018</td>
+                <td class="d-none d-sm-table-cell">IDR 300.987</td>
+                <td class="d-none d-sm-table-cell">123241221</td>
+                <td>Shipped</td>
+                <td class="d-none d-sm-table-cell"><a href="#">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="" style="display:flex; justify-content:flex-end;">
+        <button class="button_kivee" style="width:201.56px;height:26.16px;font-size:14px;">GO BACK TO SHOP</button>
+    </div>
+    </div>*@
+        

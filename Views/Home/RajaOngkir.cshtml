@@ -1,0 +1,25 @@
+﻿@model Nop.Web.Models.MyProvince
+
+@{
+    ViewBag.Title = "RajaOngkir";
+}
+
+<h2>RajaOngkir</h2>
+
+
+
+@foreach (var item in Model.rajaongkir.results)
+{
+    <table>
+        <tr>
+                <td>
+                    @item.province_id
+                </td>
+                <td>
+                    @item.province
+                </td>
+
+            </tr>
+    </table>
+}
+

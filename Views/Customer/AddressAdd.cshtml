@@ -1,0 +1,204 @@
+﻿@model CustomerAddressEditModel
+@using Nop.Web.Models.Customer;
+@{
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+    //ViewBag.HideMenu = "true";
+    //ViewBag.HideDesktopMenu = "true";
+    
+}
+
+@section left
+{
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Addresses })*@
+}
+
+
+@*<div class="container">
+    <div class="account__details">
+        <h1>MY DETAILS</h1>
+        <p>Edit your customer details, telephone number or delivery address.</p>
+    </div>
+    <div class="mydetails-row">
+        <div class="mydetails-left">
+            <p>Personal Information</p>
+            <div class="form-mydetails">
+                <input class="input-cart" data-val="true" data-val-required="First name is required." id="FirstName" name="FirstName" placeholder="First name" type="text" value="">
+                <input class="input-cart" data-val="true" data-val-required="First name is required." id="LastName" name="LastName" placeholder="Last name" type="text" value="">
+                <input type="tel" id="yourphone" name="yourphone" placeholder="Mobile" class="input-cart" />
+                <input type="email" id="email" name="email" placeholder="Email" class="input-cart" />
+                <input type="password" id="psw" name="psw" placeholder="Create a password" class="input-cart" />
+                <input type="country" id="country" name="country" placeholder="Indonesia" class="input-cart" />
+                <input type="text" id="address" name="address" placeholder="Address" class="input-cart" />
+                <input type="tel" id="address" name="address" placeholder="Post Code" class="input-cart" />
+                <input type="tel" id="address" name="address" placeholder="Town/City" class="input-cart" />
+                <input type="tel" id="address" name="address" placeholder="Province/State" class="input-cart" />
+            </div>
+            <br /><button class="button_kivee button_kivee-account" style="margin-bottom:20px;">CONTINUE</button>
+            <br/><center><a href="#" style="margin-bottom:20px;color:#000;font-size:14px;">Do you wish to cancel? Click here</a></center>
+        </div>
+         
+        <div class="mydetails-right">
+            <div class="card-address"><a href="#" class="collapsed" data-toggle="collapse" data-target="#address-add" aria-expanded="true" aria-controls="address-add">Billing Address</a></div>
+            <div class="collapse" id="address-add">
+                <div class="address-box">
+                    <div class="address-category">
+                        <div class="address-tick">
+                            <label class="container-checkbox">
+                                Address 1
+                                <input type="checkbox" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <a href="#">
+                            <div class="address-delete">
+                                <img src="~/Content/Images/cup.png" class="trash-icon" />
+                                <p>Delete</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="address-list">
+                        <p>
+                            JL. ABC no.09 rt.001 rw.001
+                            12332 Jakarta Selatan
+                            DKI Jakarta Indonesia
+                        </p>
+                        <p>
+                            Jane Doe
+                            janedoe@emailaddress.com
+                            +62 8123344533
+                        </p>
+                    </div>
+                    <div class="address-edit"><a href="#">edit</a></div>
+                </div>
+                <div class="address-box">
+                    <div class="address-category">
+                        <label class="container-checkbox">
+                            Address 2
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                        <a href="#">
+                            <div class="address-delete">
+                                <img src="~/Content/Images/cup.png" class="trash-icon" />
+                                <p>Delete</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="address-list">
+                        <p>
+                            JL. ABC no.09 rt.001 rw.001
+                            12332 Jakarta Selatan
+                            DKI Jakarta Indonesia
+                        </p>
+                        <p>
+                            Jane Doe
+                            janedoe@emailaddress.com
+                            +62 8123344533
+                        </p>
+                    </div>
+                    <div class="address-edit"><a href="#">edit</a></div>
+                </div>
+                <div style="display:flex;flex-direction:column;">
+                    <a href="#" style="font-size:14px; color:#000;">Add more +</a>
+                    <div style="display:flex;">
+                        <label class="container-checkbox" style="font-size:14px; color:#000;">
+                            My Shipping Address is the same as my Billing Address
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-address"><a href="#" class="collapsed" data-toggle="collapse" data-target="#address-add2" aria-expanded="true" aria-controls="address-add2">Shipping Address</a></div>
+            <div class="collapse" id="address-add2">
+                <div class="address-box">
+                    <div class="address-category">
+                        <div class="address-tick">
+                            <label class="container-checkbox">
+                                Address 1
+                                <input type="checkbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <a href="#">
+                            <div class="address-delete">
+                                <img src="~/Content/Images/cup.png" class="trash-icon" />
+                                <p>Delete</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="address-list">
+                        <p>
+                            JL. ABC no.09 rt.001 rw.001
+                            12332 Jakarta Selatan
+                            DKI Jakarta Indonesia
+                        </p>
+                        <p>
+                            Jane Doe
+                            janedoe@emailaddress.com
+                            +62 8123344533
+                        </p>
+                    </div>
+                    <div class="address-edit"><a href="#">edit</a></div>
+                </div>
+                            <div class="collapse" id="address-add">
+
+                <div style="display:flex;flex-direction:column;">
+                    <a href="#" style="font-size:14px; color:#000;">Add more +</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>*@
+
+
+
+<section class="col-main mt-5">
+    @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.Addresses, isMobile = true })*@
+    <div class="row">
+        <div class="col-md-6 address-book-form">
+            <h1>@T("Account.CustomerAddresses")</h1>
+
+            @using (Html.BeginForm())
+            {
+
+                @Html.AntiForgeryToken()
+
+                var validationSummary = Html.ValidationSummary(true);
+
+                if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                {
+                    <div class="message-error">
+                        @validationSummary
+                    </div>
+                }
+
+                var dataDictAddress = new ViewDataDictionary();
+                //Merge ModelState (required for validation)
+                dataDictAddress.ModelState.Merge(ViewData.ModelState);
+                dataDictAddress.TemplateInfo.HtmlFieldPrefix = "Address";
+                @Html.Partial("_CreateOrUpdateAddress", Model.Address, dataDictAddress)
+
+                <div class="form-group">
+                    <div class="buttons">
+                        <button type="submit" class="btn btn-default" value="@T("Common.Save")">Save</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div class="col-md-6 address-book">
+            @Html.Action("Addresses")
+        </div>
+    </div>
+</section>
+
+    
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

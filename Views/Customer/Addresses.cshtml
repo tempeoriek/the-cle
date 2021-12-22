@@ -1,0 +1,249 @@
+﻿@model CustomerAddressListModel
+@using Nop.Web.Models.Customer;
+
+@{
+    @*default address*@
+    var defAdressId = 0;
+    if(ViewBag.defAddressId !=null)
+    {
+        defAdressId = ViewBag.defAddressId;
+    }
+        
+    var classActive = "";
+    var radioChecked = "";
+}
+
+
+<br />
+
+@*<div class="mydetails-right">
+    
+    <div class="collapse" id="address-add">
+        <div class="address-box">
+            <div class="address-category">
+                <div class="address-tick">
+                    <label class="container-checkbox">
+                        Address 1
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <a href="#">
+                    <div class="address-delete">
+                        <img src="~/Content/Images/cup.png" class="trash-icon" />
+                        <p>Delete</p>
+                    </div>
+                </a>
+            </div>
+            <div class="address-list">
+                <p>
+                    JL. ABC no.09 rt.001 rw.001
+                    12332 Jakarta Selatan
+                    DKI Jakarta Indonesia
+                </p>
+                <p>
+                    Jane Doe
+                    janedoe@emailaddress.com
+                    +62 8123344533
+                </p>
+            </div>
+            <div class="address-edit"><a href="#">edit</a></div>
+        </div>
+      
+    </div>
+   
+</div>*@   
+
+
+
+
+    @if (Model.Addresses != null)
+    {
+        if (Model.Addresses.Count > 0)
+        {
+            <div class="address-list">
+
+
+                @*<div class="address-box">
+                    <div class="address-category">
+                        <div class="address-tick">
+                            <label class="container-checkbox">
+                                Address 1
+                                <input type="checkbox" checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <a href="#">
+                            <div class="address-delete">
+                                <img src="~/Content/Images/cup.png" class="trash-icon" />
+                                <p>Delete</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="address-list">
+                        <p>
+                            JL. ABC no.09 rt.001 rw.001
+                            12332 Jakarta Selatan
+                            DKI Jakarta Indonesia
+                        </p>
+                        <p>
+                            Jane Doe
+                            janedoe@emailaddress.com
+                            +62 8123344533
+                        </p>
+                    </div>
+                    <div class="address-edit"><a href="#">edit</a></div>
+                </div>*@
+
+
+                <ul class="list-unstyled">
+
+                    @for (int i = 0; i < Model.Addresses.Count; i++)
+                {
+
+
+                    var address = Model.Addresses[i];
+
+                    classActive = "";
+                    radioChecked = "";
+                    if (address.Id == defAdressId)
+                    {
+                        radioChecked = "checked=checked";
+                        classActive = "selected";
+                    }
+
+               
+                    <li>
+                        <div class="address-item address-box">
+                            <div class="address-category">
+                                @*<div class="address-tick">
+                                    <label class="container-checkbox">
+                                        Address 1
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>*@
+
+                                <div class="radio-default" style="height:45px;">
+                                    <input type="radio" id="optionsRadios@(i + 1)" name="optionsRadios" value="@Model.Addresses[i].Id" class="radio-default" @radioChecked>
+                                    <label for="optionsRadios@(i + 1)" style="font-size:1rem;">
+                                        <span></span> Address @(i + 1)
+                                    </label>
+                                </div>
+
+
+                                <div class="address-delete">
+                                @*<img src="~/Content/Images/cup.png" class="trash-icon" />*@
+                                <p><input type="button" class="btn btn-link" onclick="if (confirm('@(T("Common.AreYouSure").Text)')) {location.href='@(Url.RouteUrl("CustomerAddressDelete", new { addressId = address.Id }))';}" value="@T("Common.Delete")" /></p>
+                                </div>
+                            </div>
+
+                            <p class="address-list" style="width:70%; padding:10px 10px 0;">
+
+                                @if (address.CompanyEnabled && !String.IsNullOrEmpty(address.Company))
+                                {
+                                    @address.Company<br />
+                                }
+
+                                @address.FirstName @address.LastName<br />
+                                @*@Html.LabelFor(model => model.Addresses[i].Email, new { }, ":") @address.Email<br />*@
+
+                                @if (address.StreetAddressEnabled)
+                                {
+                                    @address.Address1
+                                }
+                                @if (address.StreetAddress2Enabled && !String.IsNullOrEmpty(address.Address2))
+                                {
+                                    @address.Address2<br />
+                                }
+
+
+                                @if (address.CityEnabled)
+                                {
+                                    @address.City;
+                                }
+
+                                @if (address.ZipPostalCodeEnabled)
+                                {
+
+                                    @address.ZipPostalCode; <br />
+                                }
+
+
+                                @if (address.StateProvinceEnabled)
+                                {
+                                    if (address.StateProvinceId != null)
+                                    {
+                                        @address.StateProvinceName; <text> - </text>
+                                    }
+
+                                }
+
+                                @if (address.CountryEnabled && !String.IsNullOrEmpty(address.CountryName))
+                                {
+                                    @address.CountryName<br />
+                                }
+                                @if (!String.IsNullOrEmpty(address.FormattedCustomAddressAttributes))
+                                {
+
+                                    @Html.Raw(address.FormattedCustomAddressAttributes)<br />
+                                }
+
+                                @if (address.PhoneEnabled)
+                                {
+
+                                    <text>T </text> @address.PhoneNumber<br />
+                                }
+                                @if (address.FaxEnabled)
+                                {
+                                    @Html.LabelFor(model => model.Addresses[i].FaxNumber, new { }, ":")
+                                    @address.FaxNumber<br />
+                                }
+
+
+
+
+                            </p>
+                            <div class="address-edit">
+                                <input type="button" class="btn btn-link @classActive" onclick="location.href='@(Url.RouteUrl("CustomerAddressEdit", new { addressId = address.Id }))'" value='@T("Common.Edit")' style="color:#292929; font-size:0.92em;" />
+                            </div>
+                        </div>
+
+
+                    </li>  
+                }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="no-data">
+                @T("Account.CustomerAddresses.NoAddresses")
+            </div>
+        }
+    }
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('.radio-default').on('change', function () {
+            
+            var selectedItem = $('input[name="optionsRadios"]:checked').val();
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/customer/SetDefaultAddress",
+                data: { "addressId": selectedItem },
+            success: function (data) {
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //alert('Failed to perform the operation.');
+            }
+        });
+        });
+
+       
+    });
+</script>

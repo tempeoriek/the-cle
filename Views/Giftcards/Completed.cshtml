@@ -1,0 +1,31 @@
+﻿@using Nop.Web.Models.Customer;
+
+@{
+    ViewBag.Title = "GiftCards";
+    //ViewBag.HideMenu = "true";
+    ViewBag.HideDesktopMenu = "true";
+}
+
+@section left
+{
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards })
+}
+
+
+<div class="col-main mijnaccount">
+
+    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.GiftCards, isMobile = true })
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <h1>
+                Thank you
+            </h1>
+            <p>
+                An email will be sent to the recipient on selected date.
+            </p>
+
+        </div>
+    </div>
+</div>

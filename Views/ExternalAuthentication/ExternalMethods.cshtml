@@ -1,0 +1,19 @@
+﻿@model List<ExternalAuthenticationMethodModel>
+@using Nop.Web.Models.Customer;
+
+@{ 
+    var ipaddress = Request.ServerVariables["REMOTE_ADDR"];
+
+   
+   
+}
+
+
+@*@if (ipaddress == "202.57.4.210" || ipaddress == "::1" || ipaddress == "175.158.50.25" || ipaddress.Contains("103.252.200."))
+{
+}*@
+    @foreach (var eam in Model)
+    {
+        @Html.Action(eam.ActionName, eam.ControllerName, eam.RouteValues)
+    }
+

@@ -1,0 +1,328 @@
+﻿@model Nop.Web.Models.Flitts.ConfirmPaymentModel
+@using Nop.Web.Models.Customer;
+
+@{
+    ViewBag.Title = "Payment Confirmation";
+    //ViewBag.HideMenu = "true";
+    //ViewBag.HideDesktopMenu = "true";
+}
+
+    <div class="col-main-slim mt-5">
+
+        @*@Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.ConfirmPayment, isMobile = true })*@
+
+        <h1 class="text-center">Payment Confirmation</h1>
+        @using (Html.BeginForm("ConfirmPaymentCompleted", "Order", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="panel panel-default">
+                @{
+
+                    if (Model.PendingOrder.Count == 0)
+                    {
+                        <div class="panel-body">
+                            <p class="text-center">
+                                You have no payment to confirm
+                            </p>
+                        </div>
+
+                    }
+                    else
+                    {
+                        //Begin form
+                        <div class="panel-body">
+                            <div class="message-error">
+                                @Html.ValidationSummary(true)
+                            </div>
+
+
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    @Html.DropDownListFor(model => model.Id, new SelectList(Model.PendingOrder, "OrderId", "DispayText"), null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.BankAccountNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Account Number" } })
+                                    @Html.ValidationMessageFor(model => model.BankAccountNumber)
+                                </div>
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.BankAccountName, new { htmlAttributes = new { @class = "form-control", placeholder = "Account holder" } })
+                                    @Html.ValidationMessageFor(model => model.BankAccountName)
+                                </div>
+                            </div>
+
+                            <div class="form-fields">
+                                    <div class="form-group">
+                                    
+                                        @Html.DropDownListFor(model => model.ReceiverBank, new SelectList(new List<Object>{
+                                           new { value ="BCA" , text = "BCA"  },
+                                           new { value ="Mandiri" , text = "Mandiri" }}, "value", "text", "BCA"), null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+
+
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", placeholder = "Amount" })
+                                    @Html.ValidationMessageFor(model => model.Amount)
+                                </div>
+                            </div>
+
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(model => model.ConfirmPaymentDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker", placeholder = "Transfer Date" })
+
+
+                                    @Html.ValidationMessageFor(model => model.ConfirmPaymentDate)
+                                </div>
+                            </div>
+
+                            <div class="buttons">
+                                <button type="submit" id="submit-button" name="submit-button" class="btn btn-default" data-loading-text="Processing...">Confirm payment</button>
+                                @Html.HiddenFor(model => model.Guest)
+                                @*<br /><br>
+                                    @Html.ActionLink("Back to My Account", "MyAccount", new { controller = "Customer" }, new { @class = "account" })*@
+                            </div>
+
+                        </div>
+
+                        //End form
+                    }
+
+                }
+
+
+
+
+            </div>
+
+                    }
+
+    </div>
+
+
+@*<div class="container" style="margin-top:120px;">
+    <div class="account__confirm__payment">
+        <h1>PAYMENT CONFIRMATION</h1>
+        <p>Please fill in the form to confirm your payment.</p>
+    </div>
+
+    <div class="confirm-payment-form">
+        <label>Order ID</label>
+        <input type="text" id="orderid" name="orderid" placeholder="" class="form-confirm-payment" />
+        <label>Payment To</label>
+        <select placeholder="Payment To">
+            <option disabled selected value="">Payment To</option>
+            <option value="bca">BCA</option>
+            <option value="mandiri">MANDIRI</option>
+            <option value="bni">BNI</option>
+        </select>
+        <label>Payment from Account Name</label>
+        <input type="text" id="account-name" name="account-name" placeholder="" class="form-confirm-payment" />
+        <label>Payment Amount</label>
+        <input type="number" id="payment-amount" name="payment-amount" placeholder="" class="form-confirm-payment" />
+        <label>Payment Date</label>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <div class="dateDropdown">
+            <label for="dateField1">Please enter the date:</label>
+            <input id="dateField1" type="text" placeholder="dd.mm.yyyy" class="payment-date"/>
+        </div>
+        <div class="buttons">
+            <button class="button_kivee button_kivee-account">SAVE CHANGES</button>
+        </div>
+    </div>
+
+  </div>*@
+
+
+
+
+@section HeaderSection{
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+}
+
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+
+<script type="text/javascript">
+
+    // create select wrapper and arrows
+    function createSelectWrapper() {
+        // select wrapper and arrows
+            var select_wrapper = $("<span>", {
+                "class": "select-wrapper"
+            });
+            var select_carets = $("<div>", {
+                "class": "select__carets"
+            }).appendTo(select_wrapper);
+            var select_caretUp = $("<div>", {
+                "class": "select__caret select__caret--right fa fa-caret-up"
+            }).appendTo(select_carets);
+            var select_caretDown = $("<div>", {
+                "class": "select__caret select__caret--down fa fa-caret-down"
+            }).appendTo(select_carets);
+
+            return select_wrapper;
+        }
+
+        // add custom arrows to select input
+        function upgradeSelect() {
+            // add select input to the wrapper
+            $("select").each(function () {
+                var wrapper = createSelectWrapper();
+                $(this).replaceWith(wrapper)
+                $(this).appendTo(wrapper);
+            });
+        }
+
+        upgradeSelect();
+
+        // handles select down arrow click
+        $(".select__caret--down").on("click", function () {
+            // find the select input we need
+            var sel = $(this).parents(".select-wrapper").find("select");
+            console.log(sel);
+            // set focus to select input so we can use arrow keys
+            $(sel).focus();
+            // increment select next option
+            $(sel).find("option:selected").prop("selected", false).next().prop("selected", true);
+        });
+
+        // handles select up arrow click
+        $(".select__caret--right").on("click", function () {
+            // find the select input we need
+            var sel = $(this).parents(".select-wrapper").find("select");
+            // set focus to select input so we can use arrow keys
+            $(sel).focus();
+            // increment select next option
+            $(sel).find("option:selected").prop("selected", false).prev().prop("selected", true);
+        });
+</script>
+}
+
+
+   
+    @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script type="text/javascript">
+        var s,
+            DateWidget = {
+                settings: {
+                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                    day: new Date().getUTCDate(),
+                    currMonth: new Date().getUTCMonth(),
+                    currYear: new Date().getUTCFullYear(),
+                    yearOffset: 21,
+                    containers: $(".dateDropdown")
+                },
+
+                init: function () {
+                    s = this.settings;
+                    DW = this;
+                    s.containers.each(function () {
+                        DW.removeFallback(this);
+                        DW.createSelects(this);
+                        DW.populateSelects(this);
+                        DW.initializeSelects(this);
+                        DW.bindUIActions();
+                    })
+                },
+
+                getDaysInMonth: function (month, year) {
+                    return new Date(year, month, 0).getDate();
+                },
+
+                addDays: function (daySelect, numDays) {
+                    $(daySelect).empty();
+
+                    for (var i = 0; i < numDays; i++) {
+                        $("<option />")
+                            .text(i + 1)
+                            .val(i + 1)
+                            .appendTo(daySelect);
+                    }
+                },
+
+                addMonths: function (monthSelect) {
+                    for (var i = 0; i < 12; i++) {
+                        $("<option />")
+                            .text(s.months[i])
+                            .val(s.months[i])
+                            .appendTo(monthSelect);
+                    }
+                },
+
+                addYears: function (yearSelect) {
+                    for (var i = 0; i < s.yearOffset; i++) {
+                        $("<option />")
+                            .text(i + s.currYear)
+                            .val(i + s.currYear)
+                            .appendTo(yearSelect);
+                    }
+                },
+
+                removeFallback: function (container) {
+                    $(container).empty();
+                },
+
+                createSelects: function (container) {
+                    $("<select class='day'>").appendTo(container);
+                    $("<select class='month'>").appendTo(container);
+                    $("<select class='year'>").appendTo(container);
+                },
+
+                populateSelects: function (container) {
+                    DW.addDays($(container).find('.day'), DW.getDaysInMonth(s.currMonth, s.currYear));
+                    DW.addMonths($(container).find('.month'));
+                    DW.addYears($(container).find('.year'));
+                },
+
+                initializeSelects: function (container) {
+                    $(container).find('.day').val(s.day);
+                    $(container).find('.currMonth').val(s.month);
+                    $(container).find('.currYear').val(s.year);
+                },
+
+                bindUIActions: function () {
+                    $(".month").on("change", function () {
+                        var daySelect = $(this).prev(),
+                            yearSelect = $(this).next(),
+                            month = s.months.indexOf($(this).val()) + 1,
+                            days = DW.getDaysInMonth(month, yearSelect.val());
+                        DW.addDays(daySelect, days);
+                    });
+
+                    $(".year").on("change", function () {
+                        var daySelect = $(this).prev().prev(),
+                            monthSelect = $(this).prev(),
+                            month = s.months.indexOf(monthSelect.val()) + 1,
+                            days = DW.getDaysInMonth(month, $(this).val());
+                        DW.addDays(daySelect, days);
+                    });
+                }
+            };
+
+        DateWidget.init();
+
+
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>*@
+

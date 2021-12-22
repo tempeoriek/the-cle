@@ -1,0 +1,140 @@
+﻿@model ProductOverviewModel
+@using Nop.Core
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Infrastructure
+@using Nop.Web.Extensions
+@using Nop.Web.Models.Catalog;
+
+@helper Text_Truncate(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(@input)
+    }
+    else
+    {
+        @Html.Raw(@input.Substring(0, length))<text>...</text>
+    }
+}
+
+
+@helper Price_Modifier(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(@input)
+    }
+    else
+    {
+        @Html.Raw(@input.Substring(0, length))<text>...</text>
+    }
+}
+
+@{
+    //prepare "Add to cart" AJAX link
+    string addtocartlink = "";
+    var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+    var quantity = 1;
+    if (Model.ProductPrice.ForceRedirectionAfterAddingToCart)
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = Model.ProductPrice.ForceRedirectionAfterAddingToCart });
+    }
+    else
+    {
+        addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = Model.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, });
+    }
+
+    var productOutOfStock = "";
+    if(Model.Quantity <= 0)
+    {
+        productOutOfStock = "soldout";
+    }
+
+}
+
+
+<div class="product-item">
+    <div>
+        @if (Model.Quantity > 0)
+        {
+            if (Model.AlternateImage != null)
+            {
+                <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" class="clean">
+                    <img data-alt-src="@Model.AlternateImage.ImageUrl" src="@Model.DefaultPictureModel.ImageUrl" class="img-fluid center-block swapImg" />
+                    @*<img data-alt-src="/content/images/thumbs/CGB001_07@2x.png" src="/content/images/thumbs/CGB001_07@2x.png" class="img-fluid center-block swapImg" />*@
+                </a>
+            }
+            else
+            {
+                <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" class="clean">
+                    <img src="@Model.DefaultPictureModel.ImageUrl" class="img-fluid center-block" />
+                    @*<img src="/content/images/thumbs/CGB001_07@2x.png" class="img-fluid center-block" />*@
+                </a>
+            }
+        }
+        else
+        {
+            <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName})" class="clean"><div class="image__blur"><img class="img-fluid center-block" src="@Model.DefaultPictureModel.ImageUrl" /></div></a>
+        }
+
+
+
+        @if (Model.Quantity == 0)
+        {
+            <div class="badge-overlay">
+                <span class="top-full badge outofstock">Out of stock</span>
+            </div>
+        }
+        else if (Model.MarkAsNew)
+        {
+            <div class="badge-overlay">
+                <span class="top-full badge new">New</span>
+            </div>
+        }
+
+        @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) || Model.ProductPrice.DisplayTaxShippingInfo)
+        {
+            if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice))
+            {
+                <div class="badge-overlay">
+                    <span class="top-full badge onsale">Sale</span>
+                </div>
+
+            }
+        }
+
+    </div>
+  
+    
+
+
+    <div class="description @productOutOfStock">
+        <h4 class="text-center"><a class="clean" href="@Url.RouteUrl("Product", new { SeName = Model.SeName})">@Html.DisplayFor(m => m.Name)</a></h4>
+        <div class="prices text-center">
+                @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice) || Model.ProductPrice.DisplayTaxShippingInfo){
+                    if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice)){
+                        
+                    <div class="price old--price"><span style="color:#B8b8b8;text-decoration:line-through"><span style="color:#b8b8b8">@Model.ProductPrice.OldPrice</span></span></div>
+                        
+                    }
+                    <div class="price actual--price">@Model.ProductPrice.Price</div>
+                }
+                else
+                {
+                    <div class="price">@Model.ProductPrice.Price</div>
+                }
+            </div>
+
+        @*@if (Model.Quantity == 0)
+        {
+            <div class="image__text text-center"><span class="out-of-stock">Out of stock</span></div>
+        }
+        else if (Model.MarkAsNew)
+        {
+            <div class="image__text text-center"><span class="new-item">NEW</span></div>
+        }*@
+    </div>
+   
+
+</div>

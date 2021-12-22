@@ -1,0 +1,425 @@
+﻿@model HeaderLinksModel
+@using Nop.Web.Models.Common;
+@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Services.Localization
+@using Nop.Web.Framework.Themes
+
+@{
+
+    //logo path
+    var currentThemeName = "v1"; //EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    var logo = "~/Themes/" + currentThemeName + "/Content/images/logo.png";
+
+    //store name
+    var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
+
+    //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+
+
+    //current product ID
+    int currentProductId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("productdetails", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
+    }
+
+    var press = "inactive";
+    var common = "inactive";
+    var topic = "";
+    var controllername = Url.RequestContext.RouteData.Values["controller"].ToString();
+    if (controllername.Equals("press", StringComparison.OrdinalIgnoreCase))
+    {
+        press = "active";
+    }
+    else if (controllername.Equals("common", StringComparison.OrdinalIgnoreCase))
+    {
+        common = "active";
+    }
+    else if (controllername.Equals("topic", StringComparison.OrdinalIgnoreCase))
+    {
+        var url = Request.RawUrl;
+        var seoname = url.Substring(url.LastIndexOf("/") + 1);
+        if (seoname != "")
+        {
+            topic = seoname;
+        }
+    }
+}
+
+
+
+<div id="sidebar-fixed" @*class="hidden-xs hidden-sm"*@ style="background-color:red">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="collapse navbar-collapse no-gutter" id="bs-example-navbar-collapse-2">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="~/"><img class="img-responsive store-logo" src="~/Themes/v1/Content/images/logo.png" /></a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mt-20">
+                    <ul class="nav navbar-nav" itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        <li class="tab dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">SHOP <b class="caret"></b></a>
+                            <div class="dropdown-menu">
+                                <div class="container">
+                                    @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
+                                </div>
+                            </div>
+                        </li>
+                        <li class="tab"><a href="~/about">ABOUT</a></li>
+                        <li class="tab"><a href="~/blog">JOURNAL</a></li>
+                    </ul>
+
+                    @*<ul class="nav navbar-nav nav-width" itemscope itemtype="http://schema.org/SiteNavigationElement">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SHOP <b class="caret"></b></a>
+                                <ul class="dropdown-menu multi-column menu-content">
+                                    <li>
+                                        <div class="container menu-container-header">
+                                            @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="~/about">ABOUT</a></li>
+                            <li><a href="~/blog">JOURNAL</a></li>
+                        </ul>*@
+                </div>
+                <div class="col-md-4 mt-20">
+                    <ul class="list-unstyled list-inline text-right" style="margin-right:10px;">
+                        <li>
+                            <a href="#search">SEARCH</a>
+                            <div id="search">
+                                <form role="search" id="searchform" action="/search" method="get">
+                                    <span class="close">X</span>
+                                    <input name="q" type="search" placeholder="Search ..." />
+                                </form>
+                            </div>
+                        </li>
+                        <li class="header-space">
+                            @if (Model.ShoppingCartEnabled)
+                            {
+                                <a id="topcartlink" href="@Url.RouteUrl("ShoppingCart")"> ( <span id="mCartItemsQty" class="xans-element- xans-layout xans-layout-orderbasketcount cart-qty">@Model.ShoppingCartItems</span> ) CART</a>
+                            }
+                        </li>
+                        @if (Model.IsAuthenticated)
+                        {
+                            <li style="width:30%">
+                                <div class="dropdown account-menu">
+                                    <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">MY ACCOUNT</a>
+                                    <div class="dropdown-menu menu-font" aria-labelledby="dropdownMenuButton">
+                                        <div><a href="~/order/ConfirmPayments">Confirm Payment</a></div>
+                                        <div><a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></div>
+                                        <div><hr /></div>
+                                        <div><a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a></div>
+                                        <div><a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a></div>
+                                        <div><a href="~/customer/addressAdd">Address Book</a></div>
+                                        <div><hr /></div>
+                                        <div><a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a></div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li> <a href="~/login" class="signin">LOGIN</a></li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+
+
+        </div>
+    </nav>
+</div>
+
+
+
+@*<div class="hidden-xs hidden-sm mt-normal">
+        <div id="header">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-2">
+                    <div class="col-md-5 menu-left-header">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="~/"><img class="img-responsive store-logo" src="~/Themes/v1/Content/images/logo.png" /></a>
+                        </div>
+                    </div>
+                    <div class="col-md-3 pt-footer">
+                        <ul class="nav navbar-nav nav-width" itemscope itemtype="http://schema.org/SiteNavigationElement">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SHOP <b class="caret"></b></a>
+                                <ul class="dropdown-menu multi-column menu-content">
+                                    <li>
+                                        <div class="container menu-container-header">
+                                            @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="~/about">ABOUT</a></li>
+                            <li><a href="~/blog">JOURNAL</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 pt-footer">
+                        <ul class="nav navbar-nav nav-width-right">
+                            <li>
+                                <!-- Search Link -->
+                                <a href="#search">SEARCH</a>
+                                <!-- Search Form -->
+                                <div id="search">
+                                    <form role="search" id="searchform" action="/search" method="get">
+                                        <span class="close">X</span>
+                                        <input value="" name="q" type="search" placeholder="Enter your search term" />
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="header-space">
+                                @if (Model.ShoppingCartEnabled)
+                                {
+                                    <a id="topcartlink" href="@Url.RouteUrl("ShoppingCart")"> ( <span id="mCartItemsQty" class="xans-element- xans-layout xans-layout-orderbasketcount cart-qty">@Model.ShoppingCartItems</span> ) CART</a>
+                                }
+                            </li>
+                            @if (Model.IsAuthenticated)
+                            {
+                                <li style="width:30%">
+                                    <div class="dropdown account-menu">
+                                        <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">MY ACCOUNT</a>
+                                        <div class="dropdown-menu menu-font" aria-labelledby="dropdownMenuButton">
+                                            <div><a href="~/order/ConfirmPayments">Confirm Payment</a></div>
+                                            <div><a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></div>
+                                            <div><hr /></div>
+                                            <div><a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a></div>
+                                            <div><a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a></div>
+                                            <div><a href="~/customer/addressAdd">Address Book</a></div>
+                                            <div><hr /></div>
+                                            <div><a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li> <a href="~/login" class="signin">LOGIN</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <!--/.navbar-collapse-->
+            </nav>
+
+        </div>
+    </div>*@
+
+
+<div class="hidden visible-xs visible-sm">
+    <nav class="navbar navbar-custom navbar-transparent navbar-light navbar-fixed-top">
+        <div class="container-fluid padding-lr">
+            <table class="table">
+                <tr>
+                    <td class="crt-mini">
+                        <div class="mini-menu pull-left" style="margin-top:-6px">
+                            <a href="@Url.RouteUrl("HomePage")" class="alt">
+                                <img src="~/Content/Images/uploaded/homepage/logo/Greater Goods Logo@2x.png" class="img-responsive store-logo center-block" style="max-width:90px" />
+                            </a>
+                        </div>
+                    </td>
+                    <td class="crt-mini" style="width:22%;">
+                        <div class="homepage-header-center">
+                            <ul class="list-unstyled list-inline">
+                                <li>
+                                    @if (Model.ShoppingCartEnabled)
+                                    {
+                                        <a class="clean" href="@Url.RouteUrl("ShoppingCart")"> <span id="mCartItemsQty" class="cart-qty">@Model.ShoppingCartItems</span>|</a>
+                                    }
+                                </li>
+                                <li class="mobile-size">
+                                    <div class="burger cd-dropdown-trigger" data-reactid=".0.0.1.1.0.0" href="#0">
+                                        <span class="burger m1" data-reactid=".0.0.1.1.0.0.1"></span>
+                                        <span class="burger m3" data-reactid=".0.0.1.1.0.0.2"></span>
+                                    </div>
+                                    <nav class="cd-dropdown">
+                                        <div>
+                                            <a href="#0" class="cd-close">Close</a>
+                                            <a class="go-back" href="#0"></a>
+                                        </div>
+                                        <div class="cd-dropdown-content">
+                                            <div class="has-children">
+                                                <div class="col-xs-12 mt-20">
+                                                    @if (Model.IsAuthenticated)
+                                                    {
+                                                        <div class="col-xs-6" style="margin-left:-7%;padding:0px">
+                                                            <div class="dropdown account-menu">
+                                                                <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">MY ACCOUNT</a>
+                                                                <div class="dropdown-menu menu-font-responsive" aria-labelledby="dropdownMenuButton">
+                                                                    <div>   <a href="~/order/ConfirmPayments">Confirm Payment</a></div>
+                                                                    <div>  <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></div>
+                                                                    <div>  <hr /></div>
+                                                                    <div> <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a></div>
+                                                                    <div> <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a></div>
+                                                                    <div>
+                                                                        <a href="~/customer/addressAdd">Address Book</a>
+                                                                    </div>
+                                                                    <div>
+                                                                        <hr />
+                                                                    </div>
+                                                                    <div><a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-xs-6" style="margin-left:-5%;padding:0px">
+                                                            <a href="~/login" class="signin">LOGIN</a>
+                                                        </div>
+                                                    }
+                                                    <div class="col-xs-6" style="text-align:end;">
+                                                        @if (Model.ShoppingCartEnabled)
+                                                        {
+                                                            <a id="topcartlink" href="@Url.RouteUrl("ShoppingCart")" style="margin-right:-50px;"> ( <span id="mCartItemsQty" class="xans-element- xans-layout xans-layout-orderbasketcount cart-qty">@Model.ShoppingCartItems</span> ) CART</a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="form-group mt-20">
+                                                        @Html.Partial("~/Views/Catalog/SearchBoxMobile.cshtml")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="has-children text-left cd-dropdown-margin">
+                                                @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
+                                                <div><a href="~/about">ABOUT</a></div>
+                                                <div><a href="~/blog">JOURNAL</a></div>
+                                            </div>
+                                        </div>
+                                    </nav>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </nav>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        //JS untuk menu mobile version menu
+
+        "use strict";
+
+        $('.menu > ul > li:has( > ul)').addClass('menu-dropdown-icon');
+        //Checks if li has sub (ul) and adds class for toggle icon - just an UI
+
+
+        $('.menu > ul > li > ul:not(:has(ul))').addClass('normal-sub');
+        //Checks if drodown menu's li elements have anothere level (ul), if not the dropdown is shown as regular dropdown, not a mega menu (thanks Luka Kladaric)
+
+        $(".menu > ul").before("<a href=\"#\" class=\"menu-mobile\">Navigation</a>");
+
+        //Adds menu-mobile class (for mobile toggle menu) before the normal menu
+        //Mobile menu is hidden if width is more then 959px, but normal menu is displayed
+        //Normal menu is hidden if width is below 959px, and jquery adds mobile menu
+        //Done this way so it can be used with wordpress without any trouble
+
+        $(".menu > ul > li").hover(
+            function (e) {
+                if ($(window).width() > 943) {
+                    $(this).children("ul").fadeIn(150);
+                    e.preventDefault();
+                }
+            }, function (e) {
+                if ($(window).width() > 943) {
+                    $(this).children("ul").fadeOut(150);
+                    e.preventDefault();
+                }
+            }
+        );
+        //If width is more than 943px dropdowns are displayed on hover
+
+
+        //the following hides the menu when a click is registered outside
+        $(document).on('click', function (e) {
+            if ($(e.target).parents('.menu').length === 0)
+                $(".menu > ul").removeClass('show-on-mobile');
+        });
+
+        $(".menu > ul > li").click(function () {
+            //no more overlapping menus
+            //hides other children menus when a list item with children menus is clicked
+            var thisMenu = $(this).children("ul");
+            var prevState = thisMenu.css('display');
+            $(".menu > ul > li > ul").fadeOut();
+            if ($(window).width() < 943) {
+                if (prevState !== 'block')
+                    thisMenu.fadeIn(150);
+            }
+        });
+        //If width is less or equal to 943px dropdowns are displayed on click (thanks Aman Jain from stackoverflow)
+
+        $(".menu-mobile").click(function (e) {
+            $(".menu > ul").toggleClass('show-on-mobile');
+            e.preventDefault();
+        });
+        //when clicked on mobile-menu, normal menu is shown as a list, classic rwd menu story (thanks mwl from stackoverflow)
+
+
+
+    });
+</script>
+
+@if (Model.ShoppingCartEnabled)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.header').on('mouseenter', '#topcartlink', function () {
+                $('#flyout-cart').addClass('active');
+            });
+            $('.header').on('mouseleave', '#topcartlink', function () {
+                $('#flyout-cart').removeClass('active');
+            });
+            $('.header').on('mouseenter', '#flyout-cart', function () {
+                $('#flyout-cart').addClass('active');
+            });
+            $('.header').on('mouseleave', '#flyout-cart', function () {
+                $('#flyout-cart').removeClass('active');
+            });
+
+        });
+    </script>
+}
+
+
+
+
+
+
+

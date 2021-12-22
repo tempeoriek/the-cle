@@ -1,0 +1,455 @@
+﻿@model ProductDetailsModel
+@using Nop.Core
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Services.Localization;
+@using Nop.Web.Models.Catalog;
+@{
+    Layout = "~/Views/Shared/_LayoutTwo.cshtml";
+    //title, meta
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var seoSettings = EngineContext.Current.Resolve<SeoSettings>();
+
+    //canonical URL
+    if (seoSettings.CanonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(productUrl);
+    }
+
+    //open graph META tags
+    if (seoSettings.OpenGraphMetaTags)
+    {
+        var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
+        Html.AddHeadCustomParts("<meta property=\"og:type\" content=\"product\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:description\" content=\"" + Html.Encode(Model.MetaDescription) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:url\" content=\"" + Request.Url.AbsoluteUri + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:site_name\" content=\"" + Html.Encode(storeName) + "\" />");
+    }
+
+    //Twitter META tags
+    if (seoSettings.TwitterMetaTags)
+    {
+        var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
+        Html.AddHeadCustomParts("<meta property=\"twitter:card\" content=\"summary\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:site\" content=\"" + Html.Encode(storeName) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:description\" content=\"" + Html.Encode(Model.MetaDescription) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:url\" content=\"" + Request.Url.AbsoluteUri + "\" />");
+    }
+}
+
+@*@Html.Partial("SidebarLink", Model)*@
+
+<section class="col-main mt-20">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7">
+            @Html.Partial("_ProductDetailsPictures", Model)
+        </div>
+
+        <div class="col-xs-12 col-sm-5 product__detail__margin">
+            <div class="prod-details">
+                @*@Html.Partial("_ProductManufacturers", Model.ProductManufacturers)*@
+
+                @using (Html.BeginRouteForm("Product", new { SeName = Model.SeName }, FormMethod.Post, new { id = "product-details-form" }))
+                {
+                    <h4 itemprop="name">@Model.Name</h4>
+                    <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+
+                      
+                        @{
+                            var dataDictPrice = new ViewDataDictionary();
+                            dataDictPrice.TemplateInfo.HtmlFieldPrefix = string.Format("price_{0}", Model.Id);
+                            @Html.Partial("_ProductPrice", Model.ProductPrice, dataDictPrice)
+
+                            <div class="line"></div>
+
+                           if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+                            {
+                                <div class="title__description">Material</div>
+                                <p>
+                                    @Html.Raw(Model.ShortDescription)
+                                </p>
+                            }
+
+
+
+                            <div class="row mt-20">
+                                <div class="col-sm-6 col-xs-6">Select a size</div>
+                                <div class="col-sm-6 col-xs-6">
+                                    <a href="" class="" data-toggle="modal" data-target="#exampleModalLong">Size Guide</a>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img class="img-responsive" src="~/Content/Images/Instagram Post.jpg" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            var dataDictAttributes = new ViewDataDictionary();
+                            dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+                            @Html.Partial("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+                            
+
+
+                            @*Design Ory *@
+                            <div class="row">
+                                @*<div class="col-sm-12 col-xs-12 mt-20">
+                                    <div class="col-sm-6 col-xs-6 ml-15">Select a size</div>
+                                    <div class="col-sm-6 col-xs-6">
+                                        <!-- Button trigger modal -->
+                                        <a href="" class="" data-toggle="modal" data-target="#exampleModalLong">
+                                            Size Guide
+                                        </a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <img class="img-responsive" src="~/Content/Images/Instagram Post.jpg" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-large">
+                               <div class="col-sm-12">
+                                   <div class="col-sm-4 m-1">
+                                       <div id="accordion2" role="tablist">
+                                           <div class="card">
+                                               <div class="card-header" role="tab" id="headingFour">
+                                                   <h5 class="mb-0">
+                                                       <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                           Size
+                                                       </a>
+                                                   </h5>
+                                               </div>
+                                               <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" data-parent="#accordion2">
+                                                   <div class="card-body">
+                                                       @{ 
+                                                           var dataDictAttributes = new ViewDataDictionary();
+                                                           dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+                                                           @Html.Partial("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+                                                       }
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-sm-4">
+                                       <div id="accordion3" role="tablist">
+                                           <div class="card">
+                                               <div class="card-header" role="tab" id="headingFive">
+                                                   <h5 class="mb-0">
+                                                       <a class="collapsed" data-toggle="collapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                           Color
+                                                       </a>
+                                                   </h5>
+                                               </div>
+                                               <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive" data-parent="#accordion3">
+                                                   <div class="card-body">
+                                                       S M L
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                  
+                               </div>
+                           </div>
+                            
+                                <div class="col-md-12 size__block mb-20">
+                                     <div class="row">
+                                          @{
+                                            var counter = 0;
+                                            var cssClass = "";
+                                        }
+                                        @for (int i = 0; i <= 7; i++)
+                                        {
+
+                                            cssClass = "col-md-3 col-xs-3 no-padding";
+                                            if (counter % 4 == 0)
+                                            {
+                                                cssClass = "col-md-3 col-xs-3 no-padding";
+                                            }
+                                            <div class="@cssClass"><button type="submit" class="size__description">1Y</button></div>
+                                            counter++;
+                                        }
+                                     </div>
+                                </div>*@
+                           
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <div class="warning-text">
+                                        Sorry, This size is Out of Stock
+                                    </div>
+                                    <div class="mt-20">
+                                        NOTIFY IF IN STOCK AGAIN
+                                    </div>
+                                     <div>
+                                        <form action="//" method="post" id="#"
+                                              name="#" class="validate" target="_blank" novalidate>
+                                            <div class="form-group" style="vertical-align:top;">
+                                                <input id="#" class="email" type="email" style="" name="EMAIL" value="" placeholder="enter your email address" />
+                                                <button id="#" type="submit" name="" value="" class="notifyme"><i class="fa fa-long-arrow-right fa-lg" aria-hidden="true"></i></button>
+                                                <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_c2fa237f2170db1a3c72e46f5_e06080e67e" id="b_c2fa237f2170db1a3c72e46f5_e06080e67e" tabindex="-1" value=""></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <div class="mb-20">Quantity</div>
+                                    <div>
+                                        @{
+                                            var dataDictAddToCart = new ViewDataDictionary();
+                                            dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = string.Format("addtocart_{0}", Model.Id);
+                                            @Html.Partial("_AddToCart", Model.AddToCart, dataDictAddToCart)
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <h5>Description</h5>
+                                    <div class="mt-10">
+                                        @Html.Raw(Model.FullDescription)
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 mt-10 mb-10">
+                                    <hr />
+                                </div>
+
+
+                                <div class="col-sm-12 col-xs-12 mb-10">Other recommended items</div>
+                                    @*@{
+                                        var counter = 0;
+                                        var cssClass = "";
+                                      }
+
+                                    @foreach (var item in Model)
+                                    {
+                                        if (counter == 0)
+                                        {
+                                            cssClass = "active";
+                                        }
+                                        else if (counter > 0 && counter <= 3)
+                                        {
+                                            cssClass = "active-next";
+                                        }
+                                        else
+                                        {
+                                            cssClass = "";
+                                        }
+
+                                        <div class="col-md-4 item @cssClass">
+                                            @Html.Partial("_ProductBox", item)
+                                        </div>
+
+                                    }*@
+
+
+                                    @{
+                                        var counter1 = 0;
+                                        var cssClass1 = "";
+                                    }
+                                    @for (int i = 0; i <= 7; i++)
+                                    {
+
+                                        cssClass1 = "col-md-6 col-xs-6 col-sm-6 mb-20";
+                                        if (counter1 % 2 == 0)
+                                        {
+                                            cssClass1 = "col-md-6 col-xs-6 col-sm-6 mb-20";
+                                        }
+                                    <div class="@cssClass1">
+                                        <img class="img-responsive" src="~/Content/Images/DSC03686_rev.png" />
+                                        <div class="mt-10">
+                                            <p>Pink Valeria Dress</p>
+                                            <p>IDR 300.000</p>
+                                        </div>
+                                    </div>
+                                        counter1++;
+                                    }
+                            </div>
+                        }
+                    </div>
+                }
+
+            </div>
+            <!-- end details -->
+
+        </div>
+
+    </div>
+
+</section>
+
+@section HeaderSection{
+    <link href="~/Scripts/app/fancyBox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" />
+
+    @* Slick *@
+    <link rel="stylesheet" type="text/css" href="~/Scripts/app/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="~/Scripts/app/slick/slick-theme.css" />
+
+}
+
+@section scripts{
+    <script src="~/Scripts/app/fancyBox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            // This button will increment the value
+            $('.qtyplus').click(function (e) {
+                // Stop acting like a button
+                e.preventDefault();
+                // Get the field name
+                fieldName = $(this).attr('field');
+                // Get its current value
+                var currentVal = parseInt($('input[id=' + fieldName + ']').val());
+                // If is not undefined
+                if (!isNaN(currentVal)) {
+                    // Increment
+                    $('input[id=' + fieldName + ']').val(currentVal + 1);
+                } else {
+                    // Otherwise put a 0 there
+                    $('input[id=' + fieldName + ']').val(0);
+                }
+            });
+            // This button will decrement the value till 0
+            $(".qtyminus").click(function (e) {
+                // Stop acting like a button
+                e.preventDefault();
+                // Get the field name
+                fieldName = $(this).attr('field');
+                // Get its current value
+                var currentVal = parseInt($('input[id=' + fieldName + ']').val());
+                // If it isn't undefined or its greater than 0
+                if (!isNaN(currentVal) && currentVal > 0) {
+                    // Decrement one
+                    $('input[id=' + fieldName + ']').val(currentVal - 1);
+                } else {
+                    // Otherwise put a 0 there
+                    $('input[id=' + fieldName + ']').val(0);
+                }
+            });
+
+        });
+
+        // create select wrapper and arrows
+        function createSelectWrapper() {
+            // select wrapper and arrows
+            var select_wrapper = $("<span>", {
+                "class": "select-wrapper"
+            });
+            var select_carets = $("<div>", {
+                "class": "select__carets"
+            }).appendTo(select_wrapper);
+            var select_caretUp = $("<div>", {
+                "class": "select__caret select__caret--right fa fa-caret-up"
+            }).appendTo(select_carets);
+            var select_caretDown = $("<div>", {
+                "class": "select__caret select__caret--down fa fa-caret-down"
+            }).appendTo(select_carets);
+
+            return select_wrapper;
+        }
+
+        // add custom arrows to select input
+        function upgradeSelect() {
+            // add select input to the wrapper
+            $("select").each(function () {
+                var wrapper = createSelectWrapper();
+                $(this).replaceWith(wrapper)
+                $(this).appendTo(wrapper);
+            });
+        }
+
+        upgradeSelect();
+
+        // handles select down arrow click
+        $(".select__caret--down").on("click", function () {
+            // find the select input we need
+            var sel = $(this).parents(".select-wrapper").find("select");
+            console.log(sel);
+            // set focus to select input so we can use arrow keys
+            $(sel).focus();
+            // increment select next option
+            $(sel).find("option:selected").prop("selected", false).next().prop("selected", true);
+        });
+
+        // handles select up arrow click
+        $(".select__caret--right").on("click", function () {
+            // find the select input we need
+            var sel = $(this).parents(".select-wrapper").find("select");
+            // set focus to select input so we can use arrow keys
+            $(sel).focus();
+            // increment select next option
+            $(sel).find("option:selected").prop("selected", false).prev().prop("selected", true);
+        });
+
+        $(document).ready(function () {
+            $(".open_ajax").fancybox({
+                type: 'ajax',
+                autoSize: false,
+                fitToView: true,
+                //minWidth: 680,
+                minHeight: 680,
+                scrolling: 'no'
+            });
+
+            $("a#inline").fancybox({
+                fitToView: true,
+                autoDimensions: true,
+                autoSize: true,
+                padding: 30,
+                'transitionIn': 'elastic',
+                'transitionOut': 'elastic',
+                'speedIn': 600,
+                'speedOut': 200,
+                'overlayShow': false
+            });
+        });
+    </script>
+
+
+    @*Slick*@
+    <script type="text/javascript" src="~/Scripts/app/slick/slick.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.related-products').slick({
+                infinite: true,
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                dots: true
+            });
+        });
+    </script>
+
+}
+
+
+
+
+

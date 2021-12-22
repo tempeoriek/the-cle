@@ -1,0 +1,98 @@
+﻿@using Nop.Core
+@using Nop.Core.Infrastructure
+@using Nop.Services.Localization
+@using Nop.Web.Framework.Themes
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (IsSectionDefined("Left"))
+{
+    @RenderSection("Left", false);
+}
+
+
+@if (string.IsNullOrEmpty(ViewBag.HideHeader))
+{
+  @Html.Action("HeaderLinks", "Common")
+}
+
+
+<div id="body-content">
+
+    <div class="container catalogs">
+        <div class="row">
+            <div class="d-none col-12 col-md-2 d-md-block">
+                @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = true })
+              
+            </div>
+            <div class="col-12 col-md-8 pl-0 pr-0">
+                @if (IsSectionDefined("Breadcrumb")){
+                    @section Breadcrumb {
+                        @RenderSection("Breadcrumb")
+                    }
+                }
+
+                @RenderBody()
+            </div>
+
+        </div>
+    </div>
+   
+
+
+
+
+
+       
+</div>
+
+
+    @if (string.IsNullOrEmpty(ViewBag.HideFooter))
+    {
+        @Html.Action("Footer", "Common")
+    }
+
+
+
+    @section RootScripts{
+
+        <script>
+    $(document).ready(function () {
+
+            $('a[href="#search"]').on('click', function (event) {
+                $('#search').addClass('open');
+                $('#search > form > input[type="search"]').focus();
+            });
+            $('#search, #search button.close').on('click keyup', function (event) {
+                if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+                    $(this).removeClass('open');
+                }
+            });
+
+            $(function () {
+                $('.accordion').find('.accordion-toggle').click(function () {
+                    $(this).next().slideToggle('0');
+                    //$(".accordion-content").not($(this).next()).slideUp('0');
+                });
+                $('.accordion-toggle').on('click', function () {
+                    //$(this).toggleClass('active').siblings().removeClass('active');
+                });
+            });
+        });
+        </script>
+
+
+        @if (IsSectionDefined("scripts"))
+    {
+            @RenderSection("scripts", required: false)
+        }
+    }
+
+    @section RootHeaderSection{
+        @if (IsSectionDefined("HeaderSection"))
+    {
+            @RenderSection("HeaderSection", false)}
+    }

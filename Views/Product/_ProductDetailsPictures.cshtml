@@ -1,0 +1,263 @@
+﻿@model ProductDetailsModel
+@using Nop.Web.Models.Catalog;
+@{
+    //Html.AddScriptParts("~/Scripts/jquery.magnific-popup.min.js");
+    //Html.AddCssFileParts("~/Content/magnific-popup/magnific-popup.css");
+}
+<link rel="stylesheet" type="text/css" href="~/Scripts/Plugins/slick/slick.css">
+<link rel="stylesheet" type="text/css" href="~/Scripts/Plugins/slick/slick-theme.css">
+
+@if (Model.PictureModels.Count > 0)
+{
+<div class="carouseldesktop d-none d-md-block">
+    @foreach (var p in Model.PictureModels)
+    {
+        @*<div><a href="@p.FullSizeImageUrl" class="clean full" data-fancybox="gallery"><img class="img-fluid w-100 pl-5" src="@p.ImageUrl" /></a></div>*@
+        <div><div class="zoom1"><img class="img-fluid" src="@p.FullSizeImageUrl" /></div></div>
+    }
+
+</div>
+
+
+
+    @*<div class="d-none d-md-block">
+            <div class="d-flex">
+                <div class="col-xs-2 no-gutter">
+                    <div id="productgallery" class="">
+                        <ul class="nav" data-spy="affix" data-offset-top="100">
+                            @for (int i = 0; i < Model.PictureModels.Count; i++)
+                            {
+                                var css = "";
+                                if (i == 0)
+                                {
+                                    css = "selected";
+                                }
+                                var pic = Model.PictureModels[i];
+
+                                <li><a href="#prodimg-@i" class="@css" data-full="@pic.FullSizeImageUrl"><img src="@pic.FullSizeImageUrl" class="img-fluid w-100" style="max-width:85px" /></a></li>
+                            }
+
+                        </ul>
+
+
+                    </div>
+
+                </div>
+                <div class="col-xs-10">
+                    <div class="prod-images">
+                        @for (int i = 0; i < Model.PictureModels.Count; i++)
+                        {
+                            var pic = Model.PictureModels[i];
+                            <img src="@pic.FullSizeImageUrl" class="img-fluid w-100" id="prodimg-@i" />
+                        }
+                    </div>
+
+
+                </div>
+            </div>
+        </div>*@
+
+    @*Mobile View*@
+    <div id="carouselExampleIndicators" class="carousel slide d-block d-md-none" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            @{ int counter = 1;
+
+                foreach (var p in Model.PictureModels)
+                {
+                    if (counter == 1)
+                    {
+
+                        <div class="carousel-item active"><a href="@p.FullSizeImageUrl" class="clean full fancybox"><img class="img-fluid" src="@p.FullSizeImageUrl" alt="@p.AlternateText" title="@p.Title" /></a></div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img class="img-fluid" src="@p.FullSizeImageUrl" alt="@p.AlternateText" title="@p.Title" />
+                        </div>
+                    }
+
+                    counter++;
+                }
+            }
+        </div>
+
+    </div>
+
+
+    @*<div id="carouselImg" class="d-block d-md-none carousel slide">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselImg" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselImg" data-slide-to="1"></li>
+            </ol>
+            <div class="carousel-inner">
+
+                @{ int counter = 1;
+
+                    foreach (var p in Model.PictureModels)
+                    {
+                        if (counter == 1)
+                        {
+                            <div class="item active">
+                                <img class="img-responsive" src="@p.FullSizeImageUrl" alt="@p.AlternateText" title="@p.Title" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <img class="img-responsive" src="@p.FullSizeImageUrl" alt="@p.AlternateText" title="@p.Title" />
+                            </div>
+                        }
+
+                        counter++;
+                    }
+                }
+            </div>
+
+            <a class="carousel-control left clean" href="#carouselImg" data-slide="prev"><i class="fa fa-angle-left fa-lg"></i></a>
+            <a class="carousel-control right clean" href="#carouselImg" data-slide="next"><i class="fa fa-angle-right fa-lg"></i></a>
+        </div>*@
+
+
+
+
+
+}
+
+<script>
+
+
+    //var $slides = document.querySelector('#slides');
+    //var $slidesControls = Array.from(document.querySelectorAll('#slides_controls input'));
+    //var $slideWidth = document.querySelector('#slide_width');
+    //var $slidesVisible = document.querySelector('#slides_visible');
+    //var slide = $slides.dataset.slide;
+
+    //$slidesControls.forEach(function (element, index) {
+    //    element.addEventListener('change', function () {
+    //        document.documentElement.style.setProperty('--slide', index);
+    //    });
+    //});
+
+    //$slideWidth.addEventListener('keyup', function (e) {
+    //    if (e.keyCode == 13) {
+    //        document.documentElement.style.setProperty('--slideWidth', this.value + 'px');
+    //    }
+    //});
+
+    //$slidesVisible.addEventListener('input', function () {
+    //    document.documentElement.style.setProperty('--slidesVisible', this.value);
+    //})
+
+
+
+
+
+
+</script>
+
+
+<script>
+    //$(document).ready(function () {
+
+    //    $('a').click(function () {
+    //        var largeImage = $(this).attr('data-full');
+    //        $('.selected').removeClass();
+    //        $(this).addClass('selected');
+    //        $('.full img').hide();
+    //        $('.full img').attr('src', largeImage);
+    //        $('.full img').fadeIn();
+    //    });
+
+    //    $('.full img').on('click', function () {
+    //        var modalImage = $(this).attr('src');
+    //        $.fancybox.open(modalImage);
+    //    });
+
+    //});
+</script>
+
+
+
+
+@*<div class="gallery">
+        <div class="picture">
+            @if (Model.DefaultPictureZoomEnabled)
+            {
+                <a href="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" id="main-product-img-lightbox-anchor-@Model.Id">
+                    <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+                </a>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#main-product-img-lightbox-anchor-@Model.Id').magnificPopup(
+                        {
+                            type: 'image',
+                            removalDelay: 300,
+                            gallery: {
+                                enabled: true,
+                                tPrev: '@T("Media.MagnificPopup.Previous")',
+                                tNext: '@T("Media.MagnificPopup.Next")',
+                                tCounter: '@T("Media.MagnificPopup.Counter")'
+                            },
+                            tClose: '@T("Media.MagnificPopup.Close")',
+                            tLoading: '@T("Media.MagnificPopup.Loading")'
+                        });
+                    });
+                </script>
+            }
+            else
+            {
+                <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+            }
+        </div>
+        @if (Model.PictureModels.Count > 1)
+        {
+            <div class="picture-thumbs">
+                @foreach (var picture in Model.PictureModels)
+                {
+                    <a class="thumb-popup-link" href="@picture.FullSizeImageUrl" title="@picture.Title">
+                        <img src="@picture.ImageUrl" alt="@picture.AlternateText" title="@picture.Title" />
+                    </a>
+                }
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.thumb-popup-link').magnificPopup(
+                    {
+                        type: 'image',
+                        removalDelay: 300,
+                        gallery: {
+                            enabled: true,
+                            tPrev: '@T("Media.MagnificPopup.Previous")',
+                            tNext: '@T("Media.MagnificPopup.Next")',
+                            tCounter: '@T("Media.MagnificPopup.Counter")'
+                        },
+                        tClose: '@T("Media.MagnificPopup.Close")',
+                        tLoading: '@T("Media.MagnificPopup.Loading")'
+                    });
+                });
+            </script>
+        }
+    </div>*@
+<script src="~/Scripts/Plugins/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    $(document).ready(function () {
+        $('.carouseldesktop').slick({
+            slidesToShow: 1,
+            slideToScroll: 2,
+            infinite: true,
+            dots: false,
+            centerMode: false,
+            arrows: true,
+            autoplay: false,
+            autoplaySpeed: 5000,
+        });
+    });
+</script>
+
+
+
