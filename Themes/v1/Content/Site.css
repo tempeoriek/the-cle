@@ -1755,7 +1755,7 @@ footer .nav-item{font-size:10px;}
   align-self: center;
   flex-direction: column;
   justify-content: space-between;
-  width: 24px;
+  width: 20px;
   height: 17px;
   cursor: pointer;
 }
