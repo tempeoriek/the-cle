@@ -7,7 +7,7 @@
 
     //logo path
     var currentThemeName = "v1"; //EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
-    var logo = "~/Themes/" + currentThemeName + "/Content/images/logo.png";
+    var logo = "~/Themes/" + currentThemeName + "/Content/images/logo.svg";
 
     //store name
     var storeName = EngineContext.Current.Resolve<IStoreContext>().CurrentStore.GetLocalized(x => x.Name);
@@ -133,7 +133,7 @@
     </div>
 
 
-    <div class="row "><div class="col-12 text-center"><a href="~/"><img src="~/Themes/v1/Content/images/logo.png" class="brandImage" /></a></div></div>
+    <div class="row "><div class="col-12 text-center"><a href="~/"><img src="~/Themes/v1/Content/images/logo.svg" class="brandImage" /></a></div></div>
 
 
 
@@ -254,7 +254,7 @@
                     </button>
                 </div>
                 <div class="col-6">
-                    <a class="navbar-brand" href="~/"><img class="img-fluid brandImage" src="~/Themes/v1/Content/images/logo.png" /></a>
+                    <a class="navbar-brand" href="~/"><img class="img-fluid brandImage" src="~/Themes/v1/Content/images/logo.svg" /></a>
                 </div>
                 <div class="col-3" style="">
                     @* <span style="color:#fff;">Cart</span> *@
@@ -404,7 +404,7 @@
 
 
                 @*<div class="mb-4">
-                        <a class="navbar-brand" href="~/"><img class="img-responsive store-logo" src="~/Themes/v1/Content/images/logo.png" /></a>
+                        <a class="navbar-brand" href="~/"><img class="img-responsive store-logo" src="~/Themes/v1/Content/images/logo.svg" /></a>
                     </div>
                     @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
                     <ul class="list-unstyled list-inline">

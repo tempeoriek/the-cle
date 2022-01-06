@@ -20,7 +20,7 @@
 
 
 
-        <div class="col-main">
+        <div class="col-main step-top">
             <div class="row mb-5">
                 <div class="col-12 col-md-6 col-lg-5">
                     @if (Model != null)
@@ -28,7 +28,7 @@
                         <img src="@Model.ImgUrl" class="img-fluid" />
                     }
                 </div>
-                <div class="col-12 col-md-6 col-lg-7">
+                <div class="col-12 col-md-6 col-lg-7 step-padding">
 
                     @using (Html.BeginForm())
                     {
@@ -77,9 +77,11 @@
             </div>
 
 
-            <hr />
-            <div class="buttons mt-30">
-                <a href="~/byob/step3" class="btn btn-default">Change Card</a>
+            <div class="container">
+                <hr />
+                <div class="buttons mt-30">
+                    <a href="~/byob/step3" class="btn btn-default">Change Card</a>
+                </div>
             </div>
         </div>
 

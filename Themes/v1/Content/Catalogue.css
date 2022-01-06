@@ -209,9 +209,9 @@
 
 .select-quantity {
     font-size: 11px;
-    padding:3px;
+    padding:5px;
     color: #000;
-    height: 30px;
+    height: 35px;
     border: 1px solid #000;
     cursor:pointer;
 }

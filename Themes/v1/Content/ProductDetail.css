@@ -248,6 +248,7 @@
 /*end product detail*/
 
 @media screen and (max-width: 767px) {
+    .mobile-prod-details { padding-top: 0 !important};
     .prod-details .add2cart {width: 100% }
     /*#product-details-form {margin-top: 365px;}*/
     .prod-details h2 {font-size: 18px;font-weight: bold;}
