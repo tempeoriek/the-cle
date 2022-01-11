@@ -206,7 +206,7 @@
 
                                     </div>
                                     <div class="buttons  mt-default" style="text-align:right;">
-                                        <input type="submit" name="nextstep" value="@T("Common.Continue")" class="btn btn-default" />
+                                        <input type="submit" name="nextstep" value="@T("Common.Continue")" onclick="validateMyForm(event);" class="btn btn-default" />
                                     </div>
                                 }
                                 </div>
@@ -226,3 +226,24 @@
 
 
 
+<script>
+    function validateMyForm(e) {
+        if (
+            $('input[id=NewAddress_Company]').val().length > 0  &&
+            $('input[id=NewAddress_FirstName]').val().length > 0  &&
+            $('input[id=NewAddress_LastName]').val().length > 0 &&
+            $('input[id=NewAddress_Email]').val().length > 0 &&
+            $('input[id=NewAddress_Address1]').val().length > 0 &&
+            document.getElementById("NewAddress_CountryId").value > 0 &&
+            document.getElementById("NewAddress_StateProvinceId").value > 0 &&
+            $('input[id=NewAddress_ZipPostalCode]').val().length > 0 &&
+            $('input[id=NewAddress_PhoneNumber]').val().length > 0
+        ) {
+            return true;
+        } 
+        else {
+             e.preventDefault(); 
+            alert(`Please Fill the new Address to Continue`)
+        }
+    }
+</script>
