@@ -94,11 +94,11 @@
                                         <label>@T("Account.Fields.Gender"):</label>
                                         <div class="gender">
                                             <span class="male">
-                                                @Html.RadioButton("Gender", "M", (Model.Gender == "M"), new { id = "gender-male" })
+                                                @Html.RadioButton("Gender", "Mr.", (Model.Gender == "M"), new { id = "gender-male" })
                                                 <label class="forcheckbox" for="gender-male">@T("Account.Fields.Gender.Male")</label>
                                             </span>
                                             <span class="female">
-                                                @Html.RadioButton("Gender", "F", (Model.Gender == "F"), new { id = "gender-female" })
+                                                @Html.RadioButton("Gender", "Mrs.", (Model.Gender == "F"), new { id = "gender-female" })
                                                 <label class="forcheckbox" for="gender-female">@T("Account.Fields.Gender.Female")</label>
                                             </span>
                                         </div>

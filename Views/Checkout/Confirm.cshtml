@@ -349,34 +349,36 @@
                             {
                             if (Model.TermsOfServiceOnOrderConfirmPage)
                             {
-                            <div id="terms-of-service-warning-box" title='@T("Checkout.TermsOfService")' style="display:none;">
-                                <p>@T("Checkout.TermsOfService.PleaseAccept")</p>
-                            </div>
+                                <div id="terms-of-service-warning-box" title='@T("Checkout.TermsOfService")' style="display:none;">
+                                    <p>@T("Checkout.TermsOfService.PleaseAccept")</p>
+                                </div>
 
-                            @*<div class="terms-of-service checkbox">
-                                    <label>
-                                        <input id="termsofservice" type="checkbox" name="termsofservice" />
-                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);">@T("Checkout.TermsOfService.IAccept")</a>
+                                @*<div class="terms-of-service checkbox">
+                                        <label>
+                                            <input id="termsofservice" type="checkbox" name="termsofservice" />
+                                            <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);">@T("Checkout.TermsOfService.IAccept")</a>
+                                        </label>
+
+                                    </div>*@
+
+
+                                <div class="radio-default  text-center">
+                                    <input id="termsofservice" type="checkbox" name="termsofservice" class="radio-default">
+                                    <label for="termsofservice">
+                                        @*<span></span> &nbsp; <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);" style="font-size:0.93em;">@T("Checkout.TermsOfService.IAccept")</a>*@
+                                        <span></span>
+
+                                        <div style="display:inline-block; width:80%; text-align:left;">
+                                            By placing your order you agree to our <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "TermsAndConditions" })', 450, 500, true);">Terms & Conditions</a>,
+                                            <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "PrivacyInfo" })', 450, 500, true);">privacy</a> and
+                                            <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "ShippingInfo" })', 450, 500, true);">returns policies</a>.<br />You also consent to some of your data being stored by The Clementines, which may be used to make future shopping experiences better for you.
+
+                                        </div>
+
                                     </label>
+                                </div>
 
-                                </div>*@
-
-
-                            <div class="radio-default  text-center">
-                                <input id="termsofservice" type="checkbox" name="termsofservice" class="radio-default">
-                                <label for="termsofservice">
-                                    @*<span></span> &nbsp; <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "conditionsofUse" })', 450, 500, true);" style="font-size:0.93em;">@T("Checkout.TermsOfService.IAccept")</a>*@
-                                    <span></span>
-
-                                    <div style="display:inline-block; width:80%; text-align:left;">
-                                        By placing your order you agree to our <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "TermsAndConditions" })', 450, 500, true);">Terms & Conditions</a>,
-                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "PrivacyInfo" })', 450, 500, true);">privacy</a> and
-                                        <a class="read" onclick="javascript:OpenWindow('@Url.RouteUrl("TopicPopup", new { SystemName = "ShippingInfo" })', 450, 500, true);">returns policies</a>.<br />You also consent to some of your data being stored by The Clementines, which may be used to make future shopping experiences better for you.
-
-                                    </div>
-
-                                </label>
-                            </div>
+                                
                             }
 
                             }
@@ -394,6 +396,44 @@
                             }
 
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div style="width: 60%; margin: 20px auto;">
+                        <p style="font-weight: 600;">Syarat Pengiriman oleh Gosend Instan: </p>
+                        <ul style="margin-left: 20px;">
+                            <li> Pemesanan Gosend dilakukan oleh customer secara langsung.  </li>
+                            <li>  Pemesanan berlaku di antara pukul 10.00-16.30 </li>
+                            <li>  Cle Gifts Butler akan menghubungi anda pada saat order ready. </li> 
+                            <li>  Apabila anda membutuhkan bantuan, silahkan hubungi 0812 1000 285. </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div style="width: 60%; margin: 20px auto;">
+                        <p style="font-weight: 600;">Syarat Pengiriman oleh Gosend Instan: </p>
+                        <ul style="margin-left: 20px;">
+                            <li> Pemesanan Gosend dilakukan oleh customer secara langsung.  </li>
+                            <li>  Pemesanan berlaku di antara pukul 10.00-16.30 </li>
+                            <li>  Cle Gifts Butler akan menghubungi anda pada saat order ready. </li> 
+                            <li>  Apabila anda membutuhkan bantuan, silahkan hubungi 0812 1000 285. </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div style="width: 60%; margin: 20px auto;">
+                        <p style="font-weight: 600;">Syarat Pengiriman oleh  Gosend Same-Day: </p>
+                        <ul style="margin-left: 20px;">
+                            <li>  Pemesanan Gosend Sameday hanya dapat dilakukan maksimum 10.30 WIB agar memastikan kurir datang sebelum jam 16.30.  </li>
+                            <li>  Cle Gifts Butler akan menghubungi anda pada saat order ready. </li> 
+                            <li>  Apabila anda membutuhkan bantuan, silahkan hubungi 0812 1000 285. </li>
+                        </ul>
                     </div>
                 </div>
             </div>

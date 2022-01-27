@@ -229,7 +229,7 @@
 <script>
     function validateMyForm(e) {
         if (
-            $('input[id=NewAddress_Company]').val().length > 0  &&
+            //$('input[id=NewAddress_Company]').val().length > 0  &&
             $('input[id=NewAddress_FirstName]').val().length > 0  &&
             $('input[id=NewAddress_LastName]').val().length > 0 &&
             $('input[id=NewAddress_Email]').val().length > 0 &&
@@ -243,7 +243,7 @@
         } 
         else {
              e.preventDefault(); 
-            alert(`Please Fill the new Address to Continue`)
+            alert(`"Please give address name to continue`)
         }
     }
 </script>
