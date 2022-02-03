@@ -58,9 +58,12 @@
                             <div class="form-fields">
                                     <div class="form-group">
                                     
-                                        @Html.DropDownListFor(model => model.ReceiverBank, new SelectList(new List<Object>{
-                                           new { value ="BCA" , text = "BCA"  },
-                                           new { value ="Mandiri" , text = "Mandiri" }}, "value", "text", "BCA"), null, new { @class = "form-control" })
+                                        @Html.DropDownListFor(model => model.ReceiverBank, new SelectList(
+                                            new List<Object>{
+                                                new { value ="BCA" , text = "BCA"  }
+                                                @* new { value ="Mandiri" , text = "Mandiri" } *@
+                                            }, "value", "text", "BCA"), null, new { @class = "form-control" }
+                                        )
                                     </div>
                                 </div>
 
@@ -68,7 +71,7 @@
 
                             <div class="form-fields">
                                 <div class="form-group">
-                                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", placeholder = "Amount" })
+                                    @Html.TextBoxFor(model => model.Amount, new { @Value = "0", @class = "form-control", placeholder = "Amount" })
                                     @Html.ValidationMessageFor(model => model.Amount)
                                 </div>
                             </div>
