@@ -300,6 +300,7 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
         <!-- cart footer -->
         <div class="cart-footer">
             @Html.Action("OrderTotals", "ShoppingCart", new { isEditable = Model.IsEditable })
+            <p class="text-right" style="font-size: 11px;margin-top: -10px;padding-right: 10px;margin-bottom: 0;">*A discount will be automatically applied from points you've collected</p>
             @Html.Partial("_GiftCardDiscountBox", Model.DiscountBox)
 
 

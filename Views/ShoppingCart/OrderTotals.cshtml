@@ -211,6 +211,11 @@
             }
         </p>
 
+        @if (Model.RedeemedRewardPoints > 0)
+        {
+            <p>LOYAL POINTS</p>
+        }
+
         @if (!String.IsNullOrEmpty(Model.PaymentMethodAdditionalFee)){
             <p class="additional-fees">@T("ShoppingCart.Totals.PaymentMethodAdditionalFee")</p>
         }
@@ -283,7 +288,13 @@
                 <span>@T("ShoppingCart.Totals.Shipping.NotRequired")</span>
             }
         </p>
-     
+
+        @if (Model.RedeemedRewardPoints > 0) {
+            <p><span class="value-summary">
+                @Model.RedeemedRewardPointsAmount
+            </span></p>
+        }
+
         @if (!String.IsNullOrEmpty(Model.PaymentMethodAdditionalFee)){
         <p><span class="value-summary">@Model.PaymentMethodAdditionalFee</span></p>
         }
@@ -303,6 +314,7 @@
 
     </div>
 </div>
+
 <div style="border-top:1px solid #000; width:100%; margin:auto;"></div>
 <div class="summary-total">
     <div class="total-row-left">
@@ -319,3 +331,5 @@
         }</p>
     </div>
 </div>
+
+
