@@ -79,12 +79,12 @@
                 <div class="col-12 ">
                     <div class="blox">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-sm-6 col-md-6">
                                 <p>&nbsp;</p>
                                 @foreach (var sci in item.ShoppingCartItems)
                                 {@Html.Partial("_CartItem", sci)}
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-sm-6 col-md-6">
                                 <p>@T("Checkout.SelectShippingMethod")</p>
                                 <div class="form-group">
                                     @if (item.ShippingAddress != null)
@@ -202,8 +202,8 @@
        
 
         <div class="row buttons" id="shipping-buttons-container">
-            <div class="col-6">
-                <p class="back-link"><a href="~/checkout"><small>&laquo; </small>@T("Common.Back")</a></p>
+            <div class="col-6 text-center-vertically">
+                <p class="back-link text-center-vertically"><a href="~/checkout"><small>&laquo; </small>@T("Common.Back")</a></p>
             </div>
             <div class="col-6" style="text-align:right;">
                 <input type="submit" name="nextstep" value="@T("Common.Continue")" class="btn btn-default" />

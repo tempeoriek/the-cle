@@ -273,7 +273,21 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
                             <p>@Html.Raw(item.Size)</p>
                             }
 
-                        <p>Qty: @item.Quantity</p>
+                        @if (Model.IsEditable)
+                        {
+                            if (item.isBYOB)
+                            {
+                                <span class="product-quantity">@item.Quantity</span>
+                            }
+                            else
+                            {
+                                <div class="pl-qty"><button type="submit" name="qtyMin" value="@item.Id" class="btn btn-line">-</button><button class="btn-line"><span>@item.Quantity</span></button><button type="submit" name="qtyPlus" value="@item.Id" class="btn btn-line">+</button></div>
+                            }
+
+                        }
+                        else
+                        {
+                            <span class="product-quantity">@item.Quantity</span>}
                     </div>
 
                     @if (Model.IsEditable)

@@ -215,36 +215,14 @@
 
 
 @*mobile navbar*@
-<div class="d-block d-md-none">
+<div class="d-block d-md-none ">
 
 
     <nav class="navbar navbar-expand-md sidebarNavigation fixed-top" data-sidebarClass="navbar-dark" style="background-color:#fff; padding-top:0; ">
-        @* <div class="header-line1" style="padding:0">
-            <div class="container-fluid">
-                <div class="row" style="width:100vw;">
-                    <div class="col-4">
-                        <div class="d-none d-sm-block">
-                            <div class="show-mobile-menu-btn" style="cursor:pointer">
-                                    <img src="~/Themes/v1/Content/images/search.png" alt="" srcset="" style="width:14px;"><span> Search</span>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="col-4 text-center">
-                        FREE SHIPPING ON YOUR FIRST BOX!&nbsp;
-                    </div>
-                    <div class="col-4 d-flex justify-content-end">
-                        <div class="pr-5">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> *@
-
         <div class="" style="padding-top:6px; padding-bottom:6px; width: 100%">
             <div class="row align-items-center">
-                <div class="col-3 text-right" style="">
-                    <button style="margin-bottom: 3px;" class="navbar-togglers leftNavbarToggler btn-toggle" type="button" data-target="#navbarsExampleDefault"
+                <div class="col-3 m-0 p-0 text-center" style="">
+                    <button id="open-side-menu" style="margin-bottom: 3px;" class="navbar-togglers leftNavbarToggler btn-toggle" type="button" data-target="#navbarsExampleDefault"
                             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                         <div class="hamburger">
                             <div class="top-bun"></div>
@@ -253,38 +231,40 @@
                         </div>
                     </button>
                 </div>
-                <div class="col-6 ml-0 pl-0">
-                    <a class="" href="~/"><img class="img-fluid brandImage" style="padding-bottom: 4px;" src="~/Themes/v1/Content/images/logo.svg" /></a>
+                <div class="col-6 m-0 p-3">
+                    <a class="" href="~/"><img class="img-fluid" style="" src="~/Themes/v1/Content/images/logo.svg" /></a>
                 </div>
-                <div class="col-3" style="">
+                <div class="col-3 m-0 p-0" style="">
                     @* <span style="color:#fff;">Cart</span> *@
                     <div class="row">
-                        <ul class="list-unstyled list-inline mb-0">
-                            @if (Model.IsAuthenticated)
-                            {
-                                <li>
-                                    <div class="dropdown">
-                                        <a href="#" class="nav-item">Account</a>
-                                        <div class="dropdown-content2 text-left">
-                                            <a href="~/order/ConfirmPayments">Confirm Payment</a>
-                                            <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
-                                            <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
-                                            <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
-                                            <a href="~/customer/addressAdd">Address Book</a>
-                                            <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                        <div class="col-6 text-right" style="">
+                            <ul class="list-unstyled list-inline mb-0">
+                                @if (Model.IsAuthenticated)
+                                {
+                                    <li>
+                                        <div class="dropdown">
+                                            <a href="#" class="nav-item">Account</a>
+                                            <div class="dropdown-content2 text-left">
+                                                <a href="~/order/ConfirmPayments">Confirm Payment</a>
+                                                <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                                                <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
+                                                <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
+                                                <a href="~/customer/addressAdd">Address Book</a>
+                                                <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
 
 
-                            }
-                            else
-                            {
-                                <li> <a href="~/login" class="signin btn-login mr-2">Login</a></li>
-                            }
-                        </ul>
+                                }
+                                else
+                                {
+                                    <li> <a href="~/login" class="signin btn-login mr-2">Login</a></li>
+                                }
+                            </ul>
+                        </div>
 
-                        <div>
+                        <div div class="col-6 m-0 p-0 text-center" style="">
                             @if (Model.ShoppingCartEnabled)
                             {
                                 var cartItem = "0";
@@ -295,9 +275,9 @@
                                     cssCartItem = "shopping-bag";
                                 }
                                 <a href="#bag" onclick="$('.aside').asidebar('open')">
-                                    <div id="icbag-panel" class="@cssCartItem align-items-center d-flex">
-                                        <div>Bag</div>
-                                        <div id="mCartItemsQty" class="cart-qty" style="margin: 0!important;">@cartItem</div>
+                                    <div class="row" id="icbag-panel" class="@cssCartItem align-items-center d-flex">
+                                        <div class="col-3 m-0 p-0 text-center">Bag</div>
+                                        <div id="mCartItemsQty" class="cart-qty col-9 m-0 p-0 text-left" style="margin: 0!important;">@cartItem</div>
                                     </div>
                                 </a>
 
@@ -334,104 +314,24 @@
                 </div>
             </div>
 
-            <div class="navbar-collapse" id="navbarsExampleDefault" style="text-transform:uppercase;">
+            <div class="navbar-collapse sideMenu" id="navbarsExampleDefault" style="text-transform:uppercase;">
 
                 <div><span class="closeIcon mclose" onclick="mclosemenu()">&nbsp;</span></div>
 
 
                 <div class="" style="margin-top:20vh;">
-
-                    @* @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false }) *@
-
-                    @* <br /><br /> *@
-
-
-
-                    <div class="d-block d-md-none">
+                    <div class="d-block d-md-none hidden-md hidden-lg">
                         <ul class="list-unstyled list-inline  mm-category1">
                             <li><a href="~/for-you"><span>For You</span></a></li>
                             <li><a href="~/for-them"><span>For Them</span></a></li>
                             <li><a href="~/byob/step1"><span>Build Your Own Box</span></a></li>
                             <li><a href="~/about">About</a></li>
                             <li><a href="~/blog">Blog</a></li>
-                            @*<li class="dropdown dropright-list">
-            <a href="#" class="dropbtn" style="" data-toggle="collapse" data-target="#collapse-nav2" aria-expanded="false" aria-controls="collapse-nav2">Our Services</a>
-            <div class="collapse mt-3 pl-3" id="collapse-nav2">
-                <a href="/ourservices/wedding">Weddings</a>
-                <a href="~/ourservices/Baby-kids">Baby &amp; Kids</a>
-                <a href="~/ourservices/social-events">Social Events</a>
-                <a href="~/ourservices/corporate">Corporate</a>
-                <a href="~/ourservices/Packaging">Packaging &amp; Gift Wraps</a>
-                <a href="~/ourservices/collaborations">Collaborations</a>
-            </div>
-        </li>*@
-                            @*@if (Model.IsAuthenticated)
-        {
-            <li class="dropdown dropright-list">
-                <a href="#" class="dropbtn" style="" data-toggle="collapse" data-target="#collapse-nav2" aria-expanded="false" aria-controls="collapse-nav2">My Account</a>
-                <div class="collapse" id="collapse-nav2">
-                    <a href="~/order/ConfirmPayments">Confirm Payment</a>
-                    <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
-                    <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
-                    <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
-                    <a href="~/customer/addressAdd">Address Book</a>
-
-                </div>
-            </li>
-                <li>
-                    <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logoff</a>
-                </li>
-        }
-        else
-        {
-            <li><a href="~/login" class="signin btn-login">Sign in/ Sign up</a></li>
-        }*@
-
-
-                            @*<li><a href="#" class="" onclick="openSearch()">Search</a></li>*@
-                            @*<li style="padding-left:48px;">
-            @Html.Action("CurrencySelector", "Common")
-        </li>*@
                         </ul>
-
                     </div>
-
-
-                </div>
-
-
-
-
-
-                @*<div class="mb-4">
-                        <a class="navbar-brand" href="~/"><img class="img-responsive store-logo" src="~/Themes/v1/Content/images/logo.svg" /></a>
-                    </div>
-                    @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId, isSidebar = false })
-                    <ul class="list-unstyled list-inline">
-                        <li> <a href="~/sale" class="signin" style="font-size:12px;">SALE</a></li>
-                        <li> <a href="#" class="" onclick="openSearch()" style="font-size:12px;">Search</a></li>
-                        @if (Model.IsAuthenticated)
-                        {
-                            <li class="dropdown dropright-list">
-                                <a href="#" class="dropbtn" style="font-size:12px;" data-toggle="collapse" data-target="#collapse-nav2" aria-expanded="false" aria-controls="collapse-nav2">My Account</a>
-                                <div class="collapse" id="collapse-nav2" style="font-size:12px;">
-                                    <a href="~/order/ConfirmPayments">Confirm Payment</a>
-                                    <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
-                                    <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
-                                    <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
-                                    <a href="~/customer/addressAdd">Address Book</a>
-                                    <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
-                                </div>
-                            </li>
-                        }
-                        else
-                        {
-                            <li><a href="~/login" class="signin btn-login" style="font-size:12px;">SIGN IN/SIGN UP</a></li>
-                        }
-
-                    </ul>*@
+               </div>
             </div>
-
+            <div class="overlay"></div>
         </div>
 
 
@@ -457,12 +357,43 @@
 <div class="aside-backdrop"></div>
 
 <script>
-    window.onload = function () { if (window.jQuery) { $(document).ready(function () { $(".sidebarNavigation .navbar-collapse").hide().clone().appendTo("body").removeAttr("class").addClass("sideMenu").show(); $("body").append("<div class='overlay'></div>"); $(".navbar-toggle, .navbar-togglers").on("click", function () { $(".sideMenu").addClass($(".sidebarNavigation").attr("data-sidebarClass")); $(".sideMenu, .overlay").toggleClass("open"); $(".overlay").on("click", function () { $(this).removeClass("open"); $(".sideMenu").removeClass("open") }) }); $("body").on("click", ".sideMenu.open .nav-item", function () { if (!$(this).hasClass("dropdown")) { $(".sideMenu, .overlay").toggleClass("open") } }); $(window).resize(function () { if ($(".navbar-toggler").is(":block")) { $(".sideMenu, .overlay").hide() } else { $(".sideMenu, .overlay").show() } }) }) } else { console.log("sidebarNavigation Requires jQuery") } }
+    window.onload = function () { 
+        if (window.jQuery) { 
+            $(document).ready(function () { $(".sidebarNavigation .navbar-collapse").hide().clone().appendTo("body").removeAttr("class").addClass("sideMenu").show();
+            $("body").append("<div class='overlay'></div>"); $(".navbar-toggle, .navbar-togglers").on("click", function () { 
+                $(".sideMenu").addClass($(".sidebarNavigation").attr("data-sidebarClass")); 
+                $(".sideMenu, .overlay").toggleClass("open"); $(".overlay").on("click", function () { 
+                    $(this).removeClass("open"); $(".sideMenu").removeClass("open") }) }); 
+                    $("body").on("click", ".sideMenu.open .nav-item", function () { 
+                        if (!$(this).hasClass("dropdown")) { 
+                            $(".sideMenu, .overlay").toggleClass("open") 
+                        } 
+                    }); 
+                    $(window).resize(function () { 
+                        if ($(".navbar-toggler").is(":block")) { 
+                            $(".sideMenu, .overlay").hide() 
+                        } 
+                        else { 
+                            $(".sideMenu, .overlay").show() 
+                        } 
+                    }) 
+                }) 
+            } 
+        else { 
+            console.log("sidebarNavigation Requires jQuery") 
+        } 
+    }
 
     $(document).on('click', '.dropdown', function (e) {
         e.stopPropagation();
         $('.dropdown').not($(this)).removeClass('active');
         $(this).toggleClass('active');
+    });
+
+    $(document).on('click', '#open-side-menu', function (e) {
+        e.stopPropagation();
+        $('div.navbar-collapse.sideMenu').addClass('open');
+        $('div.overlay').addClass('open');
     });
 
     $(document).on('click', function () {

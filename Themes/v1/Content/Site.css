@@ -882,6 +882,9 @@ a.dropdown-item {
 
 
 /*cart*/
+.margin-remove-mobile {
+    margin-top: 3rem!important;
+}
 .select-address-form{display:flex;justify-content:column;}
 .select-address{width:500px;border-bottom:1px solid #707070 !important; margin-bottom:20px; border: none;}
 .input-cart{width:300px; height:40px; margin-bottom:10px;display:flex;flex-direction:column;}
@@ -1119,8 +1122,8 @@ table.table-coupon {
 
     .cart-thumbnail{padding-right:5px;}
     .cart-checkout {
-    bottom:2em;
-
+        bottom:2em;
+        width: 90%;
     }
 }
 
@@ -2104,9 +2107,47 @@ cursor:pointer;
 
  .enter-address{
  }
-
+ .confirm-more-info {
+    width: 60%; 
+    margin: 20px auto;
+}
+.login-top-page {
+    margin-top: 100px;
+}
  /* FOR PHONE */
 @media (max-width: 575.98px) {
+    .login-top-page {
+        margin-top: 50px;
+    }
+    .confirm-more-info {
+        width: 73% !important; 
+        margin: 20px auto;
+    }
+    .checkout-terms-condition{
+        width:100% !important;
+        margin:20px auto;
+    }
+    
+    .text-center-vertically {
+        display:flex;
+        align-items: center;
+        margin: 0;
+    }
+    .margin-remove-mobile {
+        margin-top: 0!important;
+    }
+    .plusone{
+        line-height:22px;
+        font-size:14px !important;
+    }
+    h1.stress {
+        font-weight: 600;
+        font-size: 28px;
+        margin-bottom: 22px;
+        line-height: 44px;
+        font-family: 'GillSansMTPro-Book';
+        letter-spacing:0.02em;
+    }
     .fancybox-inner {
         overflow: hidden;
         width: 100% !important;
@@ -2272,11 +2313,42 @@ cursor:pointer;
         max-width: 100% !important;
     }
     .tab-content {
-        padding: 50px;
+        padding: 50px 111px;
     }
 }
 
 @media (max-width: 991.98px) {
+    .login-top-page {
+        margin-top: 50px;
+    }
+    .confirm-more-info {
+        width: 73% !important; 
+        margin: 20px auto;
+    }
+    .checkout-terms-condition{
+        width:100% !important;
+        margin:20px auto;
+    }
+    .text-center-vertically {
+        display:flex;
+        align-items: center;
+        margin: 0;
+    }
+    .margin-remove-mobile {
+        margin-top: 0!important;
+    }
+    .plusone{
+        line-height:22px;
+        font-size:14px !important;
+    }
+    h1.stress {
+        font-weight: 600;
+        font-size: 28px;
+        margin-bottom: 22px;
+        line-height: 44px;
+        font-family: 'GillSansMTPro-Book';
+        letter-spacing:0.02em;
+    }
     .fancybox-inner {
         overflow: hidden;
         width: 100% !important;

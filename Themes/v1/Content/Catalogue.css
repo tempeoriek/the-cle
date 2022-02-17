@@ -270,6 +270,14 @@
 
 
 @media (max-width: 575.98px) {
+    .select-quantity {
+        font-size: 16px;
+        padding:5px;
+        color: #000;
+        height: 37px;
+        border: 1px solid #000;
+        cursor:pointer;
+    }
     .img-shopall{width: 187.49px;}
     .product1, .product2, .product3, .product4{padding-left:0;padding-right:0;}
     .img-collection{width: 187.49px;}
