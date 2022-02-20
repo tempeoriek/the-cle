@@ -1089,8 +1089,8 @@ table.table-coupon {
     .card-header{background-color:transparent;border-radius:none; border:none; border-bottom:1px solid #000 !important;padding: 0;}
     .card{border-radius:none;border:none;width:350px;margin:auto;}
     .btn-cart{width: 135.68px !important;height: 40px !important;margin:auto;}
-    .order-summary-item-mobile{display:flex;margin:20px; justify-content:space-between;border-bottom:1px solid #000;}
-    .order-summary{width:380px;margin:auto;}
+    .order-summary-item-mobile{display:flex;margin:0px; justify-content:space-between;border-bottom:1px solid #000;}
+    .order-summary{margin:auto;}
     .cart-column2-mobile{width:40%; padding-left:10px;}
     .cart-column3-mobile{width:30%;}
     .cart-column2-mobile>div>p, .cart-column3-mobile>p{font-size:11px; color:#000;line-height:10px;}
@@ -2120,8 +2120,9 @@ cursor:pointer;
         margin-top: 50px;
     }
     .confirm-more-info {
-        width: 73% !important; 
+        width: 88% !important; 
         margin: 20px auto;
+        text-align: justify;
     }
     .checkout-terms-condition{
         width:100% !important;
@@ -2322,8 +2323,9 @@ cursor:pointer;
         margin-top: 50px;
     }
     .confirm-more-info {
-        width: 73% !important; 
+        width: 88% !important; 
         margin: 20px auto;
+        text-align: justify;
     }
     .checkout-terms-condition{
         width:100% !important;

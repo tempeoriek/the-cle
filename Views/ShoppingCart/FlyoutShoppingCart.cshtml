@@ -63,12 +63,12 @@
         <hr />
         <div class="cart-total"><h4>SUBTOTAL</h4><h4>@Model.SubTotal</h4></div>
         @* <p class="p-0 text-right" style=" font-size: 11px; margin-top: -20px; margin-bottom: 0;">Reduction of the total price from the points you have collected</p> *@
-        @*@if (Model.DisplayShoppingCartButton)
+        @if (Model.DisplayShoppingCartButton)
         {
             <input type="button" value="VIEW BAG" class="btn btn-default btn-block mt-2" onclick="setLocation('@(Url.RouteUrl("ShoppingCart"))')" />
-        }*@
+        }
 
-        <input type="button" value="Continue Shopping" class="btn btn-default btn-block mt-2" onclick="$('.aside').asidebar('close');" />
+        @* <input type="button" value="Continue Shopping" class="btn btn-default btn-block mt-2" onclick="$('.aside').asidebar('close');" /> *@
 
 
         @*<input type="button" value="Continue Shopping" class="btn btn-default btn-block mt-2" onclick="javascript: history.go(-2);" />*@
