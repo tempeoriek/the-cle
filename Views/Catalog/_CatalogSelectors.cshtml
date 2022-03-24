@@ -10,10 +10,17 @@
         var i = 1;
         foreach (var sort in Model.AvailableSortOptions)
         {
-            <div class="radio-alternate-new">
-                <label style="cursor: pointer;"><input type="radio" name="SortProduct" class="content-filter-sortby_@(i)" id="sortby_@(i)" value="sortby_@(i)">@sort.Text</label>
-                @* <input type="radio" id="sortby_@(i)" name="orderby" value="@(sort.Value)" @selected><label for="sortby_@(i)">@sort.Text</label> *@
-            </div>
+            var sort_name = sort.Text;
+            if (sort.Text == "Position") {
+                sort_name = "Newest Items";
+            }
+            if (sort_name != "Created on") {
+                <div class="radio-alternate-new">
+                    <label style="cursor: pointer;"><input type="radio" name="SortProduct" class="content-filter-sortby_@(i)" id="sortby_@(i)" value="sortby_@(i)">
+                        @sort_name
+                    </label>
+                </div>
+            }
 
             i++;
         }

@@ -81,7 +81,9 @@
 .product-description .description h5{
     font-size:11px;
     cursor:pointer;
-    margin:8px 0;
+    /* padding-top:8px 0; */
+    height: 20px;
+    display: initial;
     letter-spacing:1px;
     text-transform:uppercase;
 }
@@ -219,7 +221,7 @@
     background-color: transparent;
     border-color: transparent;
     color:#000;
-    width:50px;
+    width:50%;
 }
 /*end of product detail*/
 
@@ -516,7 +518,7 @@ font-size:12px !important;
     color:#000;
     text-align: center;
     width:100%;
-    height:20px;
+    height:50%;
 }
 
 input::-webkit-outer-spin-button,

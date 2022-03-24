@@ -204,6 +204,15 @@
 
             <div class="gap"></div>
 
+            <div class="">
+                @{
+                    var pager = Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber");
+                    if (!pager.IsEmpty())
+                    {
+                        <div class="pager">@pager</div>
+                    }
+                }
+            </div>
 
         </div>
 

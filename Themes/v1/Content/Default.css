@@ -154,13 +154,13 @@ label{float:left;}
 .blog_list .pnl-right {
     display: inline-block;
     width: 100%;
-    max-width: 40%;
+    /* max-width: 40%; */
     margin-left:5%;
 }
 
 
 .blog_list .card +.card {
-    margin-top:10em;
+    margin-top: 3em;
 }
 
 

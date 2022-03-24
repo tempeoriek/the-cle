@@ -17,7 +17,7 @@
                     <div class="byobcart__boxsize">
 
                         <div class="row">
-                            <div class="col-8 col-md-8 col-lg-9">
+                            <div class="col-7 col-md-8 col-lg-9">
                                 @{
                                     var box = "Small Box";
                                     var progressbarwidth = (Model.TotalWeightFactor * 6);
@@ -26,7 +26,7 @@
                                     if(progressbarwidth == 0)
                                     {
                                         progressbarwidth = 10;
-                                        progressbarwidthmobile = 40;
+                                        progressbarwidthmobile = 35;
                                     }
                                     else if(progressbarwidth == 96)
                                     {
@@ -44,12 +44,22 @@
                                 }
                        
                                 <div class="progress">
-                                    <div class="d-none d-md-block hidden-xs hidden-sm progress-bar bg-progress" role="progressbar" style="width: @string.Format("{0}%", progressbarwidth)" aria-valuenow="@progressbarwidth" aria-valuemin="0" aria-valuemax="100">@box</div>
-                                    <div class="d-block d-md-none hidden-md hidden-xl progress-bar bg-progress" role="progressbar" style="padding: 4px; width: @string.Format("{0}%", progressbarwidthmobile)" aria-valuenow="@progressbarwidthmobile" aria-valuemin="0" aria-valuemax="100">@box</div>
+                                    <div class="d-none d-md-block hidden-xs hidden-sm progress-bar bg-progress" role="progressbar" style="width: @string.Format("{0}%", progressbarwidth)" aria-valuenow="@progressbarwidth" aria-valuemin="0" aria-valuemax="100">
+                                        @box
+                                    </div>
+                                    <div 
+                                        class="d-block d-md-none hidden-md hidden-xl progress-bar bg-progress font-byob-progress" 
+                                        role="progressbar" 
+                                        style="padding: 4px; width: @string.Format("{0}%", progressbarwidthmobile)" 
+                                        aria-valuenow="@progressbarwidthmobile" 
+                                        aria-valuemin="0" aria-valuemax="100"
+                                    >
+                                        @box
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-4 col-lg-3">
-                                <a href="~/byob/step3" class="btn btn-cart-byob" style="width:100%;">Complete Your Box</a>
+                            <div class="col-5 col-md-4 col-lg-3">
+                                <a href="~/byob/step3" class="btn btn-cart-byob font-byob-progress" style="width:100%;">Complete Your Box</a>
                             </div>
                         </div>
                     </div>

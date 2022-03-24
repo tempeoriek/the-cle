@@ -133,25 +133,15 @@
         if (Model.Categories.Count > 0)
         {
 
-            @*<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">For you</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>*@
-
-
             if (Model != null)
             {
+                //desktop
                 foreach (var category in Model.Categories)
                 {
 
                     if (lstCategories.Contains(category.SeName))
                     {
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown d-none d-md-block p-0">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-@category.Id" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@category.Name</a>
                             @if (category.SubCategories.Any())
                             {
@@ -193,7 +183,7 @@
 
                                                                 if (subcat.Name.Equals("brands", StringComparison.OrdinalIgnoreCase))
                                                                 {
-                                                                    <li><a class="" href="~/catalog/allbrands">See more</a></li>
+                                                                    <li><a class="" style="color: #C1C1C1;" href="~/catalog/allbrands">See more</a></li>
                                                                 }
                                                                 else
                                                                 {
@@ -224,72 +214,7 @@
 
                                                                 }
 
-
-
                                                             }
-
-
-
-
-
-                                                            @*if (subcat.Name.Equals("brands", StringComparison.OrdinalIgnoreCase))
-                                                                        {
-                                                                            var ubound = subcat.SubCategories.Count;
-                                                                            if (ubound <= 5)
-                                                                            {
-                                                                                foreach (var s in subcat.SubCategories)
-                                                                                {
-                                                                                    <li><a class="" href="@Url.RouteUrl("Category", new { SeName = s.SeName })">@s.Name</a></li>
-                                                                                }
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                for (int n = 0; n <= 5; n++)
-                                                                                {
-                                                                                    var s = subcat.SubCategories[n];
-                                                                                    <li><a class="" href="@Url.RouteUrl("Category", new { SeName = s.SeName })">@s.Name</a></li>
-                                                                                }
-
-                                                                                <li>
-                                                                                    <div class="accordion accordion-flush"
-                                                                                         id="accMoreBrands" style="border-top:none; cursor:pointer;">
-                                                                                        <div class="accordion-item">
-                                                                                            <div class="accordion-header" id="flush-headingOne">
-                                                                                                <a class="collapsed"
-                                                                                                   data-bs-toggle="collapse"
-                                                                                                   data-bs-target="#flush-collapseOne"
-                                                                                                   aria-expanded="false" aria-controls="flush-collapseOne">
-                                                                                                    See more
-                                                                                                </a>
-                                                                                            </div>
-
-                                                                                            <div id="flush-collapseOne"
-                                                                                                 class="accordion-collapse collapse"
-                                                                                                 aria-labelledby="flush-headingOne"
-                                                                                                 data-bs-parent="#accMoreBrands">
-
-                                                                                                @for (int n = 6; n <ubound; n++)
-                                                                                                {
-                                                                                                    var s = subcat.SubCategories[n];
-                                                                                                    <a class="" href="@Url.RouteUrl("Category", new { SeName = s.SeName })">@s.Name</a><br />
-                                                                                                }
-
-            </div>
-                                                                                        </div>
-
-
-                                                                                    </div>
-                                                                                </li>
-
-                                                                            }
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            foreach (var s in subcat.SubCategories)
-                                                                            {
-                                                                                <li><a class="" href="@Url.RouteUrl("Category", new { SeName = s.SeName })">@s.Name</a></li>
-                                                                            }
-                                                                        }*@
                                                         }
                                                     </ul>
                                                 </div>
@@ -305,98 +230,6 @@
                     }
 
                 }
-
-                @*<hr />
-
-                    var shopcategory = Model.Categories.FirstOrDefault(x => (x.Name.Equals("for you", StringComparison.OrdinalIgnoreCase)));
-                    if (shopcategory != null)
-                    {
-                        if (shopcategory.SubCategories.Any())
-                        {
-                            foreach (var subcat in shopcategory.SubCategories)
-                            {
-                                <div class="col-12 col-md-4">
-                                    <div class="">@subcat.Name</div>
-
-                                    <ul class="list-unstyled">
-                                        @foreach (var s in subcat.SubCategories)
-                                        {
-                                            <li><a class="" href="@Url.RouteUrl("Category", new { SeName = s.SeName })">@s.Name</a></li>
-                                        }
-                                    </ul>
-                                </div>
-                            }
-                        }
-                    }*@
-
-
-                @*if (shopcategory != null)
-                    {
-                        <a href="@Url.RouteUrl("Category", new { SeName = shopcategory.SeName })">All</a>
-
-                        if (shopcategory.SubCategories.Any())
-                        {
-                            <div class="container-fluid text-center">
-                                <div class="row">
-                                    @foreach (var subcat in shopcategory.SubCategories)
-                                    {
-                                        <div class="col-12 col-md-4">
-                                            <select id="ddl_@shopcategory.Id" class="shop__filter form-control">
-                                                <optgroup label="@subcat.Name">
-                                                    <option value="shop">All</option>
-                                                    @foreach (var s in subcat.SubCategories)
-                                                    {
-                                                        <option value="@s.SeName">@s.Name</option>
-                                                    }
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    }*@
-
-                @*<ul class="list-unstyled mm-category1">
-
-                        @foreach (var category in Model.Categories)
-                        {
-                            if (category.SubCategories.Any())
-                            {
-                                <li>
-                                    <a class="" data-toggle="collapse" href="#mm-category1-@category.Id" role="button" aria-expanded="false" aria-controls="mm-category1-@category.Id">@category.Name</a>
-                                    <ul class="mm-subcategory1 list-unstyled collapse" id="mm-category1-@category.Id">
-                                        @if (category.SubCategories.Any())
-                                        {
-                                            <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">All</a></li>
-
-                                            foreach (var subcat in category.SubCategories)
-                                            {
-                                                <li>
-                                                    <a href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })">@subcat.Name</a>
-                                                    @if (subcat.SubCategories.Any())
-                                                    {
-                                                        <ul class="mm-subsubcategory1 list-unstyled">
-                                                            @foreach (var subsubcat in subcat.SubCategories)
-                                                            {
-                                                                <li><a href="@Url.RouteUrl("Category", new { SeName = subsubcat.SeName })">@subsubcat.Name</a></li>
-                                                            }
-                                                        </ul>
-                                                    }
-                                                </li>
-                                            }
-                                        }
-                                    </ul>
-                                </li>
-                            }
-                            else
-                            {
-                                <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name.ToUpper()</a></li>
-                            }
-                        }
-                    </ul>*@
-
-
             }
 
         }
@@ -452,5 +285,3 @@
 
         }
 }
-
-

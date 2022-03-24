@@ -258,7 +258,7 @@
     .prod-desc{text-decoration-color: #565656}
     .prod-details .prices {color: #565656;font-weight: 300;margin-top: 5px;}
     .prod-details .prices .old-product-price {font-size: 13px;}
-    .prod-details .prices .product--price {font-size: 13px;font-weight:bold;color: #F7CBCB;}
+    .prod-details .prices .product--price {font-size: 13px;font-weight:bold;color: #1C1C1C;}
     .prod-details .line {margin: 10px 0;}
     .prod-details .attributes {margin-bottom: 5px;margin-top: 5px}
     .prod-details .add2cart{margin-top:5px}

@@ -73,44 +73,44 @@
 
     @if (Model.Products.Any())
     {
-    <div class="mb-5">
-        @*@using (Ajax.BeginForm("EmployeeMaster", "Home", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divEmp" }))
-        {
+        <div class="mb-5">
+            @*@using (Ajax.BeginForm("EmployeeMaster", "Home", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divEmp" }))
+            {
 
-        }*@
+            }*@
 
 
-            <form id="filter-selected-form" class="login-form" method="post" action="~/@Model.SeName">
-                @Html.AntiForgeryToken()
-                <div class="byob-filter">
-                    <div class="row">
-                        <div class="col-12">
-                            <a data-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter" class="filter__toogle collapsed">Filter</a>
+                <form id="filter-selected-form" class="login-form" method="post" action="~/@Model.SeName">
+                    @Html.AntiForgeryToken()
+                    <div class="byob-filter">
+                        <div class="row">
+                            <div class="col-12">
+                                <a data-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter" class="filter__toogle collapsed">Filter</a>
 
-                        </div>
-                    </div>
-                    <div class="collapse" id="collapseFilter">
-                        <div class="filter_panel">
-                            <div class="row">
-                                <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CategorySelectors", Model, new ViewDataDictionary())</div>
-                                <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div>
-                                <div class="col-12 col-lg-3 mb-5">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
-                                <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
                             </div>
-                            @*<div class="row">
-                                <div class="col-12 text-center mt-3">
-                                    <input type="submit" value="Apply" class="btn btn-default" style="min-width:150px;" />
+                        </div>
+                        <div class="collapse" id="collapseFilter">
+                            <div class="filter_panel">
+                                <div class="row">
+                                    <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CategorySelectors", Model, new ViewDataDictionary())</div>
+                                    <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div>
+                                    <div class="col-12 col-lg-3 mb-5">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
+                                    <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
                                 </div>
-                            </div>*@
+                                @*<div class="row">
+                                    <div class="col-12 text-center mt-3">
+                                        <input type="submit" value="Apply" class="btn btn-default" style="min-width:150px;" />
+                                    </div>
+                                </div>*@
+                            </div>
+
+
                         </div>
 
 
                     </div>
-
-
-                </div>
-            </form>
-    </div>
+                </form>
+        </div>
 
 
 

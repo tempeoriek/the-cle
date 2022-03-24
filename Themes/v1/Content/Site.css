@@ -53,11 +53,11 @@ body {
 
 }
 
-#body-wrapper {
+/* #body-wrapper {
     min-height: 100%;
     position: relative;
     margin: 0 auto;
-}
+} */
 
 #body-content {
     min-height: 90vh;
@@ -112,9 +112,9 @@ body {
     position:fixed;
 }
 .brandImage{
-    margin-top:32px;
-    max-height: 42px;
-    margin-bottom:32px;
+    margin-top:23px;
+    max-height: 25px;
+    margin-bottom:23px;
 }
 
 .menu-bottom {
@@ -656,7 +656,7 @@ select.classic {
     cursor: pointer;
     background-image: url('../../v1/Content/images/arrow.svg');
     background-repeat: no-repeat;
-    background-position: right;
+    background-position: 97% 50%;
     background-size: 12px !important;
 }
 
@@ -2114,8 +2114,55 @@ cursor:pointer;
 .login-top-page {
     margin-top: 100px;
 }
+
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: black;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.headerparent-slider-mobile {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    overflow-x: scroll;
+}
+.headerparent-slider-mobile::-webkit-scrollbar {
+    width:1px; 
+    height:100%;
+  }
+  .headerparent-slider-mobile::-webkit-scrollbar * {
+    background:transparent;
+  }
+  .headerparent-slider-mobile::-webkit-scrollbar-thumb {
+    background:transparent !important;
+  }
+.headerchild-slider-mobile {
+    height: 100%;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    width: 500px;
+    position: absolute; top: 0;
+}
+
+.subheader-text {
+    font-size: 12px; 
+    text-decoration: none;
+}
  /* FOR PHONE */
 @media (max-width: 575.98px) {
+    #body-wrapper {
+        min-height: 100%;
+        position: relative;
+        margin: 0 auto;
+        padding-top: 45px;
+    }
+    
+    .font-byob-progress {
+        font-size: 9px !important;
+    }
     .login-top-page {
         margin-top: 50px;
     }
@@ -2314,11 +2361,14 @@ cursor:pointer;
         max-width: 100% !important;
     }
     .tab-content {
-        padding: 50px 111px;
+        padding: 50px 60px;
     }
 }
 
 @media (max-width: 991.98px) {
+    .font-byob-progress {
+        font-size: 9px !important;
+    }
     .login-top-page {
         margin-top: 50px;
     }
@@ -3064,7 +3114,9 @@ top:95vh;
 
     /*static pages*/
     .static-page {
-        padding-top: 90px;
+        padding-top: 0;
+        padding-left: 30px;
+        padding-right: 30px;
         max-width: 800px;
         margin-left: auto;
         margin-right: auto;
