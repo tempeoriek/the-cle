@@ -9,14 +9,14 @@
 
 @if (Model.PictureModels.Count > 0)
 {
-<div class="carouseldesktop d-none d-md-block">
-    @foreach (var p in Model.PictureModels)
-    {
-        @*<div><a href="@p.FullSizeImageUrl" class="clean full" data-fancybox="gallery"><img class="img-fluid w-100 pl-5" src="@p.ImageUrl" /></a></div>*@
-        <div><div class="zoom1"><img class="img-fluid" src="@p.FullSizeImageUrl" /></div></div>
-    }
+    <div class="carouseldesktop d-none d-md-block">
+        @foreach (var p in Model.PictureModels)
+        {
+            @*<div><a href="@p.FullSizeImageUrl" class="clean full" data-fancybox="gallery"><img class="img-fluid w-100 pl-5" src="@p.ImageUrl" /></a></div>*@
+            <div><div class="zoom1"><img class="img-fluid" src="@p.FullSizeImageUrl" /></div></div>
+        }
 
-</div>
+    </div>
 
 
 
@@ -58,7 +58,7 @@
         </div>*@
 
     @*Mobile View*@
-    <div id="carouselExampleIndicators" class="carousel slide d-block d-md-none" data-ride="carousel">
+    @* <div id="carouselExampleIndicators" class="carousel slide d-block d-md-none" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -86,10 +86,18 @@
             }
         </div>
 
+    </div> *@
+
+    <div class="carouselmobile d-block d-md-none">
+        @foreach (var p in Model.PictureModels)
+        {
+            @*<div><a href="@p.FullSizeImageUrl" class="clean full" data-fancybox="gallery"><img class="img-fluid w-100 pl-5" src="@p.ImageUrl" /></a></div>*@
+            <div><div class="zoom1"><img class="img-fluid" src="@p.FullSizeImageUrl" /></div></div>
+        }
+
     </div>
 
-
-    @*<div id="carouselImg" class="d-block d-md-none carousel slide">
+    @* <div id="carouselImg" class="d-block d-md-none carousel slide">
             <ol class="carousel-indicators">
                 <li data-target="#carouselImg" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselImg" data-slide-to="1"></li>
@@ -120,7 +128,7 @@
 
             <a class="carousel-control left clean" href="#carouselImg" data-slide="prev"><i class="fa fa-angle-left fa-lg"></i></a>
             <a class="carousel-control right clean" href="#carouselImg" data-slide="next"><i class="fa fa-angle-right fa-lg"></i></a>
-        </div>*@
+    </div> *@
 
 
 
@@ -247,6 +255,17 @@
 <script>
     $(document).ready(function () {
         $('.carouseldesktop').slick({
+            slidesToShow: 1,
+            slideToScroll: 2,
+            infinite: true,
+            dots: false,
+            centerMode: false,
+            arrows: true,
+            autoplay: false,
+            autoplaySpeed: 5000,
+        });
+
+        $('.carouselmobile').slick({
             slidesToShow: 1,
             slideToScroll: 2,
             infinite: true,

@@ -181,6 +181,9 @@
                 foreach(var category in Model.Categories) {
                     if (category.SubCategories.Any()) {
                         <div id="subcategorymobile-@category.Id" class="d-block d-md-none sub-category-mobile" style="display: none !important;">
+                            <div class="mt-2 mb-2" style="font-size: 12px; margin-left: 10%;">
+                                <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" style="text-decoration: none;">Shop All</a>
+                            </div>
                             @foreach(var subcategory in category.SubCategories) {
                                 <div class="mt-2 mb-2" style="font-size: 12px; margin-left: 10%;">
                                     <a href="@Url.RouteUrl("Category", new { SeName = subcategory.SeName })" style="text-decoration: none;">

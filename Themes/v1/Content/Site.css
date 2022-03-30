@@ -2576,6 +2576,8 @@ select::-ms-expand {
 .accordion {border-radius:0;}
     .accordion .card {
         border-bottom: 1px solid #1C1C1C !important;
+        padding-top: 8px;
+        padding-bottom: 8px;
     }
 .accordion .card-body {
     padding-bottom: 3rem;
@@ -2695,8 +2697,8 @@ top:95vh;
         background-repeat: no-repeat !important;
         background-size: contain !important;
         width: 50px !important;
-        height: 50px !important;
-        left: 0px !important;
+        height: 40px !important;
+        left: 10px !important;
     }
 
     .slick-next {
@@ -2705,7 +2707,7 @@ top:95vh;
         background-position: center center !important;
         background-size: contain !important;
         width: 50px !important;
-        height: 50px !important;
+        height: 40px !important;
         right: 0 !important;
     }
 
