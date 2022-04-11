@@ -86,7 +86,7 @@
 
     </div> *@
 
-<div class="carouselmobile d-none d-md-block">
+<div class="carouselmobile d-block d-md-none">
     @foreach (var p in Model.PictureModels)
     {
         <div><a href="@p.FullSizeImageUrl" class="clean full" data-fancybox="gallery"><img class="img-fluid" src="@p.ImageUrl" /></a></div>
