@@ -4,9 +4,18 @@
 
 
 
-<h5>Occassions</h5>
 @if (Model.SubCategories.Any())
 {
+    if (Model.SeName.Equals("brands", StringComparison.OrdinalIgnoreCase))
+    {
+        <h4>Brands</h4>
+    }
+    else
+    {
+        <h4>Categories</h4>
+    }
+
+
     var selected = "";
     var i = 1;
     foreach (var item in Model.SubCategories)
@@ -19,7 +28,7 @@
         {
             selected = "";
         }
-        <div class="radio-alternate"><input type="radio" id="cat_@(i)" name="cat" value="@(item.Id)" @selected ><label for="cat_@(i)">@item.Name</label></div>
+        <div class="radio-alternate filter__radio"><input type="radio" id="cat_@(i)" name="cat" value="@(item.Id)" @selected><label for="cat_@(i)">@item.Name</label></div>
 
         i++;
     }
