@@ -10,7 +10,7 @@
 
     <div class="container mt-3">
         <div class="row">
-            <div class="col-12 col-sm-3  col-md-2 text-center text-md-left">
+            <div class="col-12 col-sm-3  col-md-2 text-left text-md-left">
                 <ul class="list-unstyled">
                     <li class="list-item"><a href="~/contactus"><span>Contact Us</span></a></li>
                     @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
@@ -20,7 +20,7 @@
 
                 </ul>
             </div>
-            <div class="col-12 col-sm-3  col-md-2 text-center text-md-left">
+            <div class="col-12 col-sm-3  col-md-2 text-left text-md-left">
                 <ul class="list-unstyled">
                     @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())
                     {
@@ -28,7 +28,7 @@
                     }
                 </ul>
             </div>
-            <div class="col-12 col-sm-3  col-md-2 text-center text-md-left">
+            <div class="col-12 col-sm-3  col-md-2 text-left text-md-left">
                 <ul class="list-unstyled">
                     @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn3).ToList())
                     {
