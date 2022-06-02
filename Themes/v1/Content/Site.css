@@ -1352,6 +1352,12 @@ textarea:focus {border-color: #eeeeee;outline: medium none;}
 ::-moz-placeholder {font-style:italic;}
 input::placeholder {font-style:italic;}
 
+.alert-placeholder::-webkit-input-placeholder { /* Chrome/Opera/Safari */font-style:italic; color: red;}
+.alert-placeholder::-moz-placeholder { /* Firefox 19+ */font-style:italic; color: red;}
+.alert-placeholder:-ms-input-placeholder { /* IE 10+ */font-style:italic; color: red;}
+.alert-placeholder:-moz-placeholder { /* Firefox 18- */font-style:italic; color: red;}
+.alert-placeholder::-moz-placeholder {font-style:italic; color: red;}
+
 .password:focus,
 .form-control:focus {box-shadow: none; border-color: #707070; background-color:transparent}
 

@@ -31,7 +31,7 @@
                 <ol class="list-unstyled opc" id="checkout-steps">
                     <li id="opc-billing" class="tab-section allow">
                         <div class="step-title checkout-margin-title" data-toggle="collapse" href="#checkout-step-billing" role="button" aria-expanded="false" aria-controls="checkout-step-billing">
-                            <h4>@T("Checkout.BillingAddress")</h4>
+                            <p>@T("Checkout.BillingAddress")</p>
                         </div>
                         <div id="checkout-step-billing" class="step a-item collapse show">
                            <div id="checkout-billing-load">@ShowContent()</div>
@@ -39,18 +39,18 @@
                     </li>
 
                     <li id="opc-shipping" class="tab-section">
-                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ShippingAddress")</h4></div>
+                        <div class="step-title checkout-margin-title"><p class="title">@T("Checkout.ShippingAddress")</p></div>
                     </li>
 
-                    <li id="opc-shipping_method" class="tab-section"><div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ShippingMethod")</h4></div> 
+                    <li id="opc-shipping_method" class="tab-section"><div class="step-title checkout-margin-title"><p class="title">@T("Checkout.ShippingMethod")</p></div> 
                     </li>
 
                     <li id="opc-payment_method" class="tab-section">
-                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.PaymentMethod")</h4></div>
+                        <div class="step-title checkout-margin-title"><p class="title">@T("Checkout.PaymentMethod")</p></div>
                     </li>
 
                     <li id="opc-confirm_order" class="tab-section">
-                        <div class="step-title checkout-margin-title"><h4 class="title">@T("Checkout.ConfirmOrder")</h4></div>
+                        <div class="step-title checkout-margin-title"><p class="title">@T("Checkout.ConfirmOrder")</p></div>
                     </li>
                 </ol>
             </div>
@@ -227,6 +227,93 @@
 
 
 <script>
+    $( "#NewAddress_CountryId" ).change(function() {
+        if (document.getElementById("NewAddress_CountryId").value != 0) {
+            $('#NewAddress_CountryId').css('cssText', 'color: #000;');
+        }
+        else {
+            $('#NewAddress_CountryId').css('cssText', 'color: #dc3545; border-bottom: 0.5px solid #dc3545 !important');
+        }
+    });
+    $( "#NewAddress_City" ).change(function() {
+        if (document.getElementById("NewAddress_City").value != 0) {
+            $('#NewAddress_City').css('cssText', 'color: #000;');
+        }
+        else {
+            $('#NewAddress_City').css('cssText', 'color: #dc3545; border-bottom: 0.5px solid #dc3545 !important');
+        }
+    });
+    $( "#NewAddress_StateProvinceId" ).change(function() {
+        if (document.getElementById("NewAddress_StateProvinceId").value != 0) {
+            $('#NewAddress_StateProvinceId').css('cssText', 'color: #000;');
+        }
+        else {
+            $('#NewAddress_StateProvinceId').css('cssText', 'color: #dc3545; border-bottom: 0.5px solid #dc3545 !important');
+        }
+    });
+
+    $( "#NewAddress_FirstName" ).change(function() {
+        if ($('input[id=NewAddress_FirstName]').val().length > 0) {
+            $('input[id=NewAddress_FirstName]').removeClass('alert-placeholder');
+            $('input[id=NewAddress_FirstName]').css('cssText', 'border-bottom: 0.5px solid #707070');
+        }
+        else {
+            $('input[id=NewAddress_FirstName]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            $('input[id=NewAddress_FirstName]').addClass('alert-placeholder');
+        }
+    });
+    $( "#NewAddress_LastName" ).change(function() {
+        if ($('input[id=NewAddress_LastName]').val().length > 0) {
+            $('input[id=NewAddress_LastName]').removeClass('alert-placeholder');
+            $('input[id=NewAddress_LastName]').css('cssText', 'border-bottom: 0.5px solid #707070');
+        }
+        else {
+            $('input[id=NewAddress_LastName]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            $('input[id=NewAddress_LastName]').addClass('alert-placeholder');
+        }
+    });
+
+    $( "#NewAddress_Email" ).change(function() {
+        if ($('input[id=NewAddress_Email]').val().length > 0) {
+            $('input[id=NewAddress_Email]').removeClass('alert-placeholder');
+            $('input[id=NewAddress_Email]').css('cssText', 'border-bottom: 0.5px solid #707070');
+        }
+        else {
+            $('input[id=NewAddress_Email]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            $('input[id=NewAddress_Email]').addClass('alert-placeholder');
+        }
+    });
+    $( "#NewAddress_Address1" ).change(function() {
+        if ($('input[id=NewAddress_Address1]').val().length > 0) {
+            $('input[id=NewAddress_Address1]').removeClass('alert-placeholder');
+            $('input[id=NewAddress_Address1]').css('cssText', 'border-bottom: 0.5px solid #707070');
+        }
+        else {
+            $('input[id=NewAddress_Address1]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            $('input[id=NewAddress_Address1]').addClass('alert-placeholder');
+        }
+    });
+    $( "#NewAddress_ZipPostalCode" ).change(function() {
+        if ($('input[id=NewAddress_ZipPostalCode]').val().length > 0) {
+            $('input[id=NewAddress_ZipPostalCode]').removeClass('alert-placeholder');
+            $('input[id=NewAddress_ZipPostalCode]').css('cssText', 'border-bottom: 0.5px solid #707070');
+        }
+        else {
+            $('input[id=NewAddress_ZipPostalCode]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            $('input[id=NewAddress_ZipPostalCode]').addClass('alert-placeholder');
+        }
+    });
+    $( "#NewAddress_PhoneNumber" ).change(function() {
+        if ($('input[id=NewAddress_PhoneNumber]').val().length > 0) {
+            $('input[id=NewAddress_PhoneNumber]').removeClass('alert-placeholder');
+            $('input[id=NewAddress_PhoneNumber]').css('cssText', 'border-bottom: 0.5px solid #707070');
+        }
+        else {
+            $('input[id=NewAddress_PhoneNumber]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            $('input[id=NewAddress_PhoneNumber]').addClass('alert-placeholder');
+        }
+    });
+
     function validateMyForm(e) {
         if (
             //$('input[id=NewAddress_Company]').val().length > 0  &&
@@ -235,15 +322,67 @@
             $('input[id=NewAddress_Email]').val().length > 0 &&
             $('input[id=NewAddress_Address1]').val().length > 0 &&
             document.getElementById("NewAddress_CountryId").value > 0 &&
+            document.getElementById("NewAddress_City").value > 0 &&
             document.getElementById("NewAddress_StateProvinceId").value > 0 &&
             $('input[id=NewAddress_ZipPostalCode]').val().length > 0 &&
             $('input[id=NewAddress_PhoneNumber]').val().length > 0
         ) {
+                $('input[id=NewAddress_FirstName]').css('cssText', 'border-bottom: 0.5px solid #707070 !important');
+                $('input[id=NewAddress_LastName]').css('cssText', 'border-bottom: 0.5px solid #707070 !important');
+                $('input[id=NewAddress_Email]').css('cssText', 'border-bottom: 0.5px solid #707070 !important');
+                $('input[id=NewAddress_Address1]').css('cssText', 'border-bottom: 0.5px solid #707070 !important');
+                $('input[id=NewAddress_ZipPostalCode]').css('cssText', 'border-bottom: 0.5px solid #707070 !important');
+                $('input[id=NewAddress_PhoneNumber]').css('cssText', 'border-bottom: 0.5px solid #707070 !important');
+                $('#NewAddress_CountryId').css('cssText', 'border-bottom: 0.5px solid #707070 !important');;
+                $('#NewAddress_StateProvinceId').css('cssText', 'border-bottom: 0.5px solid #707070 !important');;
+                $('#NewAddress_City').css('cssText', 'border-bottom: 0.5px solid #707070 !important');;
+
             return true;
         } 
         else {
-             e.preventDefault(); 
-            alert(`Please fill the new address to continue`)
+            e.preventDefault();
+            if ($('input[id=NewAddress_FirstName]').val().length == 0) {
+                $('input[id=NewAddress_FirstName]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+                $('input[id=NewAddress_FirstName]').addClass('alert-placeholder');
+            }
+
+            if ($('input[id=NewAddress_LastName]').val().length == 0) {
+                $('input[id=NewAddress_LastName]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+                $('input[id=NewAddress_LastName]').addClass('alert-placeholder');
+            }
+
+            if ($('input[id=NewAddress_Email]').val().length == 0) {
+                $('input[id=NewAddress_LastName]').addClass('alert-placeholder');
+                $('input[id=NewAddress_Email]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            }
+
+            if ($('input[id=NewAddress_Address1]').val().length == 0) {
+                $('input[id=NewAddress_Address1]').addClass('alert-placeholder');
+                $('input[id=NewAddress_Address1]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            }
+
+            if ($('input[id=NewAddress_ZipPostalCode]').val().length == 0) {
+                $('input[id=NewAddress_ZipPostalCode]').addClass('alert-placeholder');
+                $('input[id=NewAddress_ZipPostalCode]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            }
+
+            if ($('input[id=NewAddress_PhoneNumber]').val().length == 0) {
+                $('input[id=NewAddress_PhoneNumber]').addClass('alert-placeholder');
+                $('input[id=NewAddress_PhoneNumber]').css('cssText', 'border-bottom: 0.5px solid #dc3545 !important');
+            }
+
+            if (document.getElementById("NewAddress_CountryId").value == 0) {
+                $('#NewAddress_CountryId').css('cssText', 'color: #dc3545; border-bottom: 0.5px solid #dc3545 !important');
+            }
+
+            if (document.getElementById("NewAddress_StateProvinceId").value == 0) {
+                $('#NewAddress_StateProvinceId').css('cssText', 'color: #dc3545; border-bottom: 0.5px solid #dc3545 !important');
+            }
+            
+            if (document.getElementById("NewAddress_City").value == 0) {
+                $('#NewAddress_City').css('cssText', 'color: #dc3545; border-bottom: 0.5px solid #dc3545 !important');
+            }
+            alert(`Please fill all necessary address detail to continue`)
         }
     }
 </script>
