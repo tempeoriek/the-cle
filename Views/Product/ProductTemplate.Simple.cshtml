@@ -57,14 +57,15 @@
 <div class="col-main prod-details mobile-prod-details">
     <div class="row">
         <div class="col-12 col-md-7">
-            @if (ViewBag.ShowPopup != null)
+            @* @if (ViewBag.ShowPopup != null)
             {
                 @Html.Partial("_ProductDetailsPicturesBYOB", Model)
             }
             else
             {
                 @Html.Partial("_ProductDetailsPictures", Model)
-            }
+            } *@
+            @Html.Partial("_ProductDetailsPictures", Model)
 
         </div>
         <div class="col-12 col-md-5">
