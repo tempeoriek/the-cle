@@ -2208,7 +2208,7 @@ cursor:pointer;
     }
     .fancybox-opened {
         z-index: 8030;
-        width: 90% !important;
+        width: 95% !important;
         left: 10px !important;
     }
     .step-padding {
@@ -2413,7 +2413,7 @@ cursor:pointer;
     }
     .fancybox-opened {
         z-index: 8030;
-        width: 90% !important;
+        width: 95% !important;
         left: 10px !important;
     }
     .step-padding {
