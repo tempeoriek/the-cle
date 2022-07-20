@@ -186,9 +186,16 @@
                             </div>
                             @foreach(var subcategory in category.SubCategories) {
                                 <div class="mt-2 mb-2" style="font-size: 12px; margin-left: 10%;">
-                                    <a href="@Url.RouteUrl("Category", new { SeName = subcategory.SeName })" style="text-decoration: none;">
-                                        @subcategory.Name
-                                    </a>
+                                    @if (subcategory.SeName == "brands") {
+                                        <a href="~/catalog/allbrands" style="text-decoration: none;">
+                                            @subcategory.Name
+                                        </a>
+                                    }
+                                    else {
+                                        <a href="@Url.RouteUrl("Category", new { SeName = subcategory.SeName })" style="text-decoration: none;">
+                                            @subcategory.Name
+                                        </a>
+                                    }
                                 </div>
                             }
                         </div>

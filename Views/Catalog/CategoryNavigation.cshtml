@@ -160,7 +160,12 @@
                                                         showShopAll = false;
                                                     }
 
-                                                    <a class="dropdown-item  subcat-header" href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })">@subcat.Name</a>
+                                                    @if (subcat.SeName == "brands") {
+                                                        <a class="dropdown-item  subcat-header" href="~/catalog/allbrands">@subcat.Name</a>
+                                                    }
+                                                    else {
+                                                        <a class="dropdown-item  subcat-header" href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })">@subcat.Name</a>
+                                                    }
                                                     <ul class="list-unstyled lst-sub-sub-category">
                                                         @{
 
@@ -285,3 +290,8 @@
 
         }
 }
+
+<script>
+    var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+	//console.log(model);
+</script>

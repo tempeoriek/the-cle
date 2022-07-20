@@ -652,8 +652,14 @@
 
     </script>
 
-
-  
+    <script>
+        $(document).ready(function () {
+            $('.radio-alternate').change(function () {
+                $('#form1').submit();
+                return false;
+            });
+        });
+    </script>
 
 }
 
