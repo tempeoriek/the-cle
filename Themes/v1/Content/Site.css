@@ -3194,7 +3194,8 @@ top:95vh;
 }
 
     .main-menu-middle .nav-item + .nav-item {
-        margin-left: 3rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
 
     .dropdown-toggle::after {
