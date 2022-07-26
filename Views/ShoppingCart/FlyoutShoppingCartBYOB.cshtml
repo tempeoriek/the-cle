@@ -20,8 +20,8 @@
                             <div class="col-7 col-md-8 col-lg-9">
                                 @{
                                     var box = "Small Box";
-                                    var progressbarwidth = (Model.TotalWeightFactor * 6);
-                                    var progressbarwidthmobile = (Model.TotalWeightFactor * 6);
+                                    var progressbarwidth = (Model.TotalWeightFactor * 10);
+                                    var progressbarwidthmobile = (Model.TotalWeightFactor * 35);
 
                                     if(progressbarwidth == 0)
                                     {
@@ -44,7 +44,12 @@
                                 }
                        
                                 <div class="progress">
-                                    <div class="d-none d-md-block hidden-xs hidden-sm progress-bar bg-progress" role="progressbar" style="width: @string.Format("{0}%", progressbarwidth)" aria-valuenow="@progressbarwidth" aria-valuemin="0" aria-valuemax="100">
+                                    <div 
+                                        class="d-none d-md-block hidden-xs hidden-sm progress-bar bg-progress" 
+                                        role="progressbar" 
+                                        style="padding: 4px; width: @string.Format("{0}%", progressbarwidth)" 
+                                        aria-valuenow="@progressbarwidth" 
+                                        aria-valuemin="0" aria-valuemax="100">
                                         @box
                                     </div>
                                     <div 
