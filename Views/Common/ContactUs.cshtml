@@ -12,7 +12,7 @@
 
 
 <div class="static-page">
-  &nbsp;
+    &nbsp;
 </div>
 
 <div class="col-main-sml">
@@ -26,7 +26,7 @@
             <br />
             <div class="contactus_bottom">
                 @if (Model.SuccessfullySent)
-            {
+                {
                     <div class="result text-center">
                         @Model.Result
                     </div>
@@ -64,9 +64,8 @@
                                 <select name="topic" class="form-control classic">
                                     <option value="Custom Gifts">Custom Gifts</option>
                                     <option value="Corporate Gifts">Corporate Gifts</option>
-
+                                    <option value="Consignment">Consignment</option>
                                     <option value="Partnership">Partnership</option>
-                                    <option value="Corporate">Corporate</option>
                                     <option value="Media">Media</option>
                                     <option value="Other">Other</option>
                                 </select>
@@ -84,7 +83,7 @@
                             <div class="form-group contactus-form text-left">
                                 Message
                                 @*@Html.LabelFor(model => model.Enquiry, new { @class = "control-label" }, " *")*@ @Html.ValidationMessageFor(model => model.Enquiry)
-                                @Html.TextAreaFor(model => model.Enquiry, new { @class = "enquiry form-control", @rows= 8 })
+                                @Html.TextAreaFor(model => model.Enquiry, new { @class = "enquiry form-control", @rows = 8 })
                             </div>
 
                             @if (Model.DisplayCaptcha)
@@ -94,7 +93,8 @@
                                 </div>
                             }
 
-                            <div class="buttons pull-right mt-30"><input type="text" name="subject" style="border:none;apperance:none; width:1px; height:1px; background-color:transparent" />
+                            <div class="buttons pull-right mt-30">
+                                <input type="text" name="subject" style="border:none;apperance:none; width:1px; height:1px; background-color:transparent" />
                                 <button type="submit" name="send-email" class="btn btn-default" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Sending...">Send</button>
                             </div>
                         </div>
@@ -110,31 +110,35 @@
 
 
 @*<div class="hero_alt bg__blue pb-50 pt-50 mt-5">
-    <h2 class="mb-0">Press + Media + Collaboration Inquiries</h2>
-    <p><a hhref="mailto:collab@the-clementines.com">collab@the-clementines.com</a></p>
-
-    <h2 class="mt-5 mb-0">Have a question about your order?</h2>
-    <p><a href="mailto:customercare@the-clementines.com">customercare@the-clementines.com</a></p>
-
-    <h2 class="mt-5 mb-0">Want to know more about Gifting Services?</h2>
-    <p><a href="mailto:info@the-clementines.com">info@the-clementines.com</a></p>
-    <br /><br /><br />
-    <p>Please not our business hours are<br />
-    Monday - Friday 10 AM to 5PM<br />
-    We promise we'll get back to you promptly-<br />
-    Your gifting needs are always on our minds!
-    </p>
-</div>*@
+        <h2 class="mb-0">Press + Media + Collaboration Inquiries</h2>
+        <p><a href="mailto:joreiner@shopclegifts.com">joreiner@shopclegifts.com</a></p>
+        <h2 class="mt-5 mb-0">Have a question about your order?</h2>
+        <p><a href="mailto:customercare@the-clementines.com">orders@shopclegifts.com </a></p>
+        <h2 class="mt-5 mb-0">Want to know more about Gifting Services?</h2>
+        <p><a href="mailto:info@the-clementines.com">yourbutler@shopclegifts.com </a></p>
+        <br /><br /><br />
+        <p>Please note our business hours are<br /> Monday - Friday 10 AM to 5PM<br /> We promise we'll get back to you promptly-<br /> Your gifting needs are always on our minds!</p>
+    </div>*@
 
 
-    @section Left{
 
-    }
 
-    @section scripts{
 
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+
+
+
+
+
+
+
+@section Left{
+
+}
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 
 
@@ -144,14 +148,14 @@
 @helper SubmenuAboutUs(string systemname)
 {
 
-string liClass = "";
+    string liClass = "";
 
-Dictionary<string, string> items = new Dictionary<string, string>();
-items.Add("about", "Our Story");
-items.Add("contactus", "Contact Us");
-items.Add("press", "Press");
-items.Add("frequently-asked-questions", "F.A.Q");
-items.Add("Careers", "Careers");
+    Dictionary<string, string> items = new Dictionary<string, string>();
+    items.Add("about", "Our Story");
+    items.Add("contactus", "Contact Us");
+    items.Add("press", "Press");
+    items.Add("frequently-asked-questions", "F.A.Q");
+    items.Add("Careers", "Careers");
 
 
 

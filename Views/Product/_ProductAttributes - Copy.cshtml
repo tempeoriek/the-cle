@@ -10,33 +10,30 @@
 
 @if (Model.Count > 0)
 {
+    <div class="card">
+        <div class="card-header" id="heading_attr">
+            <h5 class="" data-toggle="collapse" data-target="#collapse_attr" aria-expanded="false" aria-controls="collapse_attr">xxx</h5>
+        </div>
+        <div id="collapse_attr" class="collapse" aria-labelledby="heading_attr" data-parent="#accordionExample">
+            <div class="card-body">
 
-
-    foreach (var attribute in Model)
-    {
-        string controlId = string.Format("product_attribute_{0}", attribute.Id);
-        string textPrompt = !string.IsNullOrEmpty(attribute.TextPrompt) ? attribute.TextPrompt : attribute.Name;
-
-        <div class="card">
-            <div class="card-header" id="heading_attr">
-                <h5 class="" data-toggle="collapse" data-target="#collapse_attr" aria-expanded="false" aria-controls="collapse_attr">@Html.Raw(attribute.Name)</h5>
-            </div>
-            <div id="collapse_attr" class="collapse" aria-labelledby="heading_attr" data-parent="#accordionExample">
-                <div class="card-body">
-
+                @foreach (var attribute in Model)
+                {
+                    string controlId = string.Format("product_attribute_{0}", attribute.Id);
+                    string textPrompt = !string.IsNullOrEmpty(attribute.TextPrompt) ? attribute.TextPrompt : ""; // attribute.Name;
 
                     @*<dt id="@string.Format("product_attribute_label_{0}", attribute.Id)">
-            <span class="text-prompt">@textPrompt</span>
-            @if (attribute.IsRequired)
-            {<span class="required">*</span>}
+                <span class="text-prompt">@textPrompt</span>
+                @if (attribute.IsRequired)
+                {<span class="required">*</span>}
 
-            @if (!string.IsNullOrEmpty(attribute.Description))
-            {
-                <div class="attribute-description">
-                    @Html.Raw(attribute.Description)
-                </div>
-            }
-        </dt>*@
+                @if (!string.IsNullOrEmpty(attribute.Description))
+                {
+                    <div class="attribute-description">
+                        @Html.Raw(attribute.Description)
+                    </div>
+                }
+            </dt>*@
 
                     <div id="@string.Format("product_attribute_input_{0}", attribute.Id)">
                         @switch (attribute.AttributeControlType)
@@ -47,41 +44,38 @@
                                         @*<div class="attribute__name">@Html.Raw(attribute.Name)</div>*@
 
                                         @*<div class="selectdiv">
-                                <select name="@(controlId)" id="@(controlId)" class="ddlAttrb">
-                                    @if (!attribute.IsRequired)
-                                    {
-                                        <option value="0">@textPrompt</option>
-                                    }
-                                    <option value="" selected disabled>@textPrompt</option>
+                                    <select name="@(controlId)" id="@(controlId)" class="ddlAttrb">
+                                        @if (!attribute.IsRequired)
+                                        {
+                                            <option value="0">@textPrompt</option>
+                                        }
+                                        <option value="" selected disabled>@textPrompt</option>
 
-                                    @foreach (var attributeValue in attribute.Values)
-                                    {
-                                        var attributeName = String.IsNullOrEmpty(attributeValue.PriceAdjustment) ?
-                                            attributeValue.Name :
-                                            T("Products.ProductAttributes.PriceAdjustment", attributeValue.Name, attributeValue.PriceAdjustment).Text;
-                                        <option selected="@attributeValue.IsPreSelected" value="@attributeValue.Id">@attributeName</option>
-                                    }
-                                </select>
-                            </div>
+                                        @foreach (var attributeValue in attribute.Values)
+                                        {
+                                            var attributeName = String.IsNullOrEmpty(attributeValue.PriceAdjustment) ?
+                                                attributeValue.Name :
+                                                T("Products.ProductAttributes.PriceAdjustment", attributeValue.Name, attributeValue.PriceAdjustment).Text;
+                                            <option selected="@attributeValue.IsPreSelected" value="@attributeValue.Id">@attributeName</option>
+                                        }
+                                    </select>
+                                </div>
 
-                            <br />*@
-
-
-                                       
+                                <br />*@
 
                                         <div class="selectdiv">
-                                            <select name="@(controlId)" id="@(controlId)" class="form-control-alternate classic ddlAttrb">
-                                                @*@if (!attribute.IsRequired)
+                                            <select name="@(controlId)" id="@(controlId)" class="ddlAttrb">
+                                                @if (!attribute.IsRequired)
                                                 {
                                                     <option value="0">@textPrompt</option>
-                                                }*@
-                                                <option value="0" disabled="disabled">- Please select -</option>
+                                                }
+                                                <option value="" selected disabled>@textPrompt</option>
 
                                                 @foreach (var attributeValue in attribute.Values)
                                                 {
                                                     var attributeName = String.IsNullOrEmpty(attributeValue.PriceAdjustment) ? attributeValue.Name : T("Products.ProductAttributes.PriceAdjustment", attributeValue.Name, attributeValue.PriceAdjustment).Text;
 
-                                                    @*if (attributeValue.VariantStockQuantity <= 0)
+                                                    if (attributeValue.VariantStockQuantity <= 0)
                                                     {
                                                         var attLabelId = attributeName;
                                                         if (attLabelId.Contains("/"))
@@ -97,9 +91,7 @@
                                                     else
                                                     {
                                                         <option selected="@attributeValue.IsPreSelected" value="@attributeValue.Id">@attributeName</option>
-                                                    }*@
-
-                                                     <option selected="@attributeValue.IsPreSelected" value="@attributeValue.Id">@attributeName</option>
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -143,15 +135,15 @@
                                     </div>
 
                                     @*if ((!string.IsNullOrEmpty(textPrompt)) || (!string.IsNullOrEmpty(attribute.Description)))
-                        {
-                            <div class="attribute-description">
-                                @if (!string.IsNullOrEmpty(attribute.Description))
-                                {
-                                    <span>@Html.Raw(attribute.Description)</span>
-                                }
-                                <span>@textPrompt</span>
-                            </div>
-                        }*@
+                            {
+                                <div class="attribute-description">
+                                    @if (!string.IsNullOrEmpty(attribute.Description))
+                                    {
+                                        <span>@Html.Raw(attribute.Description)</span>
+                                    }
+                                    <span>@textPrompt</span>
+                                </div>
+                            }*@
 
                                 }
                                 break;
@@ -334,14 +326,16 @@
                                 break;
                         }
                     </div>
+                }
 
 
-                    @*show message*@
-                    @if (attribute.Name.Equals("Personalized", StringComparison.OrdinalIgnoreCase))
+                @*show message*@
+                @foreach (var attribute in Model)
+                {
+                    if (attribute.Name.Equals("Personalized", StringComparison.OrdinalIgnoreCase))
                     {
                         if ((!string.IsNullOrEmpty(attribute.TextPrompt)) || (!string.IsNullOrEmpty(attribute.Description)))
                         {
-                            <br />
                             <div class="attribute-description">
                                 @if (!string.IsNullOrEmpty(attribute.Description))
                                 {
@@ -351,14 +345,21 @@
                             </div>
                         }
                     }
-                    @*end message*@
 
-                </div>
+                }
+
+
             </div>
         </div>
+    </div>
 
 
-    }
+
+
+
+
+
+
 
 
 }
@@ -604,37 +605,37 @@
 
 
 <script>
-    //$(function () {
-    //    $('.ddlAttrb').on('change', function () {
-    //        var v = $(this).val();
-    //        if (v == "-1") {
-    //            $('.back-in-stock-subscription').show();
-    //            $('.add2cart').hide();
-    //            //$('.btn-add2cart').prop('disabled', true);
-    //        }
-    //        else if (v == 0) {
-    //            $('.back-in-stock-subscription').hide();
-    //            $('.add2cart').show();
-    //            //$('.btn-add2cart').prop('disabled', true);
-    //        }
-    //        else {
-    //            $('.back-in-stock-subscription').hide();
-    //            $('.add2cart').show();
-    //            //$('.btn-add2cart').prop('disabled', false);
-    //        }
-    //    });
-    //})
+    $(function () {
+        $('.ddlAttrb').on('change', function () {
+            var v = $(this).val();
+            if (v == "-1") {
+                $('.back-in-stock-subscription').show();
+                $('.add2cart').hide();
+                //$('.btn-add2cart').prop('disabled', true);
+            }
+            else if (v == 0) {
+                $('.back-in-stock-subscription').hide();
+                $('.add2cart').show();
+                //$('.btn-add2cart').prop('disabled', true);
+            }
+            else {
+                $('.back-in-stock-subscription').hide();
+                $('.add2cart').show();
+                //$('.btn-add2cart').prop('disabled', false);
+            }
+        });
+    })
 
-    //$(function () {
-    //    if ($(".ddlAttrb").length) {
-    //        var vorraad = 0;
-    //        $(".ddlAttrb > option").each(function () {
-    //            vorraad += this.value;
-    //        });
-    //        if (vorraad <= 0) {
-    //            $('.back-in-stock-subscription').show();
-    //            $('.add2cart').hide();
-    //        }
-    //    }
-    //});
+    $(function () {
+        if ($(".ddlAttrb").length) {
+            var vorraad = 0;
+            $(".ddlAttrb > option").each(function () {
+                vorraad += this.value;
+            });
+            if (vorraad <= 0) {
+                $('.back-in-stock-subscription').show();
+                $('.add2cart').hide();
+            }
+        }
+    });
 </script>

@@ -55,7 +55,7 @@
                             <a href="@Url.RouteUrl("OrderDetails", new { orderId = Html.AttributeEncode(order.Id) })"># @order.Id</a>
                         </td>
                         <td>
-                            @string.Format("{0:dd / MM / yy}", order.CreatedOn)
+                            @string.Format("{0:dd.MM.yy}", order.CreatedOn)
                         </td>
 
                         <td>

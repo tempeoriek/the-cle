@@ -5,18 +5,19 @@
     string controlId = string.Format("customer_attribute_{0}", attribute.Id);
     string textPrompt = attribute.Name;
 
-    <div class="inputs custom-attributes">
-        <label>@textPrompt:</label>
+    <div class="inputs custom-attributes" style="width:336px;">
+        @*<label>@textPrompt:</label>*@
         
         @switch (attribute.AttributeControlType)
         {
             case AttributeControlType.DropdownList:
             {
-            <select name="@(controlId)" id="@(controlId)">
-                @if (!attribute.IsRequired)
-                    {
+            <select name="@(controlId)" id="@(controlId)" class="form-control classic">
+                @*@if (!attribute.IsRequired)
+                {
                     <option value="0">---</option>
-                    }
+                }*@
+
                 @foreach (var attributeValue in attribute.Values)
                     {
                     <option selected="@attributeValue.IsPreSelected" value="@attributeValue.Id">@attributeValue.Name</option>

@@ -2,86 +2,93 @@
 @using Nop.Web.Models.Customer
 @using Nop.Web.Models.Order
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    //Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.Account").Text);
 }
-@section left
-{
-    @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.RewardPoints })
-}
-<div class="page account-page reward-points-page">
-    <div class="page-title">
-        <h1>@T("Account.MyAccount") - @T("Account.RewardPoints")</h1>
+
+
+@*@section left
+    {
+        @Html.Action("CustomerNavigation", "Customer", new { selectedTabId = CustomerNavigationEnum.RewardPoints })
+    }*@
+
+
+
+
+
+<div class="col-main mt-5 mijnaccount">
+
+    <h1>Loyalty Points</h1>
+
+    <div class="reward-points-overview">
+        
+        <div class="current-balance">@T("RewardPoints.CurrentBalance", Model.RewardPointsBalance, Model.RewardPointsAmount)</div>
+       
+        @if (Model.MinimumRewardPointsBalance > 0)
+        {
+            <div class="min-balance">@T("RewardPoints.MinimumBalance", Model.MinimumRewardPointsBalance, Model.MinimumRewardPointsAmount)</div>
+        }
     </div>
-    <div class="page-body">
-        <div class="reward-points-overview">
-            <div class="current-balance">@T("RewardPoints.CurrentBalance", Model.RewardPointsBalance, Model.RewardPointsAmount)</div>
-            @if (Model.MinimumRewardPointsBalance > 0)
-            {
-                <div class="min-balance">@T("RewardPoints.MinimumBalance", Model.MinimumRewardPointsBalance, Model.MinimumRewardPointsAmount)</div>
-            }
+    <div class="section reward-points-history mt-5">
+        <div class="title">
+            <strong>@T("RewardPoints.History")</strong>
         </div>
-        <div class="section reward-points-history">
-            <div class="title">
-                <strong>@T("RewardPoints.History")</strong>
+        <br />
+
+        @if (Model.RewardPoints.Count > 0)
+        {
+            <div class="table-wrapper">
+                <table class="table basic bestelling order-history">
+                  
+                    <tr class="text-uppercase">
+                        <td style="padding-left:0;">@T("RewardPoints.Fields.Date")</td>
+                        <td>@T("RewardPoints.Fields.Points")</td>
+                        <td>@T("RewardPoints.Fields.PointsBalance")</td>
+                        <td>
+                            @T("RewardPoints.Fields.Message")
+                        </td>
+                    </tr>
+
+
+
+
+
+                    <tbody>
+                        @for (int i = 0; i < Model.RewardPoints.Count; i++)
+                        {
+                            var item = Model.RewardPoints[i];
+                        <tr @(i % 2 == 0 ? Html.Raw(" class=\"odd\"") : Html.Raw(" class=\"even\""))>
+
+                            <td style="padding-left:0;">
+                                @string.Format("{0:dd.MM.yy}", item.CreatedOn)
+                            </td>
+
+                           
+                            <td class="points">
+                                @item.Points
+                            </td>
+                            <td class="points-balance">
+                                @item.PointsBalance
+                            </td>
+                            <td class="message">
+                                @item.Message
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-            @if (Model.RewardPoints.Count > 0)
-            {
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <colgroup>
-                            <col width="25%" />
-                            <col width="15%" />
-                            <col width="15%" />
-                            <col />
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th class="date">
-                                    @T("RewardPoints.Fields.Date")
-                                </th>
-                                <th class="points">
-                                    @T("RewardPoints.Fields.Points")
-                                </th>
-                                <th class="points-balance">
-                                    @T("RewardPoints.Fields.PointsBalance")
-                                </th>
-                                <th class="message">
-                                    @T("RewardPoints.Fields.Message")
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (int i = 0; i < Model.RewardPoints.Count; i++)
-                            {
-                                var item = Model.RewardPoints[i];
-                                <tr @(i % 2 == 0 ? Html.Raw(" class=\"odd\"") : Html.Raw(" class=\"even\""))>
-                                    <td class="date">
-                                        @item.CreatedOn
-                                    </td>
-                                    <td class="points">
-                                        @item.Points
-                                    </td>
-                                    <td class="points-balance">
-                                        @item.PointsBalance
-                                    </td>
-                                    <td class="message">
-                                        @item.Message
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else
-            {
-                <div class="no-data">
-                    @T("RewardPoints.NoHistory")
-                </div>
-            }
-        </div>
+        }
+        else
+        {
+            <div class="no-data mt-5">
+                @T("RewardPoints.NoHistory")
+            </div>
+        }
     </div>
+
+   
+
 </div>

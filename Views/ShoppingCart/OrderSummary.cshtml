@@ -273,21 +273,7 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
                             <p>@Html.Raw(item.Size)</p>
                             }
 
-                        @if (Model.IsEditable)
-                        {
-                            if (item.isBYOB)
-                            {
-                                <span class="product-quantity">@item.Quantity</span>
-                            }
-                            else
-                            {
-                                <div class="pl-qty"><button type="submit" name="qtyMin" value="@item.Id" class="btn btn-line">-</button><button class="btn-line"><span>@item.Quantity</span></button><button type="submit" name="qtyPlus" value="@item.Id" class="btn btn-line">+</button></div>
-                            }
-
-                        }
-                        else
-                        {
-                            <span class="product-quantity">@item.Quantity</span>}
+                        <p>Qty: @item.Quantity</p>
                     </div>
 
                     @if (Model.IsEditable)
@@ -439,46 +425,57 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
                     </table>
                 </div>*@
 
-            <div class="col-sm-6 checkout-margin mt-5">
-                @if (Model.IsEditable)
-                {
-                    @*<button type="submit" id="continueshopping" name="continueshopping" value="@T("ShoppingCart.ContinueShopping")" class="btn btn-default">
-                        Continue Shopping
-                    </button>*@
+        <div class="col-sm-6 checkout-margin mt-5">
+            @if (Model.IsEditable)
+            {
+                @*<button type="submit" id="continueshopping" name="continueshopping" value="@T("ShoppingCart.ContinueShopping")" class="btn btn-default">
+                Continue Shopping
+            </button>*@
 
-                    <button type="submit" id="continueshopping" name="continueshopping" value="@T("ShoppingCart.ContinueShopping")" class="btn btn-inverse btn-block" style="width:100%;text-transform:uppercase">
-                        Continue Shopping
+                @*<button type="submit" id="continueshopping" name="continueshopping" value="@T("ShoppingCart.ContinueShopping")" class="btn btn-inverse btn-block" style="width:100%;text-transform:uppercase">
+                    Continue Shopping
+                </button>*@
+
+                <a id="continueshopping" name="continueshopping" href="~/"
+                        class="btn btn-inverse btn-block" 
+                        style="width:100%;text-transform:uppercase;">
+                    Continue Shopping
+                </a>
+
+
+
+            }
+            <div class="">
+                @if (String.IsNullOrEmpty(Model.MinOrderSubtotalWarning))
+                {
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#checkout').click(function () {
+                                //terms of service
+                                var termOfServiceOk = true;
+                                if ($('#termsofservice').length > 0) {
+                                    //terms of service element exists
+                                    if (!$('#termsofservice').is(':checked')) {
+                                        $("#terms-of-service-warning-box").dialog();
+                                        termOfServiceOk = false;
+                                    } else {
+                                        termOfServiceOk = true;
+                                    }
+                                }
+                                return termOfServiceOk;
+                            });
+                        });
+                    </script>
+
+                    <button type="submit" id="checkout" name="checkout"
+                            value="checkout" class="btn btn-default btn-block mt-3"
+                            style="width:100%;text-transform:uppercase">
+                        Proceed to Checkout
                     </button>
                 }
-                <div class="">
-                    @if (String.IsNullOrEmpty(Model.MinOrderSubtotalWarning))
-                    {
-                        <script type="text/javascript">
-                                            $(document).ready(function () {
-                                                $('#checkout').click(function () {
-                                                    //terms of service
-                                                    var termOfServiceOk = true;
-                                                    if ($('#termsofservice').length > 0) {
-                                                        //terms of service element exists
-                                                        if (!$('#termsofservice').is(':checked')) {
-                                                            $("#terms-of-service-warning-box").dialog();
-                                                            termOfServiceOk = false;
-                                                        } else {
-                                                            termOfServiceOk = true;
-                                                        }
-                                                    }
-                                                    return termOfServiceOk;
-                                                });
-                                            });
-                        </script>
-
-                                <button type="submit" id="checkout" name="checkout" 
-                                        value="checkout" class="btn btn-default btn-block mt-3" 
-                                        style="width:100%;text-transform:uppercase">Proceed to Checkout</button>
-                    }
-                </div>
-
             </div>
+
+        </div>
         </div>
     }
     

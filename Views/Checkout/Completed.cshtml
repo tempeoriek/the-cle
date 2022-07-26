@@ -4,6 +4,9 @@
 
     //title
     Html.AddTitleParts(T("PageTitle.Checkout").Text);
+
+   
+
 }
 
 @section Left{
@@ -29,35 +32,53 @@
 
 
 <section class="col-main-sml checkout-completed-blox mt-large text-center">
-    
+
     @*<div class="row">
         <div class="col-5">
             <img src="~/Content/Images/uploaded/assets/completedpage.jpg" class="img-fluid mx-auto d-block" />
         </div>
         <div class="col-7">*@
-            <p style="text-transform:uppercase; margin-top:40px;">
-                Your Order has been placed
-                @*@T("Checkout.YourOrderHasBeenSuccessfullyProcessed")*@
-            </p>
+    <p style="text-transform:uppercase; margin-top:40px;">
+        Thank you for your order
+        @*@T("Checkout.YourOrderHasBeenSuccessfullyProcessed")*@
+    </p>
 
-            <p class="mt-5" style="font-size:1.5rem;">
-                Order# <span class="checkout-completed-orderid"><a href="@Url.RouteUrl("OrderDetails", new { orderID = Html.AttributeEncode(Model.OrderId) })">@FormatOrderId(Model.OrderId)</a></span>
-            </p>
-            <p class="mt-5">
-                If you choose to pay via Bank transfer, please make your payment directly to the following bank account <br />and include your order number as the payment reference.<br />
-                <strong>BCA</strong><br />Account No.: 7090 685 168<br />Beneficiary Name: PT. Regalo Asher Indonesia (BCA)
-            </p>
-            <p class="mt-5" style="text-transform:uppercase;">
-                @T("Checkout.ThankYou")
-            </p>
-              @*<p class="text-center">
-                    <a href="@Url.RouteUrl("OrderDetails", new { orderID = Html.AttributeEncode(Model.OrderId) })">@T("Checkout.PlacedOrderDetails")</a>
-                    <div class="buttons">
-                            <input type="button" value="@T("Checkout.ThankYou.Continue")" class="btn btn-default" onclick="setLocation('@Url.RouteUrl("HomePage")')" />
-                    </div>
-                </p>*@
-        @*</div>
-    </div>*@
+    <p class="mt-5" style="font-size:1.5rem;">
+        Order# <span class="checkout-completed-orderid"><a href="@Url.RouteUrl("OrderDetails", new { orderID = Html.AttributeEncode(Model.OrderId) })">@FormatOrderId(Model.OrderId)</a></span>
+    </p>
+
+    @if (Model.PaymentMethod.Contains("BankTransfer"))
+    {
+        <p class="mt-5">
+            Please pay directly to the following account: <br />
+            <strong>BCA Account</strong><br />No.: 7090 685 168<br />Beneficiary Name: PT. Regalo Asher Indonesia (BCA)
+            <br />Special NOTE: Please add your order number on the payment detail
+        </p>
+        <div class="buttons mt-5">
+            <input type="button" value="Confirm Payment" class="btn btn-default" onclick="setLocation('/order/confirmpayments')" />
+        </div>
+    }
+    else
+    {
+        <p class="mt-5">
+            #YourGiftButler will be in contact with you shortly.<br />
+            Please standby with your WhatsApp, we will confirm your order promptly.
+        </p>
+
+    }
+
+    @*<p class="mt-5" style="text-transform:uppercase;">
+        @T("Checkout.ThankYou")
+    </p>
+    <p class="text-center">
+        <a href="@Url.RouteUrl("OrderDetails", new { orderID = Html.AttributeEncode(Model.OrderId) })">@T("Checkout.PlacedOrderDetails")</a>
+        <div class="buttons">
+            <input type="button" value="@T("Checkout.ThankYou.Continue")" class="btn btn-default" onclick="setLocation('@Url.RouteUrl("HomePage")')" />
+            <input type="button" value="@T("Checkout.ThankYou.Continue")" class="btn btn-default" onclick="setLocation('@Url.RouteUrl("HomePage")')" />
+        </div>
+    </p>*@
+    @*</div>
+        </div>*@
 </section>
 <br /><br /><br />
 

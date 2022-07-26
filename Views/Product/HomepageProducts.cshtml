@@ -6,7 +6,7 @@
 {
  
 
-    <div class="container">
+    @*<div class="container">
         <div class="row mt-5">
             <div class="col-6 col-md-3 text-left"><h1 class="text-uppercase">Best seller</h1></div>
             <div class="col-md-6 d-none d-md-block"></div>
@@ -20,16 +20,40 @@
                     @Html.Partial("_ProductBox", item)
                 </div>
             }
-
-            @*<div class="col-6 col-md-3 text-center"><a href="#">
-                <img src="~/content/images/uploaded/homepage/a.png" class="img-fluid w-100 mb-5" />
-                <h4>Ayara Dress In Ice</h4>
-                <p>IDR 729.000</p>
-                </a>
-            </div>*@
-           
         </div>
+    </div>*@
+
+
+
+    <div class="container homepage-products pt-md-5">
+        <h1 class="text-center mb-3 text-uppercase">Shop gifts for every occassion</h1>
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-6 col-md-3 homepage__bestseller">
+                    @Html.Partial("_ProductBox", item)
+                </div>
+            }
+
+
+            @*<div class="col-6 col-md-3">
+                <img src="~/Content/Images/uploaded/product/Shop our currated gift 1.png" class="img-fluid" />
+                <p class="text-center mt-20">
+                    <h3>Eunoia x Cle Spray</h3>
+                    <span>IDR 220.000</span><br />
+
+                </p>
+            </div>*@
+            
+        </div><br />
+        <a href="~/for-them" class="btn btn-link">See more gifts >></a>
     </div>
 
 
+
+
 }
+
+
+

@@ -1,4 +1,4 @@
-@model RegisterModel
+﻿@model RegisterModel
 @using Nop.Web.Models.Customer;
 @{
 
@@ -59,6 +59,90 @@
             <div class="page registration-page">
             <div class="page-body">
                   <div class="">
+
+                      <div class="form-fields">
+                          <div class="form-group">
+
+                              @if (Model.CustomerAttributes.Count > 0)
+                              {
+                                  @Html.Partial("_CustomerAttributes", Model.CustomerAttributes)
+                              }
+
+                              <div class="form-group">
+                                  @if (Model.GenderEnabled)
+                                  {
+                                      <div class="inputs">
+                                          <label>@T("Account.Fields.Gender"):</label>
+                                          <div class="gender">
+                                              <span class="male">
+                                                  @Html.RadioButton("Gender", "Mr.", (Model.Gender == "M"), new { id = "gender-male" })
+                                                  <label class="forcheckbox" for="gender-male">@T("Account.Fields.Gender.Male")</label>
+                                              </span>
+                                              <span class="female">
+                                                  @Html.RadioButton("Gender", "Ms.", (Model.Gender == "F"), new { id = "gender-female" })
+                                                  <label class="forcheckbox" for="gender-female">@T("Account.Fields.Gender.Female")</label>
+                                              </span>
+                                          </div>
+                                      </div>
+                                  }
+                              </div>
+
+                              <div class="form-group">
+                                  @Html.TextBoxFor(model => model.FirstName, new { @class = "form_signin pb-2", placeholder = "First name" })
+                                  @Html.ValidationMessageFor(model => model.FirstName)
+                              </div>
+                              <div class="form-group">
+                                  @Html.TextBoxFor(model => model.LastName, new { @class = "form_signin pb-2", placeholder = "Last name" })
+                                  @Html.ValidationMessageFor(model => model.LastName)
+                              </div>
+
+                              @if (Model.DateOfBirthEnabled)
+                              {
+                                  <div class="inputs date-of-birth">
+                                      <label>@T("Account.Fields.DateOfBirth"):</label> <br>
+                                      @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                                      Html.FieldNameFor(x => x.DateOfBirthMonth),
+                                      Html.FieldNameFor(x => x.DateOfBirthYear),
+                                      DateTime.Now.Year - 110,
+                                      DateTime.Now.Year,
+                                      Model.DateOfBirthDay,
+                                      Model.DateOfBirthMonth,
+                                      Model.DateOfBirthYear)
+
+                                      @*@if (Model.DateOfBirthRequired)
+                                      {
+                                          @Html.RequiredHint()
+                                      }*@
+
+                                      @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                                      @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                                      @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                                  </div>
+                              }
+
+
+                              @if (Model.PhoneEnabled)
+                              {
+                                  <div class="form-group">
+                                      @Html.TextBoxFor(model => model.Phone, new { @class = "form_signin pb-2", placeholder = "Phone number" })
+
+                                      @Html.ValidationMessageFor(model => model.Phone)
+
+                                  </div>
+                              }
+
+                              @*@if (Model.FaxEnabled)
+        {
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", placeholder = "Fax" })
+                @Html.ValidationMessageFor(model => model.Fax)
+            </div>
+        }*@
+
+
+                          </div>
+                      </div>
+
                       <div class="form-fields">
                         @if (Model.UsernamesEnabled)
                         {
@@ -87,78 +171,7 @@
                             </div>
 
 
-                            <div class="form-group">
-                                @if (Model.GenderEnabled)
-                                {
-                                    <div class="inputs">
-                                        <label>@T("Account.Fields.Gender"):</label>
-                                        <div class="gender">
-                                            <span class="male">
-                                                @Html.RadioButton("Gender", "Mr.", (Model.Gender == "M"), new { id = "gender-male" })
-                                                <label class="forcheckbox" for="gender-male">@T("Account.Fields.Gender.Male")</label>
-                                            </span>
-                                            <span class="female">
-                                                @Html.RadioButton("Gender", "Ms.", (Model.Gender == "F"), new { id = "gender-female" })
-                                                <label class="forcheckbox" for="gender-female">@T("Account.Fields.Gender.Female")</label>
-                                            </span>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-
-                            <div class="form-group">
-                                @Html.TextBoxFor(model => model.FirstName, new { @class = "form_signin pb-2", placeholder = "First name" })
-                                @Html.ValidationMessageFor(model => model.FirstName)
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(model => model.LastName, new { @class = "form_signin pb-2", placeholder = "Last name" })
-                                @Html.ValidationMessageFor(model => model.LastName)
-                            </div>
-
-                            @if (Model.DateOfBirthEnabled)
-                            {
-                                @*<div class="inputs date-of-birth">
-                                    <label>@T("Account.Fields.DateOfBirth"):</label> <br>
-                                    @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
-                                    Html.FieldNameFor(x => x.DateOfBirthMonth),
-                                    Html.FieldNameFor(x => x.DateOfBirthYear),
-                                    DateTime.Now.Year - 110,
-                                    DateTime.Now.Year,
-                                    Model.DateOfBirthDay,
-                                    Model.DateOfBirthMonth,
-                                    Model.DateOfBirthYear)
-                                    @if (Model.DateOfBirthRequired)
-                                    {
-                                        @Html.RequiredHint()
-                                    }
-                                    @Html.ValidationMessageFor(model => model.DateOfBirthDay)
-                                    @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
-                                    @Html.ValidationMessageFor(model => model.DateOfBirthYear)
-                                </div>*@
-
-                                <input type="date" name="dob" class="form_signin pb-2" />
-
-
-                            }
-
-
-                            @if (Model.PhoneEnabled)
-                            {
-                                <div class="form-group">
-                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form_signin pb-2", placeholder = "Phone number" })
-
-                                    @Html.ValidationMessageFor(model => model.Phone)
-
-                                </div>
-                            }
-
-                            @*@if (Model.FaxEnabled)
-                            {
-                                <div class="form-group">
-                                    @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", placeholder = "Fax" })
-                                    @Html.ValidationMessageFor(model => model.Fax)
-                                </div>
-                            }*@
+                           
                            
 
                             @if (Model.DisplayCaptcha)
@@ -471,7 +484,7 @@
  </div>
 }
 
-<style>
+@*<style>
     input[name="DateOfBirthDay"] {
         border-bottom: 0.5px solid #707070 !important;
         border: 0;
@@ -490,13 +503,4 @@
         margin-right: 10px;
         padding: 4px;
     }
-    select[name="DateOfBirthDay"] {
-        width: 60px !important;
-    }
-    select[name="DateOfBirthMonth"] {
-        width: 94px !important;
-    }
-    select[name="customer_attribute_1"] {
-        width: 294px !important;
-    }
-</style>
+</style>*@

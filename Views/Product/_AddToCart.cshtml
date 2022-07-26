@@ -71,7 +71,7 @@
                         else
                         {
 
-                            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                            <div class="d-flex justify-content-between">
                                 @*@Html.HiddenFor(model => model.EnteredQuantity)*@
                                     <input id="sub" type='button' value='-' class='sub quantity-btn qtyminus' field='EnteredQuantity' />
                                     @Html.TextBoxFor(model => model.EnteredQuantity, new { @class = "qty", id = "EnteredQuantity", type = "number" })
