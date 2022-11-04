@@ -79,7 +79,7 @@
                     <div class="filter_panel">
                         <div class="row">
                             <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CategorySelectors", Model, new ViewDataDictionary())</div>
-                            <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div>
+                            @* <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div> *@
                             <div class="col-12 col-lg-3 mb-5">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
                             <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
                         </div>

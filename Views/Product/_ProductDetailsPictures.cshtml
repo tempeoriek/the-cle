@@ -13,7 +13,7 @@
         @foreach (var p in Model.PictureModels)
         {
             @*<div><a href="@p.FullSizeImageUrl" class="clean full" data-fancybox="gallery"><img class="img-fluid w-100 pl-5" src="@p.ImageUrl" /></a></div>*@
-            <div><div class="zoom1"><img class="img-fluid" src="@p.FullSizeImageUrl" /></div></div>
+            <div><div class="zoom1"><img style="width: 500px;" src="@p.FullSizeImageUrl" /></div></div>
         }
 
     </div>
@@ -256,13 +256,11 @@
     $(document).ready(function () {
         $('.carouseldesktop').slick({
             slidesToShow: 1,
-            slideToScroll: 2,
+            slideToScroll: 1,
             infinite: true,
-            dots: false,
-            centerMode: false,
             arrows: true,
-            autoplay: false,
-            autoplaySpeed: 5000,
+            autoplay: true,
+            autoplaySpeed: 2000
         });
 
         $('.carouselmobile').slick({
@@ -273,7 +271,7 @@
             centerMode: false,
             arrows: true,
             autoplay: false,
-            autoplaySpeed: 5000,
+            autoplaySpeed: 2000,
         });
     });
 </script>

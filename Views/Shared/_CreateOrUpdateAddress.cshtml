@@ -213,14 +213,19 @@
                 {
                     <div class="form-group inputs">
                         <div class="col-12">
-                            @*@Html.TextBoxFor(model => model.City, new { @class = "form-control square-box", autofocus = "autofocus", placeholder = "City" })*@
-
+                            @Html.DropDownList("City", Model.AvailableCities, "Select city", new { @class = "form-control square-box" })
+                            @* @Html.DropDownListFor(model => model.City, Model.AvailableCities, "Select city", new { @class = "form-control square-box", }) *@
+                        </div>
+                        <div class="col-xs-12">
+                            <span id="states-loading-progress" style="display: none;" class="text-info">@T("Common.Wait...")</span>
+                            @Html.ValidationMessageFor(model => model.StateProvinceId, string.Empty, new { @class = "text-danger" })
+                        </div>
+                        @* <div class="col-12">
                             @Html.DropDownListFor(model => model.City, Model.AvailableCities, "Select city", new { @class = "form-control square-box", })
                             <span id="cities-loading-progress" style="display: none;" class="text-info">@T("Common.Wait...")</span>
-                            @*<input type="text" name="Address.City" id="tbCity" class="form-control" style="display:none;" disabled="disabled" />*@
                             @Html.ValidationMessageFor(model => model.City, string.Empty, new { @class = "text-danger" })
 
-                        </div>
+                        </div> *@
                     </div>
                 }
 

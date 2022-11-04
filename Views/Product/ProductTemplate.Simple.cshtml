@@ -144,7 +144,7 @@
                                                     *@
                                                     @Html.Action("ShowAvailableCards", "Catalog")
 
-                                                    <div class="form-group text-left">
+                                                    <div class="form-group text-left" id="textarea-card">
                                                         <textarea name="CardMessage" placeholder="Enter your card message here. 250 characters max. Please leave it empty if you want to write yourself" class="form-control-alternate" style="width:100%; height:100px"></textarea>
                                                     </div>
                                                 </div>
@@ -262,6 +262,21 @@
 
 
 <script>
+    //default area card
+    var selectcard = 0;
+    $("#textarea-card").css("display", "none");
+
+    $('#select-card').change(function() {
+        selectcard = $(this).val();
+        if (selectcard == 0) {
+            $("#textarea-card").css("display", "none");
+        }
+        else {
+            $("#textarea-card").css("display", "flex");
+        }
+    });
+
+
     $('.add').click(function () {
         if ($(this).prev().val() < 9) {
             $(this).prev().val(+$(this).prev().val() + 1);

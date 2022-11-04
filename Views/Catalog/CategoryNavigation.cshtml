@@ -141,13 +141,13 @@
 
                     if (lstCategories.Contains(category.SeName))
                     {
-                        <li class="nav-item dropdown d-none d-md-block p-0">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-@category.Id" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@category.Name</a>
+                        <li class="nav-item dropdown d-none d-md-block p-0" style="position: inherit;">
+                            <a class="nav-link dropdown-toggle" href="@Url.RouteUrl("Category", new { SeName = category.SeName })" id="navbarDropdown-@category.Id" role="button">@category.Name</a>
                             @if (category.SubCategories.Any())
                             {
                                 var showShopAll = true;
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown-@category.Id">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown-@category.Id" style="position: absolute;">
 
                                     <div class="container" style="padding-top:15px; padding-bottom:15px;">
                                         <div class="row">

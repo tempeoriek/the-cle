@@ -163,7 +163,7 @@ a:hover {
 .header-line1{
     background-color:#1c1c1c;
     color:#fff;
-    padding:10px 0;
+    padding:5px 0;
 }
 
 .header-line1 a{color:#fff;}
@@ -205,8 +205,15 @@ a:hover {
 }
 
 
-.nav-item > a{}
+.brand-name{}
 
+.brand-name:focus,
+.brand-name:active,
+.brand-name:hover {
+    color: #bfbfbf;
+}
+
+.nav-item > a{}
 
 .nav-item > a:focus,
 .nav-item > a:active,
@@ -214,6 +221,7 @@ a:hover {
     text-decoration:underline;
     color: #2F2F2F;
 }
+
 .nav-item2>div>ul>li>a{border-bottom:1px solid transparent;}
 .nav-item2>div>ul>li>a:hover{border-bottom:1px solid black;}
     .nav-item > a:focus,
@@ -2149,7 +2157,7 @@ cursor:pointer;
     height: 100%;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    width: 500px;
+    width: 650px;
     position: absolute; top: 0;
 }
 
@@ -2926,7 +2934,7 @@ top:95vh;
 
     .byob-cart.show {
         /*height: unset;*/
-        height: 360px;
+        height: 370px;
         -webkit-transition: height 1s ease-out;
         -moz-transition: height 1s ease-out;
         -o-transition: height 1s ease-out;
@@ -3182,9 +3190,25 @@ top:95vh;
     .navbar-expand-lg .navbar-nav .dropdown-menu {
         position: fixed;
     }
+
+    
 }
 
-
+@media (min-width: 769px) {
+    .navbar-collapse {
+        display: flex !important;
+    }
+    .navbar-nav {
+        font-size:14px;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: row;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+}
 
 
 /*main menu */
