@@ -35,10 +35,56 @@
             item.To == "IDR 1,000,000" ? 500000 :
             item.To == "IDR 500,000" ? 200000 : 0;
         <div class="radio-alternate">
-            <a style="cursor: pointer;" name="SortProduct" data-price="@price_tag" data-price-min="@price_min" id="checkbox-price">@FormatPriceRangeText(item)</a>
+            <a style="cursor: pointer;" onclick="addParameterPrice(@item.FilterUrl)" id="checkbox-price">@FormatPriceRangeText(item)</a>
+            @* <a style="cursor: pointer;" name="SortProduct" data-price="@price_tag" data-price-min="@price_min" id="checkbox-price">@FormatPriceRangeText(item)</a> *@
         </div>
     }
     <div class="radio-alternate-new">
         <p class="removeshowfilter-price" style="cursor: pointer;"></p>
     </div>
 }
+
+<script>
+    function addParameterPrice (param) {
+        let param_sort = param.toString()
+        if (param_sort.substring(1,0) == '-') param_sort = `0${param_sort}`
+        
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
+
+        var data_val = getUrlParameter('price')
+        if (data_val) {
+            let new_url = "";
+
+            if (window.location.search && window.location.search.indexOf('price=') != -1) {
+                new_url = window.location.search.replace( /price=\w*\d*/, "price=" + data_val.toString());
+            } else if (window.location.search) {
+                new_url = window.location.search + "&price=" + data_val.toString();
+            } else {
+                new_url = window.location.search + "?price=" + data_val.toString();
+            }
+        }
+        else {
+            if (window.location.search) {
+                new_url = window.location.search + "&price=" + param_sort.toString();
+            } else {
+                new_url = window.location.search + "?price=" + param_sort.toString();
+            }
+        }
+        window.location.href = new_url;
+    };
+    
+</script>

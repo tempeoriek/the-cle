@@ -96,6 +96,7 @@
                                     @* <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div> *@
                                     <div class="col-12 col-lg-3 mb-5">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
                                     <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
+                                    <div class="col-12 col-lg-3 mb-5"><h4 id="removeallfilter" style="cursor: pointer; display: none;">Clear</h4></div>
                                 </div>
                                 @*<div class="row">
                                     <div class="col-12 text-center mt-3">
@@ -111,10 +112,17 @@
                     </div>
                 </form>
         </div>
+       <div class="row catalogue-img" id="sortnormal">
+            @foreach (var item in Model.Products)
+            {
+                var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
+                <div class="@colCss catalog-line allproducts">
+                    @Html.Partial("_ProductBox", item)
+                </div>
+            }
+        </div>
 
-
-
-        <div class="row catalogue-img" id="sortnormal">
+        @* <div class="row catalogue-img" id="sortnormal">
             @foreach (var item in Model.Products)
             {
                 var colCss = "col-6 col-sm-6 col-md-3 col-lg-3";
@@ -205,7 +213,7 @@
             <div class="col-12 col-md-12 col-sm-12 text-center">
                 <h3>We're still preparing the collection. Please stay tuned.</h3>
             </div>
-        </div>
+        </div> *@
     }
     else
     {
@@ -410,6 +418,10 @@
                 removesortnew();
             }
             startfilter();
+        });
+        
+        $('#removeallfilter').click(function(){
+            window.location.href = window.location.origin+window.location.pathname;
         });
 
         function tag (type, filter, value) {
@@ -628,6 +640,10 @@
             $('.shop__filter').on('change', function () {
                window.location = "/" +$(this).val();
             });
+
+            if (window.location.search) {
+                $("#removeallfilter").css("display", 'flex');
+            }
         });
     </script>
 
