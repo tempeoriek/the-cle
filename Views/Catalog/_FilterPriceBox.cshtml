@@ -34,8 +34,10 @@
         var price_min = item.To == null ? 1000000 : 
             item.To == "IDR 1,000,000" ? 500000 :
             item.To == "IDR 500,000" ? 200000 : 0;
+        var from = item.From;
+        var to = item.To;
         <div class="radio-alternate">
-            <a style="cursor: pointer;" onclick="addParameterPrice(@item.FilterUrl)" id="checkbox-price">@FormatPriceRangeText(item)</a>
+            <a style="cursor: pointer;" id="price_normal_@from-@to">@FormatPriceRangeText(item)</a>
             @* <a style="cursor: pointer;" name="SortProduct" data-price="@price_tag" data-price-min="@price_min" id="checkbox-price">@FormatPriceRangeText(item)</a> *@
         </div>
     }
@@ -45,7 +47,7 @@
 }
 
 <script>
-    function addParameterPrice (param) {
+    @* function addParameterPrice (param) {
         let param_sort = param.toString()
         if (param_sort.substring(1,0) == '-') param_sort = `0${param_sort}`
         
@@ -66,9 +68,8 @@
         };
 
         var data_val = getUrlParameter('price')
+        let new_url = "";
         if (data_val) {
-            let new_url = "";
-
             if (window.location.search && window.location.search.indexOf('price=') != -1) {
                 new_url = window.location.search.replace( /price=\w*\d*/, "price=" + data_val.toString());
             } else if (window.location.search) {
@@ -85,6 +86,20 @@
             }
         }
         window.location.href = new_url;
-    };
+    }; *@
+     $("a[id^='price_normal_']" ).click(function() {
+        var id = this.id.replace("price_normal_", "");
+        let param_sort = id.replace(/IDR/g,'').replace(/,/g,'').replace(/ /g, '').trim()
+        
+        if (window.location.search && window.location.search.indexOf('price=') != -1) {
+            let text=window.location.search.split("=")[1];
+            new_url = window.location.search.replace( `price=${text}`, "price=" + param_sort);
+        } else if (window.location.search) {
+            new_url = window.location.search + "&price=" + param_sort;
+        } else {
+            new_url = window.location.search + "?price=" + param_sort;
+        }
+        window.location.href = new_url;
+    });
     
 </script>

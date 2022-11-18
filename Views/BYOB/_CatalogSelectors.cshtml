@@ -19,7 +19,9 @@
 
             if (sort_name != "Created on") {
                 <div class="radio-alternate-new">
-                    <label style="cursor: pointer;"><input type="radio" name="SortProduct" class="content-filter-sortby_@(i)" id="sortby_@(i)" value="sortby_@(i)">@sort_name</label>
+                    <label style="cursor: pointer;"><input type="radio" name="SortProduct" class="content-filter-sortby_@(i)" id="sortby_@(i)" value="sortby_@(i)">
+                        <a href="@sort.Value" style="text-decoration: none;">@sort_name</a> 
+                    </label>
                 </div>
             }
 

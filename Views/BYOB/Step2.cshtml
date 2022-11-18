@@ -82,6 +82,7 @@
                             @* <div class="col-12 col-lg-3 mb-5">@Html.Partial("_ColorSelectors", Model.AvailableColors, new ViewDataDictionary())</div> *@
                             <div class="col-12 col-lg-3 mb-5">@Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())</div>
                             <div class="col-12 col-lg-3 mb-5">@Html.Partial("_CatalogSelectors", Model.PagingFilteringContext, new ViewDataDictionary())</div>
+                            <div class="col-12 col-lg-3 mb-5"><h4 id="removeallfilterbyob" style="cursor: pointer; display: none;">Clear</h4></div>
                         </div>
                         <div class="row">
                             <div class="col-12 text-center mt-3">
@@ -441,6 +442,10 @@
             startfilter();
         });
 
+        $('#removeallfilterbyob').click(function(){
+            window.location.href = window.location.origin+window.location.pathname;
+        });
+        
         function tag (type, filter, value) {
             if (type == "remove") {
                 if (filter == `sort`) {
@@ -658,6 +663,9 @@
                 $('#form1').submit();
                 return false;
             });
+            if (window.location.search) {
+                $("#removeallfilterbyob").css("display", 'flex');
+            }
         });
     </script>
 

@@ -45,11 +45,32 @@ else
         var price_min = item.To == null ? 1000000 : 
             item.To == "IDR 1,000,000" ? 500000 :
             item.To == "IDR 500,000" ? 200000 : 0;
+        var from = item.From;
+        var to = item.To;
         <div class="radio-alternate">
-            <a style="cursor: pointer;" name="SortProduct" data-price="@price_tag" data-price-min="@price_min" id="checkbox-price">@FormatPriceRangeText(item)</a>
+            @* <a style="cursor: pointer;" name="SortProduct" data-price="@price_tag" data-price-min="@price_min" id="checkbox-price">@FormatPriceRangeText(item)</a> *@
+            <a style="cursor: pointer;" id="price_byob_@from-@to">@FormatPriceRangeText(item)</a>
         </div>
     }
     <div class="radio-alternate-new">
         <p class="removeshowfilter-price" style="cursor: pointer;"></p>
     </div>
 }
+
+<script>
+    $("a[id^='price_byob_']" ).click(function() {
+        var id = this.id.replace("price_byob_", "");
+        let param_sort = id.replace(/IDR/g,'').replace(/,/g,'').replace(/ /g, '').trim()
+        
+        if (window.location.search && window.location.search.indexOf('price=') != -1) {
+            let text=window.location.search.split("=")[1];
+            new_url = window.location.search.replace( `price=${text}`, "price=" + param_sort);
+        } else if (window.location.search) {
+            new_url = window.location.search + "&price=" + param_sort;
+        } else {
+            new_url = window.location.search + "?price=" + param_sort;
+        }
+        window.location.href = new_url;
+    });
+    
+</script>
