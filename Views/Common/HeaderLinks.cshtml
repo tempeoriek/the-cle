@@ -64,116 +64,104 @@
 
 <div class="container-fluid d-none d-md-block p-0">
 
-    <div class="header-line1">
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
-                    <div class="d-none d-sm-block">
-                        @*<div class="show-mobile-menu-btn" style="cursor:pointer">
-                                <img src="~/Themes/v1/Content/images/search.png" alt="" srcset="" style="width:14px;"><span> Search</span>
-                            </div>*@
+    <div style="position: fixed;top: 0;width: 100%;background-color: white;z-index: 1000;">
+        <div class="header-line1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="d-none d-sm-block">
+                            @*<div class="show-mobile-menu-btn" style="cursor:pointer">
+                                    <img src="~/Themes/v1/Content/images/search.png" alt="" srcset="" style="width:14px;"><span> Search</span>
+                                </div>*@
+                        </div>
                     </div>
-                </div>
-                <div class="col-6 text-center d-flex justify-content-center align-item-center">
-                    @Html.Action("TopicBlock", "Topic", new { systemName = "FreeShippingBar" })
-                </div>
-                <div class="col-3 d-flex justify-content-end">
-                    <div class="pr-5">
-                        <ul class="list-unstyled list-inline mb-0">
-                            @if (Model.IsAuthenticated)
-                            {
-                                <li>
-                                    <div class="dropdown">
-                                        <a href="#" class="nav-item">Account</a>
-                                        <div class="dropdown-content2 text-left">
-                                            <a href="~/order/ConfirmPayments">Confirm Payment</a>
-                                            <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
-                                            <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
-                                            <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
-                                            <a href="~/customer/addressAdd">Address Book</a>
-                                            <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                    <div class="col-6 text-center d-flex justify-content-center align-item-center">
+                        @Html.Action("TopicBlock", "Topic", new { systemName = "FreeShippingBar" })
+                    </div>
+                    <div class="col-3 d-flex justify-content-end">
+                        <div class="pr-5">
+                            <ul class="list-unstyled list-inline mb-0">
+                                @if (Model.IsAuthenticated)
+                                {
+                                    <li>
+                                        <div class="dropdown">
+                                            <a href="#" class="nav-item">Account</a>
+                                            <div class="dropdown-content2 text-left">
+                                                <a href="~/order/ConfirmPayments">Confirm Payment</a>
+                                                <a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a>
+                                                <a href="@Url.RouteUrl("CustomerInfo")">Personal Info</a>
+                                                <a href="@Url.RouteUrl("CustomerChangePassword")">Change Password</a>
+                                                <a href="~/customer/addressAdd">Address Book</a>
+                                                <a href="@Url.RouteUrl("Logout")"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Logout</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
 
 
-                            }
-                            else
+                                }
+                                else
+                                {
+                                    <li> <a href="~/login" class="signin btn-login mr-2">Login</a></li>
+                                }
+                            </ul>
+
+
+                        </div>
+
+
+
+                        <div class="pr-5">
+                            @if (Model.ShoppingCartEnabled)
                             {
-                                <li> <a href="~/login" class="signin btn-login mr-2">Login</a></li>
+                                var cartItem = "0";
+                                var cssCartItem = "bag-empty";
+                                if (Model.ShoppingCartItems > 0)
+                                {
+                                    cartItem = string.Format("{0}", Model.ShoppingCartItems);
+                                    cssCartItem = "shopping-bag";
+                                }
+                                <a href="#bag" onclick="$('.aside').asidebar('open')"><div id="icbag-panel" class="@cssCartItem align-items-center d-flex"><div>Bag</div><div id="mCartItemsQty" class="cart-qty">@cartItem</div></div></a>
+
                             }
-                        </ul>
+                        </div>
+
+
 
 
                     </div>
-
-
-
-                    <div class="pr-5">
-                        @if (Model.ShoppingCartEnabled)
-                        {
-                            var cartItem = "0";
-                            var cssCartItem = "bag-empty";
-                            if (Model.ShoppingCartItems > 0)
-                            {
-                                cartItem = string.Format("{0}", Model.ShoppingCartItems);
-                                cssCartItem = "shopping-bag";
-                            }
-                            <a href="#bag" onclick="$('.aside').asidebar('open')"><div id="icbag-panel" class="@cssCartItem align-items-center d-flex"><div>Bag</div><div id="mCartItemsQty" class="cart-qty">@cartItem</div></div></a>
-
-                        }
-                    </div>
-
-
-
-
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="row "><div class="col-12 text-center"><a href="~/"><img src="~/Themes/v1/Content/images/logo.svg" class="brandImage" /></a></div></div>
+        <div class="row "><div class="col-12 text-center"><a href="~/"><img src="~/Themes/v1/Content/images/logo.svg" class="brandImage" /></a></div></div>
 
 
 
-    <div class="row" style="position: relative;">
-        <div class="col-12">
+        <div class="row">
+            <div class="col-12">
 
-            <div class="container text-center">
+                <div class="container text-center">
 
-                <nav class="navbar navbar-expand-lg" style="padding:0; position: inherit;">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    <nav class="navbar navbar-expand-lg" style="padding:0; position: inherit;">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav main-menu-middle">
-                            @*<li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                For them
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Ramadhan</a>
-                <a class="dropdown-item" href="#">Valentines</a>
-                <a class="dropdown-item" href="#">Xmas</a>
-            </div>
-        </li>
-                            *@
-                            @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false })
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav main-menu-middle">
+                                @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = 0, currentProductId = 0, isMobile = false, isSidebar = false })
 
-                            <li class="nav-item"><a class="nav-link" href="~/byob/step1"><span>Build Your Own Box</span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="~/about"><span>About Us</span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="~/contactus"><span>Contact</span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="~/blog"><span>Blog</span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="~/order/confirmpayments"><span>Confirm Payment</span></a></li>
-                        </ul>
+                                <li class="nav-item"><a class="nav-link" href="~/byob/step1"><span>Build Your Own Box</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href="~/about"><span>About Us</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href="~/contactus"><span>Contact</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href="~/blog"><span>Blog</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href="~/order/confirmpayments"><span>Confirm Payment</span></a></li>
+                            </ul>
 
-                    </div>
-                </nav>
+                        </div>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
@@ -220,7 +208,10 @@
 
 
     <nav class="navbar navbar-expand-md sidebarNavigation fixed-top" data-sidebarClass="navbar-dark" style="background-color:#fff; padding-top:0; ">
-        <div class="" style="padding-top:6px; padding-bottom:6px; width: 100%">
+        <div class="text-center d-flex justify-content-center align-item-center" style="background-color: black; color: white; width: 100%">
+            @Html.Action("TopicBlock", "Topic", new { systemName = "FreeShippingBar" })
+        </div>
+        <div class="" style="padding-bottom:6px; width: 100%">
             <div class="row align-items-center">
                 <div class="col-3 m-0 p-0 text-center" style="">
                     @* <button id="open-side-menu" style="margin-bottom: 10px; margin-left: 15px" class="navbar-togglers leftNavbarToggler btn-toggle" type="button" data-target="#navbarsExampleDefault"

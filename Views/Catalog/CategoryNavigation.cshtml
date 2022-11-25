@@ -127,6 +127,7 @@
 @*desktop*@
 
 @{
+    
 
     if (!Model.isSidebar)
     {
@@ -141,13 +142,15 @@
 
                     if (lstCategories.Contains(category.SeName))
                     {
-                        <li class="nav-item dropdown d-none d-md-block p-0" style="position: inherit;">
-                            <a class="nav-link dropdown-toggle" href="@Url.RouteUrl("Category", new { SeName = category.SeName })" id="navbarDropdown-@category.Id" role="button">@category.Name</a>
+                        <li class="nav-item dropdown d-none d-md-block p-0">
+                            <a class="nav-link dropdown-toggle" href="@Url.RouteUrl("Category", new { SeName = category.SeName })" id="navbarDropdown-@category.Id" role="button">
+                                @category.Name
+                            </a>
                             @if (category.SubCategories.Any())
                             {
                                 var showShopAll = true;
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown-@category.Id" style="position: absolute;">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown-@category.Id">
 
                                     <div class="container" style="padding-top:15px; padding-bottom:15px;">
                                         <div class="row">
@@ -237,58 +240,58 @@
                 }
             }
 
-        }
-        else
+    }
+    else
+    {
+        @*sidebar*@
+        if (Model.Categories.Count > 0)
         {
-            @*sidebar*@
-            if (Model.Categories.Count > 0)
-            {
-                <ul class="list-unstyled mm-category">
-                    <li><a href="~/new-arrivals">New Arrivals</a></li>
+            <ul class="list-unstyled mm-category">
+                <li><a href="~/new-arrivals">New Arrivals</a></li>
 
-                    @foreach (var category in Model.Categories)
+                @foreach (var category in Model.Categories)
+                {
+                    if (category.SubCategories.Any())
                     {
-                        if (category.SubCategories.Any())
-                        {
-                            <li>
-                                <a class="" data-toggle="collapse" href="#mm-category-@category.Id" role="button" aria-expanded="false" aria-controls="mm-category-@category.Id">@category.Name.ToUpper()</a>
-                                <ul class="mm-subcategory list-unstyled collapse" id="mm-category-@category.Id">
-                                    @if (category.SubCategories.Any())
+                        <li>
+                            <a class="" data-toggle="collapse" href="#mm-category-@category.Id" role="button" aria-expanded="false" aria-controls="mm-category-@category.Id">@category.Name.ToUpper()</a>
+                            <ul class="mm-subcategory list-unstyled collapse" id="mm-category-@category.Id">
+                                @if (category.SubCategories.Any())
+                                {
+                                    <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">All</a></li>
+
+                                    foreach (var subcat in category.SubCategories)
                                     {
-                                        <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">All</a></li>
-
-                                        foreach (var subcat in category.SubCategories)
-                                        {
-                                            <li>
-                                                <a href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })">@subcat.Name.ToUpper()</a>
-                                                @if (subcat.SubCategories.Any())
-                                                {
-                                                    <ul class="mm-subsubcategory list-unstyled">
-                                                        @foreach (var subsubcat in subcat.SubCategories)
-                                                        {
-                                                            <li><a href="@Url.RouteUrl("Category", new { SeName = subsubcat.SeName })">@subsubcat.Name.ToUpper()</a></li>
-                                                        }
-                                                    </ul>
-                                                }
-                                            </li>
-                                        }
+                                        <li>
+                                            <a href="@Url.RouteUrl("Category", new { SeName = subcat.SeName })">@subcat.Name.ToUpper()</a>
+                                            @if (subcat.SubCategories.Any())
+                                            {
+                                                <ul class="mm-subsubcategory list-unstyled">
+                                                    @foreach (var subsubcat in subcat.SubCategories)
+                                                    {
+                                                        <li><a href="@Url.RouteUrl("Category", new { SeName = subsubcat.SeName })">@subsubcat.Name.ToUpper()</a></li>
+                                                    }
+                                                </ul>
+                                            }
+                                        </li>
                                     }
+                                }
 
-                                </ul>
-                            </li>
-                        }
-                        else
-                        {
-                            <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name.ToUpper()</a></li>
-
-                        }
+                            </ul>
+                        </li>
                     }
+                    else
+                    {
+                        <li><a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name.ToUpper()</a></li>
 
-                </ul>
+                    }
+                }
 
-            }
+            </ul>
 
         }
+
+    }
 }
 
 <script>
