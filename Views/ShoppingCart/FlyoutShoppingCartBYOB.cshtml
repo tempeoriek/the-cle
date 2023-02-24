@@ -6,8 +6,9 @@
     <div class="byob-cart" id="byobcart">
         <div class="arrow-up"></div>
         <div class="p-4">
+            <div id="collapseBYOBStep" name="collapseBYOBStep"></div>
 
-            @if (Model.TotalProducts == 0)
+            @* @if (Model.TotalProducts == 0)
             {
                 @T("ShoppingCart.Mini.NoItems")
             }
@@ -117,14 +118,308 @@
                                 <div class="byobitem">
                                     <div class="text-left d-flex">
                                         <img class="img-fluid" alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title" />
-                                        @*<div class="delete">X</div>*@
                                     </div>
                                 </div>
                             }
                         </div>
                     }
                 </div>
-            }
+            } *@
         </div>
 
     </div>
+
+<script>
+    //var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+	//console.log(model);
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    function FetchAjax(type, url, data) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                cache: false,
+                type,
+                url,
+                data,
+                dataType: 'json',
+                success: function (data) {
+                    resolve(data)
+                },
+                error: function (err) {
+                    reject(err)
+                }
+            });
+        });
+    }
+
+    function deleteItems(id) {
+        let arr = []
+        let step2_items = dataBYOB();
+
+        for (let i = 0 ; i < step2_items.items.length ; i++) {
+            let item = step2_items.items[i];
+            if (item.Id != id) arr.push(item);
+        }
+        step2_items.items = arr;
+
+        //ajax new product
+        const all_products = localStorage.getItem('products');
+        const step2 = localStorage.getItem('step2');
+        var all_products_parse = JSON.parse(all_products);
+        var old_products = JSON.parse(step2);
+        let combine_products = all_products_parse.filter(item => item != id);
+        let products = old_products.filter(item => item != id);
+
+        localStorage.setItem('step2', JSON.stringify(products));
+        localStorage.setItem('products', JSON.stringify(combine_products));
+
+        bodyModal(step2_items);
+    }
+
+    function bodyModal(data) {
+        let box_weight = data.Box.WeightFactor;
+        if (data.items.length > 0) box_weight += data.items.reduce((n, {WeightFactor}) => n + WeightFactor, 0);
+        let box = "Small Box";
+        let progressbarwidth = box_weight * 10;
+        let progressbarwidthmobile = box_weight * 35;
+        if(progressbarwidth >= 0 && progressbarwidth < 49) {
+            progressbarwidth = 10;
+            progressbarwidthmobile = 35;
+        }
+        else if(progressbarwidth >= 50 && progressbarwidth < 90) {
+            progressbarwidth = 40;
+            progressbarwidthmobile = 75;
+        }
+        else if(progressbarwidth > 90) {
+            progressbarwidth = 100;
+            progressbarwidthmobile = 100;
+        }
+
+        if (box_weight >= 8) box = "Regular Box";
+        if (box_weight >= 12) box = "Large Box";
+
+        //find image horizontal
+        let image_products = `
+            <div class="byobitem">
+                <div class="text-left d-flex">
+                    <img class="img-fluid" alt="${data.Box.Name}" src="${data.Box.ImageUrl}" title="${data.Box.Name}" />
+                </div>
+            </div>
+        `;
+
+        //create table
+        let subtotal = data.Box.Price;
+        let table_box = `<table>`;
+        //box
+        if (data.Box) {
+            table_box += `
+                <tr>
+                    <td style="width:40px;">${data.Box.Quantity}</td>
+                    <td>${data.Box.Name}</td>
+                    <td style="width:25%;">${data.Box.PriceStr}</td>
+                    <td style="width:25px;"></td>
+                </tr>
+            `;
+        }
+
+        //items
+        if (data.items.length > 0) {
+            for (let i = 0 ; i < data.items.length ; i++) {
+                let item = data.items[i];
+                let delete_button = ``;
+                table_box += `
+                    <tr>
+                        <td style="width:40px;">${item.Quantity}</td>
+                        <td>${item.Name}</td>
+                        <td style="width:25%;">${item.PriceStr}</td>
+                        <td style="width:25px;">
+                            <button onclick='deleteItems(${item.Id})' name="id" class="btn btn-link btn__link-byob"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                `;
+
+                subtotal += item.Price;
+                image_products += `
+                    <div class="byobitem">
+                        <div class="text-left d-flex">
+                            <img class="img-fluid" alt="${item.Name}" src="${item.ImageUrl}" title="${item.Name}" />
+                        </div>
+                    </div>
+                `
+            }
+        }
+
+        if (subtotal > 0) subtotal = numberWithCommas(subtotal);
+        table_box += `
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr class="subtotal">
+                    <td></td>
+                    <td>Subtotal</td>
+                    <td>IDR ${subtotal}</td>
+                    <td></td>
+                </tr>
+            </table>
+        `;
+
+        //no product or box
+        let no_product = ``;
+        if (!data.Box && data.items.length == 0) no_product += `You have no items in your shopping cart.`
+
+        //combiine all product
+        let str = `
+            ${no_product}
+            <div class="collapsed-cart">
+                <div class="byobcart__boxsize">
+                    <div class="row">
+                        <div class="col-7 col-md-8 col-lg-9">
+                            <div class="progress">
+                                <div 
+                                    class="d-none d-md-block hidden-xs hidden-sm progress-bar bg-progress" 
+                                    role="progressbar" 
+                                    style="padding: 4px; width: ${progressbarwidth}%" 
+                                    aria-valuenow="${progressbarwidth}" 
+                                    aria-valuemin="0" aria-valuemax="100">
+                                    ${box}
+                                </div>
+                                <div 
+                                    class="d-block d-md-none hidden-md hidden-xl progress-bar bg-progress font-byob-progress" 
+                                    role="progressbar" 
+                                    style="padding: 4px; width: ${progressbarwidthmobile}%" 
+                                    aria-valuenow="${progressbarwidthmobile}" 
+                                    aria-valuemin="0" aria-valuemax="100"
+                                >
+                                    ${box}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5 col-md-4 col-lg-3">
+                            <a href="/byob/step3" class="btn btn-cart-byob font-byob-progress" id="test-complete" style="width:100%;">Complete Your Box</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="byobcart__list">
+                    <div class="col-main-slim">
+                        <h2>Your Box</h2>
+                        <div style="border:solid 1px #fff; padding:5px;">
+                            ${table_box}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items scroll-cart1">
+                    ${image_products}
+                </div>
+            </div>                
+        `;
+        
+        $('div[id=collapseBYOBStep][name=collapseBYOBStep]').html(str);
+    }
+
+    function bodyFlyCart(datas) {
+        let products = [];
+        for (let i = 0 ; i < datas.length ; i++) {
+            let data = datas[i];
+
+            //skip for box
+            if (i == 0) continue;
+
+            let product = `${data.qty}_${data.id}_`;
+            if (data.variant != 0) product = `${data.qty}_${data.id}_${data.variant}`;
+            products.push(product);
+        }
+
+        return products
+    }
+
+    function dataBYOB() {
+        let step2_items;
+        let body = {
+            box: localStorage.step1,
+            products: []
+        }
+
+        const all_products_obj = localStorage.getItem('products_obj');
+        const step2 = localStorage.getItem('step2');
+        let step2_parse = step2 ?  JSON.parse(step2) : [];
+        if (step2_parse.length > 0) {
+            let all_products_obj_parse = JSON.parse(all_products_obj);
+            body.products = bodyFlyCart(all_products_obj_parse);
+        }
+        let response = await FetchAjax("POST", "/byob/fetchitems", body);
+        if (response && response.Box) step2_items = response;
+        
+        @* step2_items = {
+            "Box": {
+                "Id": 347,
+                "Name": "Wooden Box",
+                "ImageUrl": "https://www.shopclegifts.com/content/images/thumbs/0004903_wooden-box_120.png",
+                "VariantId": 0,
+                "Variant": null,
+                "VariantValueId": 0,
+                "VariantValue": null,
+                "Quantity": 1,
+                "IsBox": true,
+                "BoxSize": 0,
+                "WeightFactor": 0,
+                "SeName": "wooden-box",
+                "Price": 10000.0000,
+                "PriceStr": "IDR 10,000",
+                "OldPrice": 0,
+                "OldPriceStr": "",
+                "DiscountPercentage": 0
+            },
+            "items": [
+                {
+                    "Id": 371,
+                    "Name": "Lune Skin Lipbalm 01 Mint",
+                    "ImageUrl": "https://www.shopclegifts.com/content/images/thumbs/0004562_lune-skin-lipbalm-01-mint_120.png",
+                    "VariantId": 0,
+                    "Variant": null,
+                    "VariantValueId": 0,
+                    "VariantValue": null,
+                    "Quantity": 1,
+                    "IsBox": false,
+                    "BoxSize": 0,
+                    "WeightFactor": 3,
+                    "SeName": "lune-skin-lipbalm-01-mint",
+                    "Price": 129000.0000,
+                    "PriceStr": "IDR 129,000",
+                    "OldPrice": 0,
+                    "OldPriceStr": "",
+                    "DiscountPercentage": 0
+                },
+                {
+                    "Id": 315,
+                    "Name": "Setitik Kisah Bear Softbook",
+                    "ImageUrl": "https://www.shopclegifts.com/content/images/thumbs/0004562_lune-skin-lipbalm-01-mint_120.png",
+                    "VariantId": 0,
+                    "Variant": null,
+                    "VariantValueId": 0,
+                    "VariantValue": null,
+                    "Quantity": 1,
+                    "IsBox": false,
+                    "BoxSize": 0,
+                    "WeightFactor": 5,
+                    "SeName": "bear-softbook",
+                    "Price": 159000.0000,
+                    "PriceStr": "IDR 159,000",
+                    "OldPrice": 0,
+                    "OldPriceStr": "",
+                    "DiscountPercentage": 0
+                }
+            ]
+        } *@
+
+        return step2_items;
+    }
+
+    $(document).ready(async function () {
+        let data_byob = dataBYOB();
+        bodyModal(data_byob);
+    });
+</script>

@@ -34,7 +34,7 @@
     @if (Model.Products.Any())
     {
 
-        using (Html.BeginForm("step3", "byob", FormMethod.Post, new { id = "form1", @class = "login-form" }))
+        @* using (Html.BeginForm("step3", "byob", FormMethod.Post, new { id = "form1", @class = "login-form" }))
         {
             @Html.AntiForgeryToken()
 
@@ -52,7 +52,23 @@
                     }
                 </div>
             </div>
-        }
+        } *@
+
+        //for local storage
+        <div class="container mb-5 step-top">
+            <div class="row">
+
+                @foreach (var item in Model.Products)
+                {
+                    <div class="col-6 col-md-3 catalog-line">
+                        <button type="submit" name="id" value="@item.Id" class="box__option clean" onclick="saveData('step3', '@item.Id')">
+                            <img src="@item.DefaultPictureModel.ImageUrl" class="img-fluid" />
+                            <h3>@item.Name</h3>
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
 
     }
     else
@@ -87,3 +103,30 @@
    
 }*@
 
+<script>
+    function saveData(attribute, value){
+        let products = [value];
+        let product_obj = {
+            id: value,
+            qty: 1,
+            variant: 0
+        }
+        const step3 = localStorage.getItem('products');
+        const products_obj = localStorage.getItem('products_obj');
+        let old_products = JSON.parse(step3);
+        let products_obj_parse = JSON.parse(products_obj);
+        products = [...products, ...old_products];
+        if (products_obj_parse.indexOf(value) > -1) {
+            products_obj_parse = products_obj_parse.filter(item => item.id != value)
+            products_obj_parse[index].qty = qty + products_obj_parse[index].qty;
+        }
+        else if (products_obj_parse.indexOf(value) == -1) {
+            products_obj_parse.push(product_obj)
+        }
+
+        localStorage.setItem("products_obj", JSON.stringify(products_obj_parse));
+        localStorage.setItem("products", JSON.stringify([... new Set(products)]));
+        localStorage.setItem(attribute, value);
+        window.location.href = `/byob/Step3a/${value}`
+    }
+</script>

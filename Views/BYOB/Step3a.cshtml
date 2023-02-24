@@ -30,8 +30,7 @@
                     }
                 </div>
                 <div class="col-12 col-md-6 col-lg-7 step-padding">
-
-                    @using (Html.BeginForm())
+                    @* @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
 
@@ -46,23 +45,11 @@
                                 @Html.TextBoxFor(model => model.To, new { @class = "form-control contactus-form" })
                             </div>
 
-                            @*<div class="form-group text-left">
-                                From
-                                @Html.TextBoxFor(model => model.From, new { @class = "form-control contactus-form" })
-                            </div>*@
-
-                        <div class="form-group contactus-form text-left">
-                            Card’s Message:
-                            @Html.ValidationMessageFor(model => model.Message)
-                            @Html.TextAreaFor(model => model.Message, new { @class = "enquiry form-control" })
-                        </div>
-
-
-                            @*<div class="form-group text-left">
-                                <div class="radio-default">
-                                    <input type="checkbox" name="cbIsBlank"  class="radio-default" id="cbCard"><label for="cbCard"><span></span> I want blank card and outside the box so I can write myself!</label>
-                                </div>
-                            </div>*@
+                            <div class="form-group contactus-form text-left">
+                                Card’s Message:
+                                @Html.ValidationMessageFor(model => model.Message)
+                                @Html.TextAreaFor(model => model.Message, new { @class = "enquiry form-control" })
+                            </div>
 
                             <div class="buttons mt-30">
                                 <input type="hidden" name="isBlank" value="@Model.isBlank" id="blankcard" />
@@ -70,7 +57,28 @@
                                 <button type="submit" name="submit" class="btn btn-default w-100">Add to Bag</button>
                             </div>
                         </div>
-                    }
+                    } *@
+
+                    @* for local storage *@
+                    <div class="fieldset">
+                        <div class="form-group text-left">
+                            Box's Personalisation:
+                            @Html.ValidationMessageFor(model => model.To)
+                            @Html.TextBoxFor(model => model.To, new { @class = "form-control contactus-form" })
+                        </div>
+
+                        <div class="form-group contactus-form text-left">
+                            Card’s Message:
+                            @Html.ValidationMessageFor(model => model.Message)
+                            @Html.TextAreaFor(model => model.Message, new { @class = "enquiry form-control" })
+                        </div>
+
+                        <div class="buttons mt-30">
+                            <input type="hidden" name="isBlank" value="@Model.isBlank" id="blankcard" />
+                            <input type="hidden" name="CardId" value="@Model.CardId" />
+                            <button type="submit" name="submit" class="btn btn-default w-100" onclick="saveData()">Add to Bag</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -87,7 +95,73 @@
     </div>
 
 <br /><br /><br />
-   
+<script>
+    function bodyBag(datas) {
+        let products = [];
+        let box = 0, box_message_id = 0;
+        for (let i = 0 ; i < datas.length ; i++) {
+            let data = datas[i];
+
+            //skip for box
+            if (i == 0 || i == datas.length-1) continue;
+
+            let product = `${data.qty}_${data.id}_`;
+            if (data.variant != 0) product = `${data.qty}_${data.id}_${data.variant}`;
+            products.push(product);
+        }
+
+        box = datas[0].id;
+        box_message_id = datas[datas.length-1].id;
+
+        return {
+            box,
+            products,
+            box_message: {
+                box_id: box_message_id,
+                personalization: '',
+                message: ''
+            }
+        }
+    }
+
+    function FetchAjax(type, url, data) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                cache: false,
+                type,
+                url,
+                data,
+                dataType: 'json',
+                success: function (data) {
+                    resolve(data)
+                },
+                error: function (err) {
+                    reject(err)
+                }
+            });
+        });
+    }
+
+    function saveData(){
+        let value = {
+            To: $("#To").val(),
+            Message: $("#Message").val(),
+        }
+        localStorage.setItem('card', JSON.stringify(value));
+        const all_products_obj = localStorage.getItem('products_obj');
+        
+        const step2 = localStorage.getItem('step2');
+        let step2_parse = JSON.parse(step2);
+        let all_products_obj_parse = JSON.parse(all_products_obj);
+        let body = bodyBag(all_products_obj_parse);
+        body.box_message.personalization = $("#To").val();
+        body.box_message.message = $("#Message").val();
+
+        let response = await FetchAjax("POST", "/Shoppingcart/insertBYOB", body);
+        console.log(response)
+        window.location.href = `/byob/Done`
+    }
+</script>
 
 
     @section scripts{

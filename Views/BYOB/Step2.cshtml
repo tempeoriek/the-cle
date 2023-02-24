@@ -116,7 +116,7 @@
                     }
                 </div>
             
-                <div class="row catalogue-img" style="display: none;" id="sortascending">
+                @* <div class="row catalogue-img" style="display: none;" id="sortascending">
                     @{
                         var productasc = Model.Products.OrderBy(x => x.ProductPrice.PriceValue);
                         foreach (var item in productasc)
@@ -189,7 +189,7 @@
 
                         }
                     }
-                </div>
+                </div> *@
                 
                 <div class="row catalogue-img" style="display: none;" id="emptyproduct">
                     <div class="col-12 col-md-12 col-sm-12 text-center">
