@@ -76,7 +76,7 @@
                         <div class="buttons mt-30">
                             <input type="hidden" name="isBlank" value="@Model.isBlank" id="blankcard" />
                             <input type="hidden" name="CardId" value="@Model.CardId" />
-                            <button type="submit" name="submit" class="btn btn-default w-100" onclick="saveData()">Add to Bag</button>
+                            <button type="submit" name="submit" class="btn btn-default w-100" onclick="saveDataBag()">Add to Bag</button>
                         </div>
                     </div>
                 </div>
@@ -106,7 +106,9 @@
             if (i == 0 || i == datas.length-1) continue;
 
             let product = `${data.qty}_${data.id}_`;
-            if (data.variant != 0) product = `${data.qty}_${data.id}_${data.variant}`;
+            let variant = data.variant != 0 ? data.variant : '';
+            let variant_value = data.variant_value != 0 ? data.variant_value : '';
+            product = `${data.qty}_${data.id}_${variant}_${variant_value}`
             products.push(product);
         }
 
@@ -124,7 +126,7 @@
         }
     }
 
-    function FetchAjax(type, url, data) {
+    function FetchAjaxFinal(type, url, data) {
         return new Promise(function(resolve, reject) {
             $.ajax({
                 cache: false,
@@ -142,7 +144,7 @@
         });
     }
 
-    function saveData(){
+    async function saveDataBag(){
         let value = {
             To: $("#To").val(),
             Message: $("#Message").val(),
@@ -154,12 +156,18 @@
         let step2_parse = JSON.parse(step2);
         let all_products_obj_parse = JSON.parse(all_products_obj);
         let body = bodyBag(all_products_obj_parse);
-        body.box_message.personalization = $("#To").val();
+        body.box_message.to = $("#To").val();
         body.box_message.message = $("#Message").val();
 
-        let response = await FetchAjax("POST", "/Shoppingcart/insertBYOB", body);
-        console.log(response)
-        window.location.href = `/byob/Done`
+        let response = await FetchAjaxFinal("POST", "/Shoppingcart/insertBYOB", body);
+        if (response && !response.success) {
+            let message = response.message && isArray(response.message) ? response.message.join(', ') : response.message ? response.message : 'Please contact our admin'
+            alert(message)
+        }
+        else {
+            window.location.href = `/byob/Done`
+        }
+        
     }
 </script>
 

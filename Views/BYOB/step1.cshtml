@@ -57,7 +57,7 @@
                 @foreach (var item in Model.Products)
                 {
                     <div class="col-6 col-lg-3 catalog-line">
-                        <button type="submit" name="id" value="@item.Id" class="box__option clean" onclick="saveData('step1', '@item.Id')">
+                        <button type="submit" name="id" value="@item.Id" class="box__option clean" onclick="saveDataStep1('step1', '@item.Id')">
                             @if (item.AlternateImage != null)
                             {
                                 <img data-alt-src="@item.AlternateImage.ImageUrl" src="@item.DefaultPictureModel.ImageUrl" class="img-fluid center-block swapImg" />
@@ -90,12 +90,13 @@
     localStorage.removeItem("step2");
     localStorage.removeItem("step3");
 
-    function saveData(attribute, value){
+    function saveDataStep1(attribute, value){
         let products = [value]
         let product_obj = {
             id: value,
             qty: 1,
-            variant: 0
+            variant: 0,
+            variant_value: 0
         }
         let product_arr = [product_obj]
         localStorage.setItem("products_obj", JSON.stringify(product_arr));

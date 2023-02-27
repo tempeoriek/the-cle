@@ -61,7 +61,7 @@
                 @foreach (var item in Model.Products)
                 {
                     <div class="col-6 col-md-3 catalog-line">
-                        <button type="submit" name="id" value="@item.Id" class="box__option clean" onclick="saveData('step3', '@item.Id')">
+                        <button type="submit" name="id" value="@item.Id" class="box__option clean" onclick="saveDataStep3('step3', '@item.Id')">
                             <img src="@item.DefaultPictureModel.ImageUrl" class="img-fluid" />
                             <h3>@item.Name</h3>
                         </button>
@@ -104,12 +104,13 @@
 }*@
 
 <script>
-    function saveData(attribute, value){
+    function saveDataStep3(attribute, value){
         let products = [value];
         let product_obj = {
             id: value,
             qty: 1,
-            variant: 0
+            variant: 0,
+            variant_value: 0
         }
         const step3 = localStorage.getItem('products');
         const products_obj = localStorage.getItem('products_obj');

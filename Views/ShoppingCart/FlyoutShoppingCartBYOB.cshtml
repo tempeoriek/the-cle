@@ -136,8 +136,8 @@
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    
-    function FetchAjax(type, url, data) {
+
+    function FetchAjaxFlyoutCart(type, url, data) {
         return new Promise(function(resolve, reject) {
             $.ajax({
                 cache: false,
@@ -154,10 +154,10 @@
             });
         });
     }
-
-    function deleteItems(id) {
+    
+    async function deleteItems(id) {
         let arr = []
-        let step2_items = dataBYOB();
+        let step2_items = await dataBYOB();
 
         for (let i = 0 ; i < step2_items.items.length ; i++) {
             let item = step2_items.items[i];
@@ -168,23 +168,39 @@
         //ajax new product
         const all_products = localStorage.getItem('products');
         const step2 = localStorage.getItem('step2');
-        var all_products_parse = JSON.parse(all_products);
+        const all_products_obj = localStorage.getItem('products_obj');
+        
+        var old_products_obj_parse = JSON.parse(all_products_obj);
         var old_products = JSON.parse(step2);
+        var all_products_parse = JSON.parse(all_products);
         let combine_products = all_products_parse.filter(item => item != id);
         let products = old_products.filter(item => item != id);
+        let old_products_obj = old_products_obj_parse.filter(item => item.id != id);
 
-        localStorage.setItem('step2', JSON.stringify(products));
+        localStorage.setItem('products_obj', JSON.stringify(old_products_obj));
         localStorage.setItem('products', JSON.stringify(combine_products));
+        localStorage.setItem('step2', JSON.stringify(products));
 
         bodyModal(step2_items);
     }
 
     function bodyModal(data) {
-        let box_weight = data.Box.WeightFactor;
+        let box = "Small Box", box_weight = 0, progressbarwidth = 0, progressbarwidthmobile = 0;
+
+        if (!data) {
+            //combiine all product
+            let str_no_items = `
+                <span>You have no items in your shopping cart.</span>
+            `;
+            
+            $('div[id=collapseBYOBStep][name=collapseBYOBStep]').html(str_no_items);
+            return 0;
+        }
+
+        box_weight = data.Box.WeightFactor;
         if (data.items.length > 0) box_weight += data.items.reduce((n, {WeightFactor}) => n + WeightFactor, 0);
-        let box = "Small Box";
-        let progressbarwidth = box_weight * 10;
-        let progressbarwidthmobile = box_weight * 35;
+        progressbarwidth = box_weight * 10;
+        progressbarwidthmobile = box_weight * 35;
         if(progressbarwidth >= 0 && progressbarwidth < 49) {
             progressbarwidth = 10;
             progressbarwidthmobile = 35;
@@ -329,14 +345,16 @@
             if (i == 0) continue;
 
             let product = `${data.qty}_${data.id}_`;
-            if (data.variant != 0) product = `${data.qty}_${data.id}_${data.variant}`;
+            let variant = data.variant != 0 ? data.variant : '';
+            let variant_value = data.variant_value != 0 ? data.variant_value : '';
+            product = `${data.qty}_${data.id}_${variant}_${variant_value}`
             products.push(product);
         }
 
         return products
     }
 
-    function dataBYOB() {
+    async function dataBYOB() {
         let step2_items;
         let body = {
             box: localStorage.step1,
@@ -349,77 +367,22 @@
         if (step2_parse.length > 0) {
             let all_products_obj_parse = JSON.parse(all_products_obj);
             body.products = bodyFlyCart(all_products_obj_parse);
-        }
-        let response = await FetchAjax("POST", "/byob/fetchitems", body);
-        if (response && response.Box) step2_items = response;
-        
-        @* step2_items = {
-            "Box": {
-                "Id": 347,
-                "Name": "Wooden Box",
-                "ImageUrl": "https://www.shopclegifts.com/content/images/thumbs/0004903_wooden-box_120.png",
-                "VariantId": 0,
-                "Variant": null,
-                "VariantValueId": 0,
-                "VariantValue": null,
-                "Quantity": 1,
-                "IsBox": true,
-                "BoxSize": 0,
-                "WeightFactor": 0,
-                "SeName": "wooden-box",
-                "Price": 10000.0000,
-                "PriceStr": "IDR 10,000",
-                "OldPrice": 0,
-                "OldPriceStr": "",
-                "DiscountPercentage": 0
-            },
-            "items": [
-                {
-                    "Id": 371,
-                    "Name": "Lune Skin Lipbalm 01 Mint",
-                    "ImageUrl": "https://www.shopclegifts.com/content/images/thumbs/0004562_lune-skin-lipbalm-01-mint_120.png",
-                    "VariantId": 0,
-                    "Variant": null,
-                    "VariantValueId": 0,
-                    "VariantValue": null,
-                    "Quantity": 1,
-                    "IsBox": false,
-                    "BoxSize": 0,
-                    "WeightFactor": 3,
-                    "SeName": "lune-skin-lipbalm-01-mint",
-                    "Price": 129000.0000,
-                    "PriceStr": "IDR 129,000",
-                    "OldPrice": 0,
-                    "OldPriceStr": "",
-                    "DiscountPercentage": 0
-                },
-                {
-                    "Id": 315,
-                    "Name": "Setitik Kisah Bear Softbook",
-                    "ImageUrl": "https://www.shopclegifts.com/content/images/thumbs/0004562_lune-skin-lipbalm-01-mint_120.png",
-                    "VariantId": 0,
-                    "Variant": null,
-                    "VariantValueId": 0,
-                    "VariantValue": null,
-                    "Quantity": 1,
-                    "IsBox": false,
-                    "BoxSize": 0,
-                    "WeightFactor": 5,
-                    "SeName": "bear-softbook",
-                    "Price": 159000.0000,
-                    "PriceStr": "IDR 159,000",
-                    "OldPrice": 0,
-                    "OldPriceStr": "",
-                    "DiscountPercentage": 0
-                }
-            ]
-        } *@
 
-        return step2_items;
+        }
+
+        try {
+            let response = await FetchAjaxFlyoutCart("POST", "/byob/fetchitems", body);
+            if (response && response.Box) step2_items = response;
+
+            return step2_items;
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     $(document).ready(async function () {
-        let data_byob = dataBYOB();
+        let data_byob = await dataBYOB();
         bodyModal(data_byob);
     });
+
 </script>

@@ -133,7 +133,7 @@
                     <button type="button" id="add-to-cart-button-@Model.ProductId"
                             class="btn btn-default btn-addcart button_sare"
                             data-productid="@Model.ProductId"
-                            onclick="saveData('step2', @Model.ProductId)">
+                            onclick="saveDataAddBag('step2', @Model.ProductId)">
                         <span>@addToCartText</span>
                     </button>
                     @* <button type="button" id="add-to-cart-button-@Model.ProductId"
@@ -167,11 +167,12 @@
         if (qty <= 1) qty = 1;
     }
 
-    function saveData(attribute, value){
+    function saveDataAddBag(attribute, value){
         let product_obj = {
             id: value,
             qty,
-            variant: 0
+            variant: 0,
+            variant_value: 0
         }
         let products = [value]
         const all_products = localStorage.getItem('products');
