@@ -141,11 +141,6 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
                             {
                                 <div class="byob_attr">@Html.Raw(item.Personalization)</div>
                             }
-                            
-                            if (!string.IsNullOrWhiteSpace(item.Message))
-                            {
-                                <div class="byob_attr">@Html.Raw(item.Message)</div>
-                            }
 
                         }
 
