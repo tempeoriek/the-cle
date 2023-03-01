@@ -142,10 +142,10 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
                                 <div class="byob_attr">@Html.Raw(item.Personalization)</div>
                             }
                             
-                            if (!string.IsNullOrWhiteSpace(item.Message))
+                            @* if (!string.IsNullOrWhiteSpace(item.Message))
                             {
                                 <div class="byob_attr">@Html.Raw(item.Message)</div>
-                            }
+                            } *@
 
                         }
 
@@ -564,6 +564,8 @@ using (Ajax.BeginForm("UpdateItemInCart", "ShoppingCart", new AjaxOptions
 
 
 <script>
+    var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+	console.log(model);
     jQuery(document).ready(function () {
         // This button will increment the value
         $('.qtyplus').click(function (e) {
