@@ -130,11 +130,46 @@
     </div>
 
 <script>
-    //var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
-	//console.log(model);
+    $(document).ready(async function () {
+        flyout_cart_byob = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        let data_byob = await dataBYOB();
 
+        if (!data_byob && flyout_cart_byob.TotalProducts > 0) {
+            //create items from model
+            let flyout_cart_byob_items = [];
+            for (let i = 0 ; i < flyout_cart_byob.Items.length ; i++) {
+                let flyout_cart_byob_item = flyout_cart_byob.Items[i];
+                flyout_cart_byob_items.push({
+                    Quantity: flyout_cart_byob_item.Quantity,
+                    Name: flyout_cart_byob_item.ProductName,
+                    PriceStr: flyout_cart_byob_item.UnitPrice,
+                    Price: 0,
+                    WeightFactor: 0,
+                    Id: flyout_cart_byob_item.ProductId,
+                    ImageUrl: flyout_cart_byob_item.Picture.ImageUrl
+                })
+            }
+            let subtotal_product = stringToPrice(flyout_cart_byob.SubTotal);
+            data_byob = {
+                Box: null,
+                items: flyout_cart_byob_items,
+                flyout_cart: true,
+                subtotal_product 
+            }
+        }
+        else {
+            data_byob.flyout_cart = false;
+            data_byob.subtotal_product = 0;
+        }
+        bodyModal(data_byob);
+    });
+    
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    function stringToPrice(string) {
+        return string.replace('IDR ', '').replace(/\,/g, '');
     }
 
     function FetchAjaxFlyoutCart(type, url, data) {
@@ -185,7 +220,9 @@
     }
 
     function bodyModal(data) {
-        let box = "Small Box", box_weight = 0, progressbarwidth = 0, progressbarwidthmobile = 0;
+        let box = "Small Box", 
+            box_weight = 0, 
+            progressbarwidth = 0, progressbarwidthmobile = 0;
 
         if (!data) {
             //combiine all product
@@ -197,40 +234,24 @@
             return 0;
         }
 
-        box_weight = data.Box.WeightFactor;
-        if (data.items.length > 0) box_weight += data.items.reduce((n, {WeightFactor}) => n + WeightFactor, 0);
-        progressbarwidth = box_weight * 10;
-        progressbarwidthmobile = box_weight * 35;
-        if(progressbarwidth >= 0 && progressbarwidth < 49) {
-            progressbarwidth = 10;
-            progressbarwidthmobile = 35;
-        }
-        else if(progressbarwidth >= 50 && progressbarwidth < 90) {
-            progressbarwidth = 40;
-            progressbarwidthmobile = 75;
-        }
-        else if(progressbarwidth > 90) {
-            progressbarwidth = 100;
-            progressbarwidthmobile = 100;
-        }
-
-        if (box_weight >= 8) box = "Regular Box";
-        if (box_weight >= 12) box = "Large Box";
-
         //find image horizontal
-        let image_products = `
-            <div class="byobitem">
-                <div class="text-left d-flex">
-                    <img class="img-fluid" alt="${data.Box.Name}" src="${data.Box.ImageUrl}" title="${data.Box.Name}" />
-                </div>
-            </div>
-        `;
+        let image_products = ``
 
         //create table
-        let subtotal = data.Box.Price;
+        let subtotal = 0;
         let table_box = `<table>`;
+
         //box
         if (data.Box) {
+            box_weight = data.Box.WeightFactor;
+            subtotal += data.Box.Price;
+            image_products += `
+                <div class="byobitem">
+                    <div class="text-left d-flex">
+                        <img class="img-fluid" alt="${data.Box.Name}" src="${data.Box.ImageUrl}" title="${data.Box.Name}" />
+                    </div>
+                </div>
+            `;
             table_box += `
                 <tr>
                     <td style="width:40px;">${data.Box.Quantity}</td>
@@ -267,8 +288,10 @@
                 `
             }
         }
+        
+        if (data.flyout_cart) subtotal += parseInt(data.subtotal_product);
+        if (subtotal > 0) subtotal = `IDR ${numberWithCommas(subtotal)}`;
 
-        if (subtotal > 0) subtotal = numberWithCommas(subtotal);
         table_box += `
                 <tr>
                     <td colspan="3">&nbsp;</td>
@@ -276,7 +299,7 @@
                 <tr class="subtotal">
                     <td></td>
                     <td>Subtotal</td>
-                    <td>IDR ${subtotal}</td>
+                    <td>${subtotal}</td>
                     <td></td>
                 </tr>
             </table>
@@ -285,6 +308,26 @@
         //no product or box
         let no_product = ``;
         if (!data.Box && data.items.length == 0) no_product += `You have no items in your shopping cart.`
+
+        //define weight factor
+        if (data.flyout_cart) {
+            box_weight = flyout_cart_byob.TotalWeightFactor;
+        }
+        else {
+            if (data.items.length > 0) box_weight += data.items.reduce((n, {WeightFactor}) => n + WeightFactor, 0);
+        }
+
+        //define progress box
+        progressbarwidth = Math.ceil(box_weight * 6.6);
+        progressbarwidthmobile = Math.ceil(box_weight * 6.6);
+
+        if (box_weight >= 6 && box_weight <= 10) box = "Regular Box";
+        else if (box_weight >= 11 && box_weight <= 15) box = "Large Box";
+
+        if (progressbarwidth > 100) {
+            progressbarwidth = 100;
+            progressbarwidthmobile = 100;
+        }
 
         //combiine all product
         let str = `
@@ -354,6 +397,36 @@
         return products
     }
 
+    function checkUnbalanceProduct() {
+        const all_products_obj = localStorage.getItem('products_obj');
+        const step2 = localStorage.getItem('step2');
+
+        let step2_parse = JSON.parse(step2) || [];
+        let all_products_obj_parses = JSON.parse(all_products_obj) || [];
+        if (
+            flyout_cart_byob.Items.length > 0 && 
+            all_products_obj_parses.length > 0 && 
+            step2_parse.length > 0
+        ) {
+            for (let i = 0 ; i < all_products_obj_parses.length ; i++) {
+                let all_products_obj_parse = all_products_obj_parses[i];
+                let item_model = flyout_cart_byob.Items.find(item => item.ProductId == all_products_obj_parse.id);
+                if (!item_model) {
+                    all_products_obj_parses = all_products_obj_parses.filter(item => item.id != all_products_obj_parse.id);
+                    step2_parse = step2_parse.filter(item => item != all_products_obj_parse.id);
+                }
+                else {
+                    if (item_model.Quantity != all_products_obj_parse.qty) {
+                        all_products_obj_parse.qty = item_model.Quantity;
+                    }
+                }
+            }
+
+            localStorage.setItem("products_obj", JSON.stringify(all_products_obj_parses));
+            localStorage.setItem("step2", JSON.stringify(step2_parse));
+        }
+    }
+
     async function dataBYOB() {
         let step2_items;
         let body = {
@@ -361,13 +434,13 @@
             products: []
         }
 
+        await checkUnbalanceProduct();
         const all_products_obj = localStorage.getItem('products_obj');
         const step2 = localStorage.getItem('step2');
         let step2_parse = step2 ?  JSON.parse(step2) : [];
         if (step2_parse.length > 0) {
             let all_products_obj_parse = JSON.parse(all_products_obj);
             body.products = bodyFlyCart(all_products_obj_parse);
-
         }
 
         try {
@@ -379,10 +452,5 @@
             console.log(error.message)
         }
     }
-
-    $(document).ready(async function () {
-        let data_byob = await dataBYOB();
-        bodyModal(data_byob);
-    });
 
 </script>

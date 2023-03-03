@@ -138,6 +138,7 @@
                     resolve(data)
                 },
                 error: function (err) {
+                    console.log(err)
                     reject(err)
                 }
             });
@@ -161,7 +162,19 @@
 
         let response = await FetchAjaxFinal("POST", "/Shoppingcart/insertBYOB", body);
         if (response && !response.success) {
-            let message = response.message && isArray(response.message) ? response.message.join(', ') : response.message ? response.message : 'Please contact our admin'
+            let message;
+            if (!response.message) {
+                message = 'Please contact our admin'
+            }
+            else if (response.message && typeof response.message == "string") {
+                message = response.message
+            }
+            else if (response.message && isArray(response.message)) {
+                message = response.message.join(', ')
+            }
+            else {
+                message = response.message
+            }
             alert(message)
         }
         else {
