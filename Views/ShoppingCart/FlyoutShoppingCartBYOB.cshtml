@@ -131,6 +131,7 @@
 
 <script>
     $(document).ready(async function () {
+        console.log('flyout_cart');
         flyout_cart_byob = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
         let data_byob = await dataBYOB();
 
@@ -216,13 +217,20 @@
         localStorage.setItem('products', JSON.stringify(combine_products));
         localStorage.setItem('step2', JSON.stringify(products));
 
+        try {
+            let body_delete = {id: id};
+            await FetchAjaxFlyoutCart("POST", "/shoppingcart/DeleteBYOBProduct", body_delete);
+        } catch (error) {
+            console.log(error.message)
+        }
+
         bodyModal(step2_items);
     }
 
     function bodyModal(data) {
         let box = "Small Box", 
-            box_weight = 0, 
-            progressbarwidth = 0, progressbarwidthmobile = 0;
+            box_weight = 2, 
+            progressbarwidth = 15, progressbarwidthmobile = 35;
 
         if (!data) {
             //combiine all product
@@ -311,15 +319,15 @@
 
         //define weight factor
         if (data.flyout_cart) {
-            box_weight = flyout_cart_byob.TotalWeightFactor;
+            box_weight = flyout_cart_byob.TotalWeightFactor ? flyout_cart_byob.TotalWeightFactor : box_weight;
         }
         else {
             if (data.items.length > 0) box_weight += data.items.reduce((n, {WeightFactor}) => n + WeightFactor, 0);
         }
 
         //define progress box
-        progressbarwidth = Math.ceil(box_weight * 6.6);
-        progressbarwidthmobile = Math.ceil(box_weight * 6.6);
+        progressbarwidth = Math.ceil(box_weight * 6.6) > progressbarwidth ? Math.ceil(box_weight * 6.6) : progressbarwidth;
+        progressbarwidthmobile = Math.ceil(box_weight * 6.6) > progressbarwidthmobile ? Math.ceil(box_weight * 6.6) : progressbarwidthmobile ;
 
         if (box_weight >= 6 && box_weight <= 10) box = "Regular Box";
         else if (box_weight >= 11 && box_weight <= 15) box = "Large Box";
