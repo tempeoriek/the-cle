@@ -133,7 +133,7 @@
                     <button type="button" id="add-to-cart-button-@Model.ProductId"
                             class="btn btn-default btn-addcart button_sare"
                             data-productid="@Model.ProductId"
-                            onclick="saveDataAddBag('step2', @Model.ProductId)">
+                            onclick="saveDataAddBag('step2', @Model.ProductId, '#product-details-form')">
                         <span>@addToCartText</span>
                     </button>
                     @* <button type="button" id="add-to-cart-button-@Model.ProductId"
@@ -167,7 +167,7 @@
         if (qty <= 1) qty = 1;
     }
 
-    function saveDataAddBag(attribute, value){
+    function saveDataAddBag(attribute, value, product_id_form){
         let product_obj = {
             id: value,
             qty,
@@ -203,7 +203,7 @@
         localStorage.setItem("products", JSON.stringify([... new Set(combine_products)]));
 
         //to recall the FlyoutShoppingCartBYOB
-        AjaxCart.addproducttocart_details('/shoppingcart/AddProductToCartBYOB', '#product-details-form');
+        AjaxCart.addproducttocart_details('/shoppingcart/AddProductToCartBYOB', product_id_form);
     }
 
     function removeData(value) {

@@ -272,6 +272,7 @@
 
         //items
         if (data.items.length > 0) {
+            console.log(data.items)
             for (let i = 0 ; i < data.items.length ; i++) {
                 let item = data.items[i];
                 let delete_button = ``;
@@ -330,7 +331,7 @@
         progressbarwidthmobile = Math.ceil(box_weight * 6.6) > progressbarwidthmobile ? Math.ceil(box_weight * 6.6) : progressbarwidthmobile ;
 
         if (box_weight >= 6 && box_weight <= 10) box = "Regular Box";
-        else if (box_weight >= 11 && box_weight <= 15) box = "Large Box";
+        else if ((box_weight >= 11 && box_weight <= 15) || box_weight > 15) box = "Large Box";
 
         if (progressbarwidth > 100) {
             progressbarwidth = 100;
