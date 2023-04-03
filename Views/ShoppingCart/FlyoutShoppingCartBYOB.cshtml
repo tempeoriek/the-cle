@@ -131,7 +131,6 @@
 
 <script>
     $(document).ready(async function () {
-        console.log('flyout_cart');
         flyout_cart_byob = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
         let data_byob = await dataBYOB();
 
@@ -272,7 +271,6 @@
 
         //items
         if (data.items.length > 0) {
-            console.log(data.items)
             for (let i = 0 ; i < data.items.length ; i++) {
                 let item = data.items[i];
                 let delete_button = ``;
