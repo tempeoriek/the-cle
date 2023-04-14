@@ -223,7 +223,7 @@
                     all_products_obj_parse[index].qty = all_products_obj_parse[index].qty - qty;
                 }
                  else if (all_products_parse_new) {
-                    all_products_obj_parse = all_products_obj_parse.filter(item => item.id == value)
+                    all_products_obj_parse = all_products_obj_parse.filter(item => item.id != value)
                 }
 
             }
